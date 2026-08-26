@@ -1,0 +1,10 @@
+# simulation / synthesis artifacts
+*.vvp
+*.vcd
+*.log
+obj_dir/
+# large physical-design artifacts (regenerate with the flow)
+*.gds
+*.odb
+*.spef
+*.def
