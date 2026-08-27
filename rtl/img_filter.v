@@ -44,7 +44,7 @@
 //  Read enables are derived from C: a zero weight is never fetched, so the
 //  external memory access count scales with blk_v, not with MEM_NUM.
 //
-//  Timing     : accept -> mem -> rdata -> MAC1 -> MAC2 -> out reg (5 cycles),
+//  Timing     : accept -> mem -> rdata -> MAC1 -> MAC2 -> MAC3 -> out (6 cyc),
 //               plus (blk_v-1)/2 row times of algorithmic fill latency.
 //  Throughput : one 4 pixel beat per cycle for every legal blk_v.
 //  REG_IN     : in_pix_data, mem_rdata, img_width, img_height, blk_v, coef
@@ -84,12 +84,12 @@ module IMG_FILTER (
     localparam DW    = 160;  // bank width
     localparam CW    = 392;  // NBK * 8 : packed weight vector
     localparam NTAP  = 50;   // 49 memory taps + 1 forwarded tap
-    // MAC partial sum groups.  Nine groups (five of six taps, four of five)
-    // balance the two MAC stages: measured generic logic depth is 36 levels
-    // for the product/group stage against 35 for the reduction stage, versus
-    // 40/31 with seven groups.  Changing this also requires updating the
-    // explicit reduction tree in section 7.
-    localparam NGRP  = 9;
+    // Three-stage MAC.  Two balanced stages measured ~35 logic levels each
+    // (1.18 ns at the SS corner), so the array is cut three ways instead:
+    // 25 pair-products (multiply + one add), 5 partial sums of 5 pairs, and
+    // a final sum + round + saturate stage, at roughly 24/23/20 levels.
+    localparam NPAIR = 25;   // 50 taps as 25 multiply-add pairs
+    localparam NPART = 5;    // 5 partial sums of 5 pairs each
     localparam ACCW  = 20;   // accumulator width
 
     localparam S_IDLE  = 3'd0;
@@ -499,7 +499,7 @@ module IMG_FILTER (
     reg [CW-1:0]     c_d1,  c_d2;
     reg [7:0]        cbp_d1, cbp_d2;
     reg [DW-1:0]     byp_d1, byp_d2;
-    reg              out_d1, out_d2, out_d3;
+    reg              out_d1, out_d2, out_d3, out_d4;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -508,12 +508,14 @@ module IMG_FILTER (
             out_d1 <= 1'b0;
             out_d2 <= 1'b0;
             out_d3 <= 1'b0;
+            out_d4 <= 1'b0;
         end else if (pipe_en) begin
             ce_d1  <= m_ce;
             ce_d2  <= ce_d1;
             out_d1 <= m_out;
             out_d2 <= out_d1;
             out_d3 <= out_d2;
+            out_d4 <= out_d3;
         end
     end
 
@@ -546,40 +548,46 @@ module IMG_FILTER (
     assign tapd[NBK*DW +: DW] = (|cbp_d2) ? byp_d2 : {DW{1'b0}};
     assign tapc[NBK*8  +: 8 ] = cbp_d2;
 
-    reg  [ACCW-1:0] psum [0:15][0:NGRP-1];
-    wire [ACCW-1:0] total [0:15];
-    wire [12:0]     rndv  [0:15];
+    // Stage 1 (valid at out_d2): 25 pair products per lane.
+    // Stage 2 (valid at out_d3): 5 partial sums of 5 pairs.
+    // Stage 3 (valid at out_d4): total, +64, >>7, saturate.
+    // With legal coefficients every intermediate value is bounded by the
+    // final total (all terms non-negative, sum of weights = 128), so ACCW
+    // covers each stage.
+    reg  [ACCW-1:0] pair_q [0:15][0:NPAIR-1];
+    reg  [ACCW-1:0] part_q [0:15][0:NPART-1];
+    wire [ACCW-1:0] total  [0:15];
+    wire [12:0]     rndv   [0:15];
     wire [159:0]    result;
 
-    genvar gl, gg;
+    genvar gl, gp;
     generate
         for (gl = 0; gl < 16; gl = gl + 1) begin : G_LANE
-            for (gg = 0; gg < NGRP; gg = gg + 1) begin : G_GRP
-                reg [ACCW-1:0] acc;
-                integer t;
-                always @* begin
-                    acc = {ACCW{1'b0}};
-                    for (t = gg; t < NTAP; t = t + NGRP)
-                        acc = acc + ({{(ACCW-10){1'b0}},
-                                      tapd[t*DW + gl*10 +: 10]} *
-                                     {{(ACCW-8){1'b0}},
-                                      tapc[t*8 +: 8]});
-                end
+            for (gp = 0; gp < NPAIR; gp = gp + 1) begin : G_PAIR
+                wire [ACCW-1:0] pprod =
+                    ({{(ACCW-10){1'b0}}, tapd[(2*gp)*DW   + gl*10 +: 10]} *
+                     {{(ACCW-8){1'b0}},  tapc[(2*gp)*8         +: 8]}) +
+                    ({{(ACCW-10){1'b0}}, tapd[(2*gp+1)*DW + gl*10 +: 10]} *
+                     {{(ACCW-8){1'b0}},  tapc[(2*gp+1)*8       +: 8]});
                 always @(posedge clk)
-                    if (pipe_en & out_d2) psum[gl][gg] <= acc;
+                    if (pipe_en & out_d2) pair_q[gl][gp] <= pprod;
             end
 
-            // Second pipeline stage: group sum, round, saturate.
-            // Written as an explicit balanced tree of NGRP = 9 terms.  A
-            // different NGRP needs this reduction updated to match; see the
-            // note at the NGRP declaration.
-            assign total[gl] = ((psum[gl][0] + psum[gl][1])  +
-                                (psum[gl][2] + psum[gl][3])) +
-                               ((psum[gl][4] + psum[gl][5])  +
-                                (psum[gl][6] + psum[gl][7])) +
-                                 psum[gl][8];
+            for (gp = 0; gp < NPART; gp = gp + 1) begin : G_PART
+                wire [ACCW-1:0] psum5 = ((pair_q[gl][5*gp]   +
+                                          pair_q[gl][5*gp+1]) +
+                                         (pair_q[gl][5*gp+2] +
+                                          pair_q[gl][5*gp+3])) +
+                                          pair_q[gl][5*gp+4];
+                always @(posedge clk)
+                    if (pipe_en & out_d3) part_q[gl][gp] <= psum5;
+            end
+
+            assign total[gl] = ((part_q[gl][0] + part_q[gl][1]) +
+                                (part_q[gl][2] + part_q[gl][3])) +
+                                 part_q[gl][4];
             wire [ACCW-1:0] rsum = total[gl] + {{(ACCW-7){1'b0}}, 7'd64};
-            assign rndv [gl] = rsum[ACCW-1:7];          // (sum + 64) >> 7
+            assign rndv [gl] = rsum[ACCW-1:7];
             assign result[gl*10 +: 10] = (|rndv[gl][12:10]) ? 10'd1023
                                                             : rndv[gl][9:0];
         end
@@ -594,7 +602,7 @@ module IMG_FILTER (
     // a push can never overflow.
     reg [159:0] oskid_d;
     wire opop  = out_v_q & out_pix_need;
-    wire opush = pipe_en & out_d3;
+    wire opush = pipe_en & out_d4;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin

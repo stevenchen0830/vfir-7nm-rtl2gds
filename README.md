@@ -39,9 +39,10 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
 
 ### Micro-architecture notes that came from measurement, not intuition
 
-- **MAC grouping**: the 50 taps are compressed in 9 groups; 9 was chosen over
-  7 by measuring mapped logic depth (36/35 levels vs 40/31) at a cost of
-  +0.9 % area.
+- **MAC pipelining**: two balanced MAC stages measured ~35 logic levels each
+  (1.18 ns at the SS corner), so the array is cut three ways — 25 multiply-add
+  pairs, 5 partial sums, and a final round/saturate stage — buying +105 MHz of
+  signoff fmax for +7 % area and one cycle of latency.
 - **Elastic interfaces**: both stream ports terminate in two-slot register
   FIFOs so the pipeline enable is a function of registers only. The first
   physical-design iteration proved why: a combinational
@@ -66,7 +67,7 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
 - **Self-checking testbench** (`verification/img_filter_tb.v`): behavioural
   single-port SRAM model with X-initialized contents, randomized
   ready/valid pressure on both ports, X injection on unused lanes, latency
-  and dead-cycle checks. **54 frames, 2,316,044 component comparisons, 0
+  and dead-cycle checks. **54 frames, 2,821,840 component comparisons, 0
   errors** on the current RTL.
 
 ```sh
@@ -92,16 +93,16 @@ cd $ORFS/flow && make DESIGN_CONFIG=./designs/asap7/img_filter/config.mk
 All numbers from the `6_finish` signoff report of a completed RTL-to-GDSII
 run (post-route parasitics, SS corner):
 
-| Metric | Value |
-| --- | --- |
-| Signoff fmax | **847 MHz** (setup WNS −180 ps against the 1 GHz target) |
-| Hold WS | −25 ps residual after repair |
-| DRC violations | **0** |
-| Routing congestion overflow | **0** on all 7 metal layers (peak usage 26 % on M3) |
-| Synthesis area | 39,842 µm² (≈ 455 k NAND2-equivalents) |
-| Post-route std-cell area | 47,410 µm², 492 k instances, 26.2 % utilization |
-| Power (vectorless, 1 GHz) | 75 mW — clock gating cut it 44× vs. the ungated first spin |
-| Worst IR drop | 7.8 mV |
+| Metric | v2 (2-stage MAC) | v3 (3-stage MAC) |
+| --- | --- | --- |
+| Signoff fmax | 847 MHz | **952 MHz** (setup WNS −50 ps vs. 1 GHz) |
+| Hold WS | −25 ps residual | −38 ps residual |
+| DRC violations | 0 | **0** |
+| Routing congestion overflow | 0 | **0** on all 7 metal layers |
+| Synthesis area | 39,842 µm² | 42,697 µm² (+7 % for the extra pipe registers) |
+| Post-route std-cell area | 47,410 µm² | 50,471 µm², 513 k instances |
+| Power (vectorless, 1 GHz) | 75 mW | **72 mW** |
+| Worst IR drop | 7.8 mV | 7.5 mV |
 
 ### The bottleneck hunt, in one paragraph
 
@@ -113,9 +114,10 @@ fixed in RTL with elastic skid buffers and inferred ICG clock gates), and
 several layers of constraint fiction (generic IO budgets on same-clock SRAM
 pins, ideal-launch vs. propagated-capture skew, silently failing SDC
 collection arithmetic — each diagnosed from repair-log behavior and fixed
-with explicit, insertion-tracking pin constraints).  The clean rerun closed
-at **847 MHz / 75 mW** with the one honest limiter remaining: the 50-tap MAC
-compressor tree at the 0.63 V SS corner. Layout gallery in [`docs/img/`](docs/img/).
+with explicit, insertion-tracking pin constraints).  The clean rerun closed at 847 MHz / 75 mW with the MAC compressor tree as the
+one honest limiter, and a third MAC pipeline stage then took signoff to
+**952 MHz / 72 mW** — the remaining 50 ps is the RVT-cell floor at 0.63 V,
+with SLVT cells as the obvious next lever. Layout gallery in [`docs/img/`](docs/img/).
 
 | | |
 |---|---|
