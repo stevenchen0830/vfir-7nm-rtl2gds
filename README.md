@@ -78,8 +78,10 @@ iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
 
 ## Physical implementation (OpenROAD-flow-scripts + ASAP7)
 
-Flow configuration in [`flow/asap7/`](flow/asap7/): 1 GHz SDC at the SS corner
-(0.63 V / 100 °C, 150 ps clock uncertainty), RVT cells, 22 % core utilization.
+Flow configuration in [`flow/asap7/`](flow/asap7/): 1 GHz SDC, 150 ps clock
+uncertainty, RVT cells, 22 % core utilization. **Timing corner**: the flow
+signs off at the ORFS ASAP7 default `CORNER=BC` (FF libraries, 0.77 V / 25 °C)
+— see the corner note below the results.
 
 ```sh
 # inside an OpenROAD-flow-scripts checkout
@@ -91,7 +93,7 @@ cd $ORFS/flow && make DESIGN_CONFIG=./designs/asap7/img_filter/config.mk
 ### Measured results
 
 All numbers from the `6_finish` signoff report of a completed RTL-to-GDSII
-run (post-route parasitics, SS corner):
+run (post-route parasitics, BC corner = ORFS ASAP7 default):
 
 | Metric | v2 (2-stage MAC) | v3 (3-stage MAC) |
 | --- | --- | --- |
@@ -103,6 +105,18 @@ run (post-route parasitics, SS corner):
 | Post-route std-cell area | 47,410 µm² | 50,471 µm², 513 k instances |
 | Power (vectorless, 1 GHz) | 75 mW | **72 mW** |
 | Worst IR drop | 7.8 mV | 7.5 mV |
+| True slow-corner setup (SS 0.63 V/100 °C, standalone STA) | — | −998 ps → **≈ 500 MHz** |
+| Hold at the fast corner (proper hold corner) | — | −38 ps residual |
+
+**Corner honesty note.** An external constraint review prompted a standalone
+OpenSTA audit of the shipped netlist + SPEF ([`reports/`](reports/)), which
+surfaced that ORFS's ASAP7 platform defaults to `CORNER=BC` — every in-flow
+signoff above is therefore at the *fast* corner, where this document
+originally claimed SS. The true SS picture was then measured directly:
+≈ 500 MHz setup-limited (a typical fast/slow ratio for RVT at 0.63 V), with
+hold checked at the fast corner as it should be (−38 ps residual, 2 ns TNS).
+The SPEF comes from a single RC extraction, so the standalone numbers are a
+close approximation rather than a multi-corner extraction signoff.
 
 ### The bottleneck hunt, in one paragraph
 
@@ -114,10 +128,12 @@ fixed in RTL with elastic skid buffers and inferred ICG clock gates), and
 several layers of constraint fiction (generic IO budgets on same-clock SRAM
 pins, ideal-launch vs. propagated-capture skew, silently failing SDC
 collection arithmetic — each diagnosed from repair-log behavior and fixed
-with explicit, insertion-tracking pin constraints).  The clean rerun closed at 847 MHz / 75 mW with the MAC compressor tree as the
-one honest limiter, and a third MAC pipeline stage then took signoff to
-**952 MHz / 72 mW** — the remaining 50 ps is the RVT-cell floor at 0.63 V,
-with SLVT cells as the obvious next lever. Layout gallery in [`docs/img/`](docs/img/).
+with explicit, insertion-tracking pin constraints).  The clean rerun closed at 847 MHz / 75 mW with the MAC compressor tree as
+the one honest limiter, and a third MAC pipeline stage then took signoff to
+**952 MHz / 72 mW** (BC corner) — the remaining 50 ps is the RVT MAC floor,
+with SLVT cells as the obvious next lever. At the true SS corner the same
+netlist runs at ≈ 500 MHz, which is the number a worst-case product spec
+would quote. Layout gallery in [`docs/img/`](docs/img/).
 
 | | |
 |---|---|

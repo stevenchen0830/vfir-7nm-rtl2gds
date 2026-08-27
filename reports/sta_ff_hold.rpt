@@ -1,0 +1,114 @@
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9184, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9217, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9250, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9283, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9316, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9349, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 9382, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 10518, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 10551, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz line 10584, timing group from output port.
+Warning 1140: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 34, library asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407 already exists.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9184, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9217, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9250, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9283, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9316, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9349, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9382, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 10518, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 10551, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 10584, timing group from output port.
+==== worst slack max ====
+worst slack max -50.35
+==== worst slack min ====
+worst slack min -37.77
+==== tns ====
+tns max -2045.86
+==== top-3 setup ====
+Warning 503: sta_ff3.tcl line 1, report_checks -group_count is deprecated. Use -group_path_count instead.
+max_delay/setup group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+c_fut[103]$_DFF_P_/D (DFFHQNx1_ASAP7_75t_R) 1344.63 1394.98  -50.35 (VIOLATED)
+c_fut[39]$_DFF_P_/D (DFFHQNx1_ASAP7_75t_R) 1343.29 1390.64  -47.35 (VIOLATED)
+c_fut[55]$_DFF_P_/D (DFFHQNx1_ASAP7_75t_R) 1347.45 1390.28  -42.83 (VIOLATED)
+
+max_delay/setup group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[144] (output)           1600.00  818.21  781.79 (MET)
+out_pix_data[156] (output)           1600.00  796.65  803.35 (MET)
+out_pix_data[149] (output)           1600.00  794.10  805.90 (MET)
+
+max_delay/setup group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_wdata[835] (output)              1700.00 1388.78  311.22 (MET)
+mem_wdata[879] (output)              1700.00 1379.32  320.68 (MET)
+mem_wdata[87] (output)               1700.00 1345.53  354.47 (MET)
+
+==== top-3 hold ====
+Warning 503: sta_ff3.tcl line 1, report_checks -group_count is deprecated. Use -group_path_count instead.
+min_delay/hold group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+part_q[67][0]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)  648.41  610.64  -37.77 (VIOLATED)
+part_q[45][1]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)  642.86  607.47  -35.38 (VIOLATED)
+part_q[47][0]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)  643.66  608.62  -35.04 (VIOLATED)
+
+min_delay/hold group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[116] (output)            300.00  569.33  269.33 (MET)
+out_pix_data[118] (output)            300.00  572.67  272.67 (MET)
+out_pix_data[49] (output)             300.00  573.31  273.31 (MET)
+
+min_delay/hold group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_ce[24] (output)                   300.00  584.12  284.12 (MET)
+mem_wdata[1038] (output)              300.00  594.11  294.11 (MET)
+mem_wdata[1037] (output)              300.00  597.79  297.79 (MET)
+
+==== unconstrained sample ====
+Warning 503: sta_ff3.tcl line 1, report_checks -group_count is deprecated. Use -group_path_count instead.
+max_delay/setup group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+c_fut[103]$_DFF_P_/D (DFFHQNx1_ASAP7_75t_R) 1344.63 1394.98  -50.35 (VIOLATED)
+c_fut[39]$_DFF_P_/D (DFFHQNx1_ASAP7_75t_R) 1343.29 1390.64  -47.35 (VIOLATED)
+c_fut[55]$_DFF_P_/D (DFFHQNx1_ASAP7_75t_R) 1347.45 1390.28  -42.83 (VIOLATED)
+
+max_delay/setup group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[144] (output)           1600.00  818.21  781.79 (MET)
+out_pix_data[156] (output)           1600.00  796.65  803.35 (MET)
+out_pix_data[149] (output)           1600.00  794.10  805.90 (MET)
+
+max_delay/setup group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_wdata[835] (output)              1700.00 1388.78  311.22 (MET)
+mem_wdata[879] (output)              1700.00 1379.32  320.68 (MET)
+mem_wdata[87] (output)               1700.00 1345.53  354.47 (MET)
+
