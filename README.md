@@ -129,8 +129,16 @@ with SLVT cells as the obvious next lever. Layout gallery in [`docs/img/`](docs/
 rtl/            synthesizable Verilog (top: IMG_FILTER)
 verification/   golden model + self-checking testbench
 flow/asap7/     OpenROAD-flow-scripts design config + SDC
+reports/        raw signoff evidence from the v3 run (see below)
 docs/img/       renders from the routed database
 ```
+
+The [`reports/`](reports/) directory carries the unedited tool output backing
+every number in the results table: `6_finish_sta.rpt` (post-route OpenSTA
+signoff — WNS/TNS, fmax, clock skew, worst paths), `4_cts_sta.rpt` and
+`5_groute_sta.rpt` (stage-by-stage timing trajectory), `5_route_drc.rpt`
+(zero bytes — the DRC proof), `1_synth_area.txt`, and `6_metrics.json`
+(machine-readable power/area/IR metrics).
 
 ## Toolchain
 
