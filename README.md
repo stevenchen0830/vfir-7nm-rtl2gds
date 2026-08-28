@@ -114,9 +114,23 @@ surfaced that ORFS's ASAP7 platform defaults to `CORNER=BC` — every in-flow
 signoff above is therefore at the *fast* corner, where this document
 originally claimed SS. The true SS picture was then measured directly:
 ≈ 500 MHz setup-limited (a typical fast/slow ratio for RVT at 0.63 V), with
-hold checked at the fast corner as it should be (−38 ps residual, 2 ns TNS).
+hold checked at the fast corner as it should be (−38 ps WNS, −8.7 ns hold
+TNS — an earlier revision of this note mislabeled the setup TNS as hold).
 The SPEF comes from a single RC extraction, so the standalone numbers are a
 close approximation rather than a multi-corner extraction signoff.
+
+**Audit addenda (plan-v3 round).** (1) The BC final-netlist worst setup
+endpoints are the `c_fut[*]` weight-vector look-ahead registers — the 392-bit
+triple-rotation cone — not the MAC array; since that vector is consumed once
+per output row, it is a clean multicycle-path candidate (future work). 
+(2) `check_timing` (any flag combination) does not terminate on this
+500k-instance netlist in standalone OpenSTA, and `report_checks
+-unconstrained` re-prints constrained groups in this version — so the
+unconstrained-endpoint count is **tool-limited, unverified**; the assertion
+harness marks those checks UNKNOWN rather than PASS. (3) WC@1000 ps
+implementation (bounded repair, violation-report purpose): CTS-stage setup
+WNS −887 ps — the honest gap to a 1 GHz product target at the slow corner.
+STA scripts, reports and a SHA-256 manifest live in [`reports/`](reports/).
 
 ### The bottleneck hunt, in one paragraph
 
