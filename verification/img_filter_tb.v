@@ -156,7 +156,7 @@ module img_filter_tb;
                 if (dead > DEADMAX) begin
                     $display("FATAL: %0d dead cycles at %0t", dead, $time);
                     errors = errors + 1;
-                    $finish;
+                    $fatal(1);
                 end
             end
         end
@@ -421,6 +421,12 @@ module img_filter_tb;
         run_frame(  32,  30, 25,  0, 40, 0);   // output back pressure
         run_frame(  40,  32, 49, 30, 30, 0);
         run_frame(  24,  24, 49, 60, 60, 1);
+        // +SMOKE stops here: the 13 frames above cover pass-through, both
+        // mirror folds, minimum H, non-multiple-of-4 widths, starvation,
+        // back pressure and X injection in interpreter-friendly sizes.
+        // The full set below adds bank-wrap, wide/tall extremes and the
+        // randomized sweeps (hours under Icarus - run before release).
+        if (!$test$plusargs("SMOKE")) begin
         // taller than the bank count: the row -> bank modulo wraps around
         run_frame(  24,  49, 49,  0,  0, 0);
         run_frame(  24,  50, 49,  0,  0, 0);
@@ -440,20 +446,26 @@ module img_filter_tb;
         // randomised sweep, first without and then with handshake pressure
         run_random(14, 0);
         run_random(14, 1);
+        end
 
         $display(
 "== %0d frames, %0d component checks, %0d errors, longest dead run %0d ==",
                  frames, checks, errors, dead_max);
-        if (errors == 0) $display("TEST PASSED");
-        else             $display("TEST FAILED");
-        $fflush;
-        $finish;
+        if (errors == 0) begin
+            $display("TEST PASSED");
+            $fflush;
+            $finish;
+        end else begin
+            $display("TEST FAILED");
+            $fflush;
+            $fatal(1);   // nonzero exit code so CI cannot miss a failure
+        end
     end
 
     initial begin
         #20_000_000;
         $display("TEST FAILED: global timeout");
-        $finish;
+        $fatal(1);
     end
 
 endmodule

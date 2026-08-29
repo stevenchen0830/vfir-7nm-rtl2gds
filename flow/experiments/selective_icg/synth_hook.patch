@@ -1,0 +1,7 @@
+--- a/flow/scripts/synth.tcl
++++ b/flow/scripts/synth.tcl
+@@ (inside the INFER_CLKGATES block, immediately before `log_cmd clockgate`)
++  if { [env_var_exists_and_non_empty CLKGATE_MIN_NET_SIZE] } {
++    lappend clkgate_args -min_net_size $::env(CLKGATE_MIN_NET_SIZE)
++  }
+   log_cmd clockgate {*}$clkgate_args

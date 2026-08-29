@@ -1,0 +1,29 @@
+Routing-DRC summary - generated 2026-08-29T13:25Z
+Checker: TritonRoute (OpenROAD detailed_route), end-of-run DRC pass.
+A zero-byte 5_route_drc.rpt is TritonRoute's clean-result form; the
+authoritative count is the final DRT-0199 line of each 5_2_route.log.
+
+== FLOW_VARIANT=base ==
+[INFO DRT-0199]   Number of violations = 12.
+[INFO DRT-0199]   Number of violations = 12.
+[INFO DRT-0199]   Number of violations = 0.
+[INFO DRT-0198] Complete detail routing.
+  5_route_drc.rpt size: 0 bytes
+
+== FLOW_VARIANT=wc ==
+[INFO DRT-0199]   Number of violations = 11.
+[INFO DRT-0199]   Number of violations = 11.
+[INFO DRT-0199]   Number of violations = 0.
+[INFO DRT-0198] Complete detail routing.
+  5_route_drc.rpt size: 0 bytes
+
+== FLOW_VARIANT=sel ==
+[INFO DRT-0199]   Number of violations = 5.
+[INFO DRT-0199]   Number of violations = 5.
+[INFO DRT-0199]   Number of violations = 0.
+[INFO DRT-0198] Complete detail routing.
+  5_route_drc.rpt size: 0 bytes
+
+Scope note: geometric routing DRC only (spacing/via/antenna as checked
+by TritonRoute). Electrical checks (max slew/cap) and timing are
+reported separately - see 6_metrics.json and the STA reports.

@@ -1,0 +1,30 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install simulators
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog verilator
+      - name: Reference model + architectural equivalence proof
+        run: python3 verification/reference_model.py
+      # Full 54-frame set takes hours under Icarus - it is a pre-release
+      # local run; see the +SMOKE note in the testbench.
+      - name: Icarus smoke regression (13 frames)
+        run: |
+          iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/img_filter_tb.v
+          vvp tb.vvp +SMOKE | tee sim.log
+          grep -q "TEST PASSED" sim.log
+      - name: Verilator lint
+        run: verilator --lint-only -Wall -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM \
+                 rtl/img_filter_def.v rtl/img_filter.v --top-module IMG_FILTER
+      - name: Manifest integrity (LF-normalized checkout)
+        run: |
+          cd reports
+          sha256sum -c manifest_planv3.sha256
