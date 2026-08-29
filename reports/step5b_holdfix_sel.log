@@ -1,0 +1,197 @@
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9184, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9217, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9250, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9283, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9316, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9349, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 9382, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 10518, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 10551, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz line 10584, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13156, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13189, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13222, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13255, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13288, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13321, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13354, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 14748, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 14781, timing group from output port.
+[WARNING STA-1212] /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 14814, timing group from output port.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/HAxp5_ASAP7_75t_R A -> SN timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/HAxp5_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/HAxp5_ASAP7_75t_R B -> SN timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/HAxp5_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XNOR2x1_ASAP7_75t_R A -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XNOR2x1_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XNOR2x1_ASAP7_75t_R B -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XNOR2x1_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XNOR2x2_ASAP7_75t_R A -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XNOR2x2_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XNOR2x2_ASAP7_75t_R B -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XNOR2x2_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XNOR2xp5_ASAP7_75t_R A -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XNOR2xp5_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XNOR2xp5_ASAP7_75t_R B -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XNOR2xp5_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XOR2x1_ASAP7_75t_R A -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XOR2x1_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XOR2x1_ASAP7_75t_R B -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XOR2x1_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XOR2x2_ASAP7_75t_R A -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XOR2x2_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XOR2x2_ASAP7_75t_R B -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XOR2x2_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XOR2xp5_ASAP7_75t_R A -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XOR2xp5_ASAP7_75t_R.
+[WARNING STA-1111] cell asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407/XOR2xp5_ASAP7_75t_R B -> Y timing group combinational not found in cell asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120/XOR2xp5_ASAP7_75t_R.
+==== BASELINE (routed SPEF) ====
+==== base_hold_ws ====
+worst slack min -127.56
+==== base_setup_ws ====
+worst slack max 43.69
+==== base_hold_tns ====
+        0 |       0 |       0 |            0 |    +0.0% | -127.557 | -468483.844 | m_ce[36]$_DFFE_PN0P_/D
+      500 |       0 |    1364 |            0 |    +0.3% | -104.875 | -444524.875 | m_c[144]$_DFFE_PP_/D
+     1000 |       0 |    2829 |            0 |    +0.6% | -104.496 | -402657.594 | c_cur[4]$_DFFE_PP_/D
+     1500 |       0 |    4548 |            0 |    +0.9% | -104.496 | -356822.406 | c_cur[4]$_DFFE_PP_/D
+     2000 |       7 |    6218 |            0 |    +1.2% | -104.496 | -312428.156 | c_cur[4]$_DFFE_PP_/D
+     2500 |      13 |    7836 |            0 |    +1.5% | -104.496 | -273005.781 | c_cur[4]$_DFFE_PP_/D
+     3000 |      20 |    9418 |            0 |    +1.8% | -104.496 | -246920.250 | c_cur[4]$_DFFE_PP_/D
+     3500 |      21 |   10872 |            0 |    +2.1% | -104.496 | -243818.734 | c_cur[4]$_DFFE_PP_/D
+     4000 |      26 |   12254 |            0 |    +2.4% | -104.496 | -239418.344 | c_cur[4]$_DFFE_PP_/D
+     4500 |      29 |   13694 |            0 |    +2.7% | -104.496 | -234687.297 | c_cur[4]$_DFFE_PP_/D
+     5000 |      35 |   14938 |            0 |    +2.9% | -104.496 | -230924.156 | c_cur[4]$_DFFE_PP_/D
+     5500 |      38 |   16000 |            0 |    +3.1% | -104.496 | -224593.609 | c_cur[4]$_DFFE_PP_/D
+     6000 |      39 |   16765 |            0 |    +3.3% | -104.496 | -203017.141 | c_cur[4]$_DFFE_PP_/D
+     6500 |      39 |   17484 |            0 |    +3.4% | -104.496 | -179867.828 | c_cur[4]$_DFFE_PP_/D
+     7000 |      39 |   18188 |            0 |    +3.6% | -104.496 | -157677.594 | c_cur[4]$_DFFE_PP_/D
+     7500 |      40 |   18882 |            0 |    +3.7% | -104.496 | -136789.469 | c_cur[4]$_DFFE_PP_/D
+     8000 |      40 |   19514 |            0 |    +3.8% | -104.496 | -116462.836 | c_cur[4]$_DFFE_PP_/D
+     8500 |      40 |   20134 |            0 |    +3.9% | -104.496 | -96827.727 | c_cur[4]$_DFFE_PP_/D
+     9000 |      40 |   20782 |            0 |    +4.1% | -104.496 | -78869.656 | c_cur[4]$_DFFE_PP_/D
+     9500 |      40 |   21428 |            0 |    +4.2% | -104.496 | -62051.633 | c_cur[4]$_DFFE_PP_/D
+    10000 |      40 |   22051 |            0 |    +4.3% | -104.496 | -46452.992 | c_cur[4]$_DFFE_PP_/D
+    10500 |      40 |   22701 |            0 |    +4.4% | -104.496 | -39543.699 | c_cur[4]$_DFFE_PP_/D
+    11000 |      40 |   23309 |            0 |    +4.6% | -104.496 | -37070.500 | c_cur[4]$_DFFE_PP_/D
+    11500 |      40 |   23975 |            0 |    +4.7% | -104.496 | -33949.426 | c_cur[4]$_DFFE_PP_/D
+    12000 |      40 |   24586 |            0 |    +4.8% | -104.496 | -31757.939 | c_cur[4]$_DFFE_PP_/D
+    12500 |      40 |   25172 |            0 |    +4.9% | -104.496 | -30272.109 | c_cur[4]$_DFFE_PP_/D
+    13000 |      40 |   25652 |            0 |    +5.0% | -104.496 | -29209.273 | c_cur[4]$_DFFE_PP_/D
+    13500 |      40 |   26036 |            0 |    +5.1% | -104.496 | -28865.572 | c_cur[4]$_DFFE_PP_/D
+    14000 |      40 |   26377 |            0 |    +5.2% | -104.496 | -28829.656 | c_cur[4]$_DFFE_PP_/D
+    14500 |      40 |   26620 |            0 |    +5.2% | -104.496 | -28735.246 | c_cur[4]$_DFFE_PP_/D
+        0 |      50711 |      8079 |     36690
+    final |      40 |   26731 |            0 |    +5.2% | -104.496 | -28687.961 | c_cur[4]$_DFFE_PP_/D
+[WARNING RSZ-0064] Unable to repair all hold checks within margin.
+[INFO RSZ-0032] Inserted 26731 hold buffers.
+==== POST-REPAIR MATRIX (GRT parasitics, both corners in one DB) ====
+==== post_hold_ws ====
+worst slack min -114.26
+==== post_hold_tns ====
+tns min -145996.67
+==== post_setup_ws ====
+worst slack max -5.40
+==== post_setup_tns ====
+tns max -5.40
+==== post_hold_worst ====
+min_delay/hold group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+c_cur[128]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)  424.06  309.80 -114.26 (VIOLATED)
+
+min_delay/hold group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[116] (output)            300.00  314.49   14.49 (MET)
+
+min_delay/hold group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_ce[4] (output)                    300.00  318.55   18.55 (MET)
+
+==== post_setup_worst ====
+max_delay/setup group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+pair_q[338][17]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R) 2312.47 2317.87   -5.40 (VIOLATED)
+
+max_delay/setup group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[136] (output)           2600.00  878.28 1721.72 (MET)
+
+max_delay/setup group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_wdata[4361] (output)             2700.00 1397.64 1302.36 (MET)
+
+==== post_hold_stream_in ====
+min_delay/hold group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+ibuf0[132]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)  653.87  953.55  299.68 (MET)
+
+==== post_hold_stream_out ====
+min_delay/hold group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[116] (output)            300.00  314.49   14.49 (MET)
+
+==== post_hold_mem_in ====
+min_delay/hold group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+rdata_q[7651]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)  654.73  832.81  178.07 (MET)
+
+==== post_hold_mem_out ====
+min_delay/hold group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_ce[4] (output)                    300.00  318.55   18.55 (MET)
+
+==== post_setup_stream_in ====
+max_delay/setup group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+ibuf1[159]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R) 2312.01 1599.72  712.29 (MET)
+
+==== post_setup_stream_out ====
+max_delay/setup group vclk_core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+out_pix_data[136] (output)           2600.00  878.28 1721.72 (MET)
+
+==== post_setup_mem_in ====
+max_delay/setup group core_clock
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+rdata_q[5056]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R) 2103.04 1051.53 1051.51 (MET)
+
+==== post_setup_mem_out ====
+max_delay/setup group vclk_mem
+
+                                     Required  Actual
+Endpoint                               Delay   Delay   Slack
+------------------------------------------------------------
+mem_wdata[4361] (output)             2700.00 1397.64 1302.36 (MET)
+
+==== post_drv_check_types ====
+==== post_area ====
+Design area 54846 um^2 28% utilization.
+==== post_power_ss ====
+[ERROR STA-0103] -scene keyword required with multi-scene analysis.
+Error: step5b_sel.tcl, 86 STA-0103
