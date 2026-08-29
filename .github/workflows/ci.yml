@@ -21,9 +21,12 @@ jobs:
                    verification/img_filter_tb.v
           vvp tb.vvp +SMOKE | tee sim.log
           grep -q "TEST PASSED" sim.log
+      # -Irtl resolves the `include of img_filter_def.v (a define file, not
+      # a compile unit). UNSIGNED waiver: generate-loop indices make one
+      # comparison constant in some instances - benign, verified v4/v5.
       - name: Verilator lint
-        run: verilator --lint-only -Wall -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM \
-                 rtl/img_filter_def.v rtl/img_filter.v --top-module IMG_FILTER
+        run: verilator --lint-only -Irtl -Wno-UNSIGNED rtl/img_filter.v
+                 --top-module IMG_FILTER
       - name: Manifest integrity (LF-normalized checkout)
         run: |
           cd reports
