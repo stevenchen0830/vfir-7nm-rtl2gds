@@ -1,0 +1,58 @@
+== IMG_FILTER regression ==
+    32x24   blk_v= 1 gap= 0/0  :    215 cyc (ideal   192), rd=      0 wr=     0, 1st out +22
+    32x24   blk_v= 3 gap= 0/0  :    223 cyc (ideal   192), rd=    376 wr=   192, 1st out +30
+    28x25   blk_v= 5 gap= 0/0  :    212 cyc (ideal   175), rd=    672 wr=   175, 1st out +36
+    26x24   blk_v= 7 gap= 0/0  :    212 cyc (ideal   168), rd=    945 wr=   168, 1st out +43
+    25x27   blk_v= 9 gap= 0/0  :    240 cyc (ideal   189), rd=   1400 wr=   189, 1st out +50
+    24x24   blk_v=49 gap= 0/0  :    311 cyc (ideal   144), rd=   3408 wr=   144, 1st out +167
+    24x25   blk_v=49 gap= 0/0  :    317 cyc (ideal   150), rd=   3708 wr=   150, 1st out +167
+    32x48   blk_v=49 gap= 0/0  :    599 cyc (ideal   384), rd=  13824 wr=   384, 1st out +215
+    24x30   blk_v=47 gap= 0/0  :    341 cyc (ideal   180), rd=   4938 wr=   180, 1st out +161
+    32x30   blk_v=25 gap=40/0  :    508 cyc (ideal   240), rd=   4608 wr=   240, 1st out +179
+    32x30   blk_v=25 gap= 0/40 :    473 cyc (ideal   240), rd=   4608 wr=   240, 1st out +120
+    40x32   blk_v=49 gap=30/30 :    830 cyc (ideal   320), rd=   9260 wr=   320, 1st out +378
+    24x24   blk_v=49 gap=60/60 :    707 cyc (ideal   144), rd=   3444 wr=   144, 1st out +393
+    24x49   blk_v=49 gap= 0/0  :    461 cyc (ideal   294), rd=   9732 wr=   294, 1st out +167
+    24x50   blk_v=49 gap= 0/0  :    467 cyc (ideal   300), rd=   9972 wr=   300, 1st out +167
+    28x51   blk_v=49 gap= 0/0  :    548 cyc (ideal   357), rd=  12726 wr=   357, 1st out +191
+    32x120  blk_v=49 gap= 0/0  :   1175 cyc (ideal   960), rd=  36032 wr=   960, 1st out +214
+    32x100  blk_v=25 gap=10/10 :   1072 cyc (ideal   800), rd=  18048 wr=   800, 1st out +134
+    24x512  blk_v= 3 gap= 0/0  :   3101 cyc (ideal  3072), rd=   6138 wr=  3072, 1st out +29
+   320x40   blk_v=13 gap= 0/0  :   3703 cyc (ideal  3200), rd=  35520 wr=  3200, 1st out +503
+  1440x26   blk_v=49 gap= 0/0  :  18023 cyc (ideal  9360), rd= 238320 wr=  9360, 1st out +8663
+   640x32   blk_v= 3 gap= 0/0  :   5303 cyc (ideal  5120), rd=  10080 wr=  5120, 1st out +183
+    27x24   blk_v=11 gap= 0/0  :    226 cyc (ideal   168), rd=   1505 wr=   168, 1st out +57
+    29x31   blk_v=21 gap=10/10 :    401 cyc (ideal   248), rd=   4160 wr=   248, 1st out +112
+  1439x24   blk_v= 1 gap= 0/0  :   8663 cyc (ideal  8640), rd=      0 wr=     0, 1st out +22
+    24x4096 blk_v= 3 gap= 0/0  :  24605 cyc (ideal 24576), rd=  49146 wr= 24576, 1st out +28
+    46x214  blk_v= 5 gap= 0/0  :   2615 cyc (ideal  2568), rd=  10224 wr=  2568, 1st out +46
+   153x79   blk_v=33 gap= 0/0  :   3728 cyc (ideal  3081), rd=  78702 wr=  3081, 1st out +646
+    85x61   blk_v=43 gap= 0/0  :   1827 cyc (ideal  1342), rd=  46662 wr=  1342, 1st out +485
+   296x90   blk_v=15 gap= 0/0  :   7201 cyc (ideal  6660), rd=  89614 wr=  6660, 1st out +541
+   122x73   blk_v=41 gap= 0/0  :   2906 cyc (ideal  2263), rd=  71672 wr=  2263, 1st out +643
+   259x88   blk_v=11 gap= 0/0  :   6068 cyc (ideal  5720), rd=  55575 wr=  5720, 1st out +348
+   308x131  blk_v= 9 gap= 0/0  :  10418 cyc (ideal 10087), rd=  79464 wr= 10087, 1st out +331
+   303x73   blk_v=17 gap= 0/0  :   6179 cyc (ideal  5548), rd=  83904 wr=  5548, 1st out +630
+   194x85   blk_v=23 gap= 0/0  :   4727 cyc (ideal  4165), rd=  85701 wr=  4165, 1st out +562
+   243x31   blk_v=47 gap= 0/0  :   3317 cyc (ideal  1891), rd=  54229 wr=  1891, 1st out +1426
+    56x114  blk_v=19 gap= 0/0  :   1745 cyc (ideal  1596), rd=  27594 wr=  1596, 1st out +148
+   142x72   blk_v=39 gap= 0/0  :   3299 cyc (ideal  2592), rd=  85500 wr=  2592, 1st out +706
+    76x112  blk_v= 5 gap= 0/0  :   2189 cyc (ideal  2128), rd=   8436 wr=  2128, 1st out +60
+   254x32   blk_v=49 gap= 0/0  :   3607 cyc (ideal  2048), rd=  61440 wr=  2048, 1st out +1558
+   245x66   blk_v=23 gap=25/49 :   9346 cyc (ideal  4092), rd=  82522 wr=  4092, 1st out +950
+    79x120  blk_v=33 gap=28/20 :   4054 cyc (ideal  2400), rd=  71680 wr=  2400, 1st out +479
+   289x172  blk_v= 7 gap=39/9  :  21251 cyc (ideal 12556), rd=  74679 wr= 12556, 1st out +362
+   268x69   blk_v=21 gap= 1/41 :   8813 cyc (ideal  4623), rd=  85760 wr=  4623, 1st out +702
+   155x40   blk_v= 7 gap=21/25 :   2466 cyc (ideal  1560), rd=   9009 wr=  1560, 1st out +188
+   211x203  blk_v= 1 gap=14/2  :  12649 cyc (ideal 10759), rd=      0 wr=     0, 1st out +23
+   117x90   blk_v=35 gap=30/40 :   5645 cyc (ideal  2700), rd=  78750 wr=  2700, 1st out +771
+   212x39   blk_v=33 gap= 3/28 :   3760 cyc (ideal  2067), rd=  52576 wr=  2067, 1st out +899
+   151x49   blk_v=47 gap=40/26 :   4446 cyc (ideal  1862), rd=  65550 wr=  1862, 1st out +1432
+   246x123  blk_v=13 gap=17/39 :  13565 cyc (ideal  7626), rd=  89280 wr=  7626, 1st out +475
+   106x49   blk_v=15 gap=10/10 :   1798 cyc (ideal  1323), rd=  17199 wr=  1323, 1st out +239
+   253x84   blk_v=13 gap=22/39 :   9765 cyc (ideal  5376), rd=  62208 wr=  5376, 1st out +506
+   321x37   blk_v=29 gap= 4/23 :   5127 cyc (ideal  2997), rd=  68040 wr=  2997, 1st out +1214
+   315x75   blk_v=15 gap=26/20 :   9486 cyc (ideal  5925), rd=  79079 wr=  5925, 1st out +764
+== 54 frames, 2821840 component checks, 0 errors, longest dead run 43 ==
+TEST PASSED
+verification/img_filter_tb.v:450: $finish called at 246185000 (1ps)
