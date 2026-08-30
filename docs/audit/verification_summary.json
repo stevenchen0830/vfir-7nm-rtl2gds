@@ -1,0 +1,64 @@
+{
+  "repository_commit": "cc60e8a",
+  "formal_functional_completeness": {
+    "status": "PARTIAL_NOT_COMPLETE",
+    "rtl_simulation": {
+      "status": "PASS",
+      "frames": 54,
+      "component_checks": 2821840,
+      "errors": 0
+    },
+    "reference_model": {
+      "status": "PASS",
+      "shape_kernel_combinations": 117
+    },
+    "control_safety_bmc": {
+      "status": "PASS",
+      "depth_cycles": 40
+    },
+    "full_mathematical_functional_proof": "NOT_PROVED"
+  },
+  "cdc_rdc": {
+    "status": "CONDITIONAL",
+    "sequential_cells": 556,
+    "state_bits": 21416,
+    "clock_domains": 1,
+    "unexpected_clock_domains": 0,
+    "async_reset_domains": 1,
+    "unexpected_async_reset_domains": 0,
+    "resettable_bits": 1238,
+    "unreset_bits": 20178,
+    "integration_reset_synchronizer_present_in_repository": false
+  },
+  "synthesis_equivalence": {
+    "status": "NOT_PROVED",
+    "generic_netlist_partitions": 682,
+    "proven_equivalent_partitions": 532,
+    "unknown_partitions": 149,
+    "tool_resource_error_partitions": 1,
+    "explicit_inequivalence_partitions": 0,
+    "physical_flow_final_netlist_available": false
+  },
+  "mmmc_final_timing": {
+    "status": "FAIL_NOT_CLOSED",
+    "bc_1ghz": {
+      "setup_wns_ps": -50.3494,
+      "setup_tns_ps": -2045.86,
+      "setup_violations": 140,
+      "hold_wns_ps": -37.7667,
+      "hold_tns_ps": -8679.22,
+      "hold_violations": 1601,
+      "max_slew_violations": 881,
+      "max_capacitance_violations": 1
+    },
+    "wc_1ghz": {
+      "setup_wns_ps": -950.61,
+      "setup_tns_ps": -4608623.0,
+      "setup_violations": 10694,
+      "max_slew_violations": 330
+    },
+    "true_multicorner_extraction": false,
+    "post_repair_reroute_and_reextract": false,
+    "check_timing_completed": false
+  }
+}

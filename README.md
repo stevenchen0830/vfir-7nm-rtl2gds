@@ -73,8 +73,21 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
 ```sh
 python3 verification/reference_model.py     # ALL REFERENCE CHECKS PASSED
 iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
-         verification/img_filter_tb.v && vvp tb.vvp
+         verification/img_filter_tb.v && vvp tb.vvp   # +SMOKE for 13-frame CI subset
 ```
+
+**Verification scorecard** (independent third-party audit, tools incl.
+SBY/EQY/Boolector — full reports in [`docs/audit/`](docs/audit/), scorecard
+detail in [`docs/verification-status.md`](docs/verification-status.md)):
+
+| Check | Status |
+| --- | --- |
+| RTL dynamic (54-frame regression + golden model) | **PASS** |
+| Formal functional completeness | **PARTIAL** — 40-cycle control-safety BMC passes; no unbounded end-to-end proof |
+| CDC | **PASS** (single clock domain, no internal crossings) |
+| RDC | **CONDITIONAL** — 20,178/21,416 state bits deliberately unreset; relies on declared external reset-synchronizer contract |
+| Synthesis equivalence | **PARTIAL** — 532/682 EQY partitions proven, 149 unknown, 0 counterexamples |
+| Timing at 1 GHz | **FAIL / NOT CLOSED** (see results below) |
 
 ## Physical implementation (OpenROAD-flow-scripts + ASAP7)
 
@@ -108,6 +121,8 @@ run (post-route parasitics, BC corner = ORFS ASAP7 default):
 | Worst IR drop | 7.8 mV | 7.5 mV |
 | True slow-corner setup (SS 0.63 V/100 °C, standalone STA) | — | −998 ps → **≈ 500 MHz** |
 | Hold at the fast corner (proper hold corner) | — | −38 ps residual |
+| WC implementation @ 1 GHz SDC | — | setup WNS −950.6 ps over 10,694 endpoints → feasible ≈ **513 MHz** |
+| **1 GHz timing status (both corners)** | — | **FAIL / NOT CLOSED** — 952 MHz (BC) and 513 MHz (WC) are the honest achieved numbers |
 
 ¹ All historical reports were produced with a blanket
 `set_clock_uncertainty 150` that also taxes every hold check with the full
@@ -205,7 +220,8 @@ verification/      golden model + self-checking testbench (CI-fatal on fail)
 flow/asap7/        design config + SDCs (reported / recommended / sweep set)
 flow/experiments/  reproduction drivers for the hold-closure study
 reports/           raw evidence + provenance map (reports/README.md)
-docs/              hold-study.md + renders from the routed databases
+docs/              hold-study.md, verification-status.md, third-party
+                   audit reports (docs/audit/), routed-database renders
 ```
 
 The [`reports/`](reports/) directory carries the unedited tool output backing

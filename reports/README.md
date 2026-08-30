@@ -25,5 +25,11 @@ Integrity: `manifest.sha256` (v3/BC round), `manifest_planv3.sha256`
 | `diag_ccur_holdroot.log` | sel netlist (unrepaired), residual root-cause diagnosis | FF | route SPEF | sweep @2000 | yes |
 | `verify_hold_uncertainty.log` | sel netlist (unrepaired), `-hold 30` override validation | FF | route SPEF | sweep @2000 + `-hold 30` | yes |
 | `drc_summary.txt` | routing-DRC summary across all three implementations | — | — | — | yes |
+| `liberty_manifest.sha256` | SHA-256 pins of the exact NLDM Liberty files used (paths relative to the ORFS checkout in `TOOL_VERSIONS.txt`) | — | — | — | yes |
+
+Final physical netlists and SPEF parasitics for all three implementations
+are published as gzipped **GitHub release assets** (with `assets.sha256`),
+enabling third-party final-netlist LEC and STA without re-running the flow.
 
 Reproduction drivers: [`../flow/experiments/`](../flow/experiments/).
+Independent audit reports: [`../docs/audit/`](../docs/audit/).
