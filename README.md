@@ -249,6 +249,31 @@ signoff — WNS/TNS, fmax, clock skew, worst paths), `4_cts_sta.rpt` and
 (zero bytes — the DRC proof), `1_synth_area.txt`, and `6_metrics.json`
 (machine-readable power/area/IR metrics).
 
+## Acknowledgments
+
+This project stands on open-source EDA infrastructure built by others:
+
+- **[OpenROAD](https://github.com/The-OpenROAD-Project/OpenROAD)** and
+  **[OpenROAD-flow-scripts](https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts)**
+  (The OpenROAD Project) — the complete RTL-to-GDSII flow, placement, CTS,
+  routing, and the OpenSTA timing engine used throughout. T. Ajayi et al.,
+  *"Toward an Open-Source Digital Flow: First Learnings from the OpenROAD
+  Project"*, DAC 2019.
+- **[Yosys](https://github.com/YosysHQ/yosys)** (Claire Xenia Wolf and the
+  YosysHQ team) — synthesis and the `clockgate` inference this project's
+  gating experiments are built on.
+- **[ASAP7](https://github.com/The-OpenROAD-Project/asap7)** (Arizona State
+  University / L. T. Clark et al.) — the 7 nm predictive PDK. L. T. Clark
+  et al., *"ASAP7: A 7-nm finFET predictive process design kit"*,
+  Microelectronics Journal 53 (2016).
+- **[Icarus Verilog](https://github.com/steveicarus/iverilog)** and
+  **[Verilator](https://github.com/verilator/verilator)** — simulation and
+  lint.
+
+All results in this repository were produced with these tools at the exact
+versions pinned in [`reports/TOOL_VERSIONS.txt`](reports/TOOL_VERSIONS.txt);
+any errors in their use are this project's own.
+
 ## Toolchain
 
 Icarus Verilog · Verilator (lint) · Yosys 0.68 · OpenROAD 26Q3 · OpenSTA ·
