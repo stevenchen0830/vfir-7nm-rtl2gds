@@ -107,17 +107,30 @@ module IMG_FILTER (
     // rot49(a,s)[j] = a[(j-s) mod 49].  Six fixed rewiring stages, each one
     // a rotation by 2^k elements taken modulo 49, so the composition of the
     // set bits of s is a rotation by (s mod 49); s <= 48 is therefore exact.
-    function [CW-1:0] rot49;
+    // The full mod-49 rotate is a 6-level log shifter.  v4 splits it into
+    // two 3-level halves with a pipeline register between them (rot49_hi o
+    // rot49_lo == the original rot49); the weight-vector cone then spans
+    // two shallow cycles instead of one deep one, and no multicycle
+    // constraint is needed anywhere.
+    function [CW-1:0] rot49_lo;              // rotate by s[2:0] (0..7)
         input [CW-1:0] a;
-        input [5:0]    s;
-        reg [CW-1:0] t0, t1, t2, t3, t4;
+        input [2:0]    s;
+        reg [CW-1:0] t0, t1;
         begin
-            t0    = s[0] ? {a [383:0], a [391:384]} : a;    // +1  element
-            t1    = s[1] ? {t0[375:0], t0[391:376]} : t0;   // +2
-            t2    = s[2] ? {t1[359:0], t1[391:360]} : t1;   // +4
-            t3    = s[3] ? {t2[327:0], t2[391:328]} : t2;   // +8
-            t4    = s[4] ? {t3[263:0], t3[391:264]} : t3;   // +16
-            rot49 = s[5] ? {t4[135:0], t4[391:136]} : t4;   // +32
+            t0       = s[0] ? {a [383:0], a [391:384]} : a;    // +1  element
+            t1       = s[1] ? {t0[375:0], t0[391:376]} : t0;   // +2
+            rot49_lo = s[2] ? {t1[359:0], t1[391:360]} : t1;   // +4
+        end
+    endfunction
+
+    function [CW-1:0] rot49_hi;              // rotate by 8*s[0]+16*s[1]+32*s[2]
+        input [CW-1:0] a;
+        input [2:0]    s;
+        reg [CW-1:0] t3, t4;
+        begin
+            t3       = s[0] ? {a [327:0], a [391:328]} : a;    // +8
+            t4       = s[1] ? {t3[263:0], t3[391:264]} : t3;   // +16
+            rot49_hi = s[2] ? {t4[135:0], t4[391:136]} : t4;   // +32
         end
     endfunction
 
@@ -163,7 +176,11 @@ module IMG_FILTER (
     reg  [13:0] mod_x;
     reg  [3:0]  prep_cnt;
     wire        prep_done  = (prep_cnt == 4'd12);
-    wire        prep_cload = (prep_cnt == 4'd10);
+    // v4: the weight pipeline is one register deeper, so the PREP capture
+    // moves from count 10 to 11.  Chain: mod_x final at the edge closing
+    // count 8 -> stage A during 9 -> c_fut written closing 10 -> c_cur
+    // captures it at the edge closing count 11; MAIN starts at 13.
+    wire        prep_cload = (prep_cnt == 4'd11);
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -348,9 +365,26 @@ module IMG_FILTER (
     wire [6:0] s3_raw = {1'b0, mod_x[5:0]} + 7'd49 - {1'b0, ymod_c};
     wire [5:0] s3_c   = (s3_raw >= 7'd49) ? (s3_raw[5:0] - 6'd49) : s3_raw[5:0];
 
-    wire [CW-1:0] cv1 = rot49(msk_int, s1_c);
-    wire [CW-1:0] cv2 = rot49(rev49(msk_top), s2_c);
-    wire [CW-1:0] cv3 = rot49(rev49(msk_bot), s3_c);
+    // Rotator stage A : masks + the fine (0..7) half of each rotation.
+    wire [CW-1:0] cvlo1 = rot49_lo(msk_int,         s1_c[2:0]);
+    wire [CW-1:0] cvlo2 = rot49_lo(rev49(msk_top),  s2_c[2:0]);
+    wire [CW-1:0] cvlo3 = rot49_lo(rev49(msk_bot),  s3_c[2:0]);
+    wire [7:0]    cbp_nxt = byp_c ? coef_q[7:0] : 8'd0;
+
+    reg [CW-1:0] cvlo1_q, cvlo2_q, cvlo3_q;   // mid-rotation pipeline regs
+    reg [2:0]    shi1_q,  shi2_q,  shi3_q;    // coarse rotation selects
+    reg [7:0]    cbp_mid_q;
+    always @(posedge clk) begin
+        cvlo1_q <= cvlo1;   shi1_q <= s1_c[5:3];
+        cvlo2_q <= cvlo2;   shi2_q <= s2_c[5:3];
+        cvlo3_q <= cvlo3;   shi3_q <= s3_c[5:3];
+        cbp_mid_q <= cbp_nxt;
+    end
+
+    // Rotator stage B : the coarse (+8/+16/+32) half, then the 3-way sum.
+    wire [CW-1:0] cv1 = rot49_hi(cvlo1_q, shi1_q);
+    wire [CW-1:0] cv2 = rot49_hi(cvlo2_q, shi2_q);
+    wire [CW-1:0] cv3 = rot49_hi(cvlo3_q, shi3_q);
 
     wire [CW-1:0]  c_nxt;
     wire [NBK-1:0] ce_nxt;
@@ -366,10 +400,11 @@ module IMG_FILTER (
                                         cv3[gi*8 +: 8]};
         end
     endgenerate
-    wire [7:0] cbp_nxt = byp_c ? coef_q[7:0] : 8'd0;
 
-    // Stage 1 : the vector of the look ahead row, recomputed one cycle after
-    //           the look ahead parameters move on (a whole row of slack).
+    // Look-ahead pipeline, now two registers deep (stage A regs -> c_fut).
+    // The value is still consumed only at the next c_load, >= 6 cycles
+    // after the sources step, so the extra stage is absorbed by the row
+    // gap; PREP compensates by loading one count later (prep_cload = 11).
     reg [CW-1:0]  c_fut;
     reg [NBK-1:0] ce_fut;
     reg [7:0]     cbp_fut;
@@ -377,7 +412,7 @@ module IMG_FILTER (
     always @(posedge clk) begin
         c_fut   <= c_nxt;
         ce_fut  <= ce_nxt;
-        cbp_fut <= cbp_nxt;
+        cbp_fut <= cbp_mid_q;
     end
 
     // Stage 2 : at the row boundary the prepared vector becomes the live one
