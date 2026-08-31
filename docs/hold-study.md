@@ -68,6 +68,55 @@ the blanket-uncertainty SDC, preserved verbatim as
 `constraint_reported.sdc` so the report ↔ constraint correspondence stays
 intact.
 
+## The closed loop: hold signoff through route + extraction
+
+A follow-up implementation leg (`FLOW_VARIANT=mcp`, BC corner, 1 GHz SDC +
+the evidence-backed multicycle exception on the weight-rotator sources,
+`flow/asap7/constraint_mcp.sdc`) completed the loop this study had left
+open — repair inside the flow, then detailed routing, RCX extraction and
+final STA on the same database:
+
+- Under the blanket-150 ps scenario the in-flow hold repair had found
+  **2,426 violating endpoints** and was still inserting buffers after
+  3,500+ moves. The stage was stopped, the corrected
+  `-setup 150 / -hold 30` scenario applied (last-write-wins override on
+  the stage SDC), and the stage re-run: the hold repair found **zero
+  violating endpoints** — the entire workload had been constraint fiction.
+- Final signoff (`reports/mcp_6_finish.rpt`, routed SPEF): **hold WNS
+  +26.6 ps, TNS 0, 0 violating endpoints** — the first fully hold-clean
+  post-route signoff of this project. Geometric routing DRC 0 (fourth
+  implementation in a row), 67.1 mW, 499 k instances.
+- Setup at 1 GHz remains open at **−51.07 ps / 112 endpoints**, all on the
+  deliberately single-cycle-checked `mod_x → c_fut` cone (the rotation
+  amount feeding 392 bits of mux control — too much fanout to size away).
+  The structural fix — splitting the rotator's 6-level log shifter into
+  two pipelined halves, which shortens the `mod_x` cone as a side effect —
+  is implemented and regression-tested on the `v4-cfut-pipe` branch.
+- Provenance label: stages 1–4 of this leg were built under the blanket
+  scenario, stage 5 onward under the corrected one — a **mixed-provenance
+  quick-closure experiment**, not equivalent to a from-scratch run under
+  the corrected SDC (that from-scratch run is the v4 leg's job).
+
+**Three-corner matrix** on this leg's final netlist + routed SPEF
+(`reports/matrix_mcp_{ff,ss,tt}.rpt`; single RC model — an ASAP7/ORFS
+platform limitation; includes recovery/removal/min-pulse-width checks and
+the endpoint enumeration: 23,399 register data pins, all on the single
+`core_clock`, plus the explicit port-list constraints):
+
+| Corner | Setup WNS / TNS | Hold WNS / TNS |
+| --- | --- | --- |
+| FF (hold corner) | −51.07 ps / −1.27 ns (112 eps, `mod_x` cone) | **+26.6 ps / 0 — clean** |
+| TT | −401.7 ps / −974 ns (≈ 714 MHz) | **+52.8 ps / 0 — clean** |
+| SS (cross-corner audit on this BC-optimized layout) | −1033.8 ps / −5.87 ms (≈ 492 MHz) | −139.3 ps / −758 ns¹ |
+
+¹ SS hold on a BC-optimized layout whose hold buffers were sized at FF —
+a documented limitation of this leg, not a signoff claim; a WC-targeted
+implementation needs its own hold pass.
+
+**Frequency commitment with guardband**: 513 MHz is the *measured* WC
+setup limit, not an operating promise; the recommended operating point is
+**≤ 500 MHz** at the slow corner, keeping ≥ 50 ps of margin.
+
 ## Controlled ICG ablation
 
 Matched stage, corner and config — the two WC legs differ *only* in the

@@ -184,11 +184,29 @@ summarized here, with the complete investigation in
   empirically validated to 0.01 ps.
 - **Controlled ICG ablation** (only the gating threshold differs):
   44.2 mW ↔ 155.1 mW — a quantified 3.5× power-vs-hold-closure trade.
-- Scope: academic flow — geometric routing DRC 0 on all three
-  implementations, no LVS/EM, no post-repair route re-signoff, SRAMs as
-  interface timing models only. Reproduction drivers:
-  [`flow/experiments/`](flow/experiments/); provenance:
-  [`reports/README.md`](reports/README.md).
+- **The closed loop (mcp leg)**: a fourth implementation with the
+  corrected hold uncertainty and the evidence-backed multicycle exception
+  completed repair → detailed route → RCX extraction → final STA in one
+  flow: **hold WNS +26.6 ps / TNS 0 / 0 endpoints at the fast corner —
+  the first fully hold-clean post-route signoff** (clean at TT too;
+  routed SPEF; `reports/mcp_6_finish.rpt` + three-corner matrix in
+  `reports/matrix_mcp_*.rpt`). Setup at 1 GHz remains open at −51 ps on
+  the `mod_x` rotation-amount cone; its structural fix (pipelined
+  rotator) is regression-tested on the `v4-cfut-pipe` branch.
+- **Current accurate statement**: at 1 GHz, SS 0.63 V/100 °C, setup does
+  not close; the measured WC setup limit is ≈ 513 MHz and the recommended
+  operating point with guardband is **≤ 500 MHz**. With the corrected
+  hold uncertainty, hold closes through the full route-and-extract loop
+  at the proper corners (FF/TT). Not yet done: 1 GHz setup closure (v4
+  branch), a from-scratch corrected-SDC run (the mcp leg is
+  mixed-provenance), per-corner RC extraction (single RCX model), LVS/EM,
+  and a tool-complete unconstrained-endpoint audit (`check_timing` is
+  tool-limited; the enumeration evidence — 23,399 register data pins on
+  the single clock + explicit port-list constraints — stands in).
+- Scope: academic flow — geometric routing DRC 0 on all four
+  implementations, no LVS/EM, SRAMs as interface timing models only.
+  Reproduction drivers: [`flow/experiments/`](flow/experiments/);
+  provenance: [`reports/README.md`](reports/README.md).
 
 
 ### The bottleneck hunt, in one paragraph
