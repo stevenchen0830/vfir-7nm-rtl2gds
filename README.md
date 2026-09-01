@@ -134,7 +134,7 @@ see the corner note below the results.
 ### Five implementations, one honest trajectory
 
 | Leg | What changed | What it established |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | `base` (v3 RTL) | baseline, blanket SDC | 952 MHz BC fmax; hold/slew debt under phantom-taxed constraints |
 | `wc` | true slow corner | honest 1 GHz gap: WNS −950.6 ps → 513 MHz measured limit |
 | `sel` | `clockgate -min_net_size 2000` (ICGs 30 → 2) | controlled gating ablation: 44.2 ↔ 155.1 mW (3.5×) vs. hold-repairability |
@@ -150,24 +150,25 @@ cd $ORFS/flow && make DESIGN_CONFIG=./designs/asap7/img_filter/config.mk
 
 ### Measured results
 
-All numbers from the `6_finish` signoff report of a completed RTL-to-GDSII
-run (post-route parasitics, BC corner = ORFS ASAP7 default):
+All numbers from `6_finish` signoff reports of completed RTL-to-GDSII runs
+(post-route parasitics, BC corner = ORFS ASAP7 default; v4 evidence pinned
+by `manifest_v4.sha256`):
 
-| Metric | v2 (2-stage MAC) | v3 (3-stage MAC) |
-| --- | --- | --- |
-| Signoff fmax | 847 MHz | **952 MHz** (setup WNS −50.35 ps / TNS −2.05 ns over 140 endpoints vs. 1 GHz) |
-| Hold WS (pre-hold-fix, blanket-uncertainty SDC¹) | −25 ps residual | −37.8 ps / TNS −8.68 ns over 1601 endpoints |
-| Electrical DRVs at signoff | — | 881 max-slew, 1 max-cap, 0 max-fanout endpoints |
-| Routing DRC (geometric²) | 0 | **0** |
-| Routing congestion overflow | 0 | **0** on all 7 metal layers |
-| Synthesis area | 39,842 µm² | 42,697 µm² (+7 % for the extra pipe registers) |
-| Post-route std-cell area | 47,410 µm² | 50,471 µm², 513 k instances |
-| Power (vectorless, 1 GHz) | 75 mW | **72 mW** |
-| Worst IR drop | 7.8 mV | 7.5 mV |
-| True slow-corner setup (SS 0.63 V/100 °C, standalone STA) | — | −998 ps → **≈ 500 MHz** |
-| Hold at the fast corner (proper hold corner) | — | −38 ps residual |
-| WC implementation @ 1 GHz SDC | — | setup WNS −950.6 ps over 10,694 endpoints → feasible ≈ **513 MHz** |
-| **1 GHz timing status (v2/v3-era table above)** | — | historical: superseded by the v4 leg — **1 GHz closed at BC** (documented uncertainty view), 520 MHz WC; see the headline box and the five-leg table |
+| Metric | v2 (2-stage MAC) | v3 (3-stage MAC) | **v4 (pipelined rotator, final)** |
+| --- | --- | --- | --- |
+| Signoff fmax | 847 MHz | 952 MHz (setup WNS −50.35 ps / TNS −2.05 ns over 140 endpoints vs. 1 GHz) | **1 GHz closed** (documented 100 ps view: setup +34.3 ps, TNS 0; legacy 150 ps view: −15.7 ps → 984.5 MHz) |
+| Hold WS (pre-hold-fix, blanket-uncertainty SDC¹) | −25 ps residual | −37.8 ps / TNS −8.68 ns over 1601 endpoints | **+4.9 ps / TNS 0 / 0 endpoints** (corrected −hold 30 SDC, in-flow repair) |
+| Electrical DRVs at signoff | — | 881 max-slew, 1 max-cap, 0 max-fanout endpoints | 243 max-slew (disclosed), **0 max-cap, 0 max-fanout** |
+| Routing DRC (geometric²) | 0 | 0 | **0** |
+| Routing congestion overflow | 0 | 0 on all 7 metal layers | **0** on all layers (M3 peak 26.2 %) |
+| Synthesis area | 39,842 µm² | 42,697 µm² (+7 % for the extra pipe registers) | 43,063 µm² |
+| Post-route std-cell area | 47,410 µm² | 50,471 µm², 513 k instances | **47,297 µm², 468 k instances** (smallest spin) |
+| Power (vectorless, 1 GHz) | 75 mW | 72 mW | **45.6 mW** (lowest spin) |
+| Worst IR drop | 7.8 mV | 7.5 mV | 5.8 mV (0.75 %) |
+| True slow-corner setup (SS 0.63 V/100 °C, standalone STA) | — | −998 ps → ≈ 500 MHz | +76.9 ps @ 2000 ps frozen-IO → **520 MHz** |
+| Hold at the fast corner (proper hold corner) | — | −38 ps residual | **clean** (+4.9 ps / TNS 0) |
+| WC implementation @ 1 GHz SDC | — | setup WNS −950.6 ps over 10,694 endpoints → feasible ≈ 513 MHz | not re-implemented at WC; limit measured by sweep (520 MHz) |
+| **1 GHz timing status** | — | not closed (historical) | **CLOSED at BC** (documented uncertainty view; both views published) |
 
 ¹ All historical reports were produced with a blanket
 `set_clock_uncertainty 150` that also taxes every hold check with the full
