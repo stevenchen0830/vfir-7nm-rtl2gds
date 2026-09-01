@@ -1,34 +1,42 @@
-# Verification status
+# Verification status — v4
 
-An independent third-party audit (2026-08-30, of commit `cc60e8a`; tools:
-Icarus Verilog 14, Yosys 0.68, SBY/EQY v0.68, Boolector 3.2.4) assessed
-this project beyond its own dynamic verification. Their full reports are
-archived unedited in [`audit/`](audit/). This page is the honest scorecard;
-nothing below is a signoff claim.
+This scorecard describes the v4 split-rotator RTL and the v4 physical reports
+on `main`. Evidence was independently re-run on 2026-09-01 with Icarus
+Verilog 14, Verilator 5.051, Yosys/SBY/EQY 0.68 and Boolector 3.2.4. Historical
+audit files for commit `cc60e8a` remain in [`audit/`](audit/) but do not define
+the current v4 status. Nothing on this page is a tapeout-signoff claim.
 
-| Check | Status | Evidence |
+| Check | Status | Current v4 evidence |
 | --- | --- | --- |
-| RTL dynamic verification | **PASS** | 54 frames / 2,821,840 component checks / 0 errors (re-run independently); reference model 117 shape×kernel equivalence combinations |
-| Formal functional completeness | **PARTIAL** | control-safety BMC to 40 cycles PASSES (FSM/counter bounds, `mem_we ⊆ mem_ce` one-hot, no same-bank read/write, post-reset quiescence, no valid loss under backpressure); **no unbounded proof** connecting the golden FIR math to every output transaction |
-| CDC | **PASS (module level)** | 556 sequential cells / 21,416 state bits all on the single `clk`; no generated or data clocks — no internal crossings exist |
-| RDC | **CONDITIONAL** | single `rst_n` domain, but 20,178 of 21,416 state bits are deliberately unreset (datapath); correctness relies on the 1,238 reset control bits isolating unknown payload — evidenced by the bounded BMC, not proven unbounded — and on an **external reset synchronizer that is not part of this repo** (declared SDC contract, `set_false_path -from rst_n`) |
-| Synthesis equivalence (LEC) | **PARTIAL** | RTL vs generic-synthesis netlist, 682 EQY partitions: **532 proven, 149 UNKNOWN** (induction did not close), the monolithic `rdata_q[7839:0]` partition exhausted solver resources, **0 counterexamples**. "No evidence of miscompile" — not "LEC PASS". The ORFS physical netlists needed for final LEC are published as release assets (below) |
-| MMMC / final timing at 1 GHz | **FAIL / NOT CLOSED** | BC: setup −50.35 ps (140 endpoints), hold −37.77 ps (1,601), 881 slew + 1 cap DRVs. WC: setup −950.61 ps (10,694 endpoints). Feasible WC period 1950.6 ps ≈ 513 MHz. Single-SPEF views, post-repair netlist not re-routed/re-extracted — see [hold-study.md](hold-study.md) |
+| RTL dynamic verification | **PASS** | Complete 54-frame self-checking regression, four independent 13-frame seeds, 0..48 split-rotator test, PREP boundary/consecutive-frame checks and five runtime-reset injection sites. Independent Python model: 117 shape-by-kernel checks. See [`audit/dynamic_verification_v4.md`](audit/dynamic_verification_v4.md). |
+| Functional coverage | **PARTIAL** | The testbench records legal kernel values, width modulo 4, bank wrap and all three rotation-shift masks. These are targeted functional counters, not code/toggle/branch coverage and not proof of every legal input sequence. |
+| Formal functional completeness | **PARTIAL** | Forty-cycle BMC passes the control-safety and split-rotator pipeline/tag assertions. It does not prove every output transaction against the mathematical FIR reference and is not an unbounded proof. |
+| CDC | **PASS (module level)** | 562 sequential cells / 22,577 state bits all use the sole top-level `clk`; no internal clock crossing exists. |
+| RDC | **CONDITIONAL** | All 1,206 resettable state bits use `rst_n`; 21,371 datapath bits are deliberately unreset. Reset-injection and bounded-formal checks support payload isolation, but safe deassertion still depends on the external reset synchronizer required by the integration contract. |
+| Synthesis equivalence | **PARTIAL / INCONCLUSIVE** | Generic Yosys synthesis passes structural `check -assert`. With the split-rotator pipeline grouped correctly, EQY proves 532/680 partitions; 147 remain UNKNOWN after the bounded fallback and only the 7,840-bit `rdata_q` partition ends in a resource ERROR. The earlier isolated `c_fut` false counterexample is gone (the grouped partition is UNKNOWN, not FAIL). This is not final LEC against an ORFS mapped netlist. |
+| Zero-delay GLS | **PASS (generic netlist)** | Public-interface pass-through smoke: 144 beats, zero errors. The v4 ORFS final netlist, cell simulation models and SDF are not published, so mapped-netlist and timing GLS remain unrun. |
+| 1 GHz FF/BC operating view | **PASS, limited view** | With the documented 100 ps setup / 30 ps hold uncertainty: setup WNS +34.31 ps, TNS 0; hold WNS +4.88 ps, TNS 0. This uses the routed v4 SPEF and FF Liberty view. |
+| Legacy 150 ps setup-uncertainty view | **NOT CLOSED** | Setup WNS -15.69 ps, TNS -117.37 ps, 19 endpoints; hold remains +4.88 ps / TNS 0. This is a deliberately more conservative alternative constraint view, not the declared 1 GHz operating view. |
+| MMMC / electrical / physical signoff | **NOT CLOSED** | 243 max-slew violations remain (max-cap and max-fanout are 0). TT at 1 GHz and SS at 2 ns are diagnostics that reuse one SPEF, not per-corner extracted MMMC. Full `check_timing`, final-netlist LEC, LVS, EM/IR and SRAM-macro signoff are absent. |
 
-## What "closed" would require (not attempted here)
+## Timing evidence boundary
 
-Transaction-level formal harness proving every output handshake against the
-golden model (assume-guarantee over banks/lanes); reset-synchronizer RTL +
-unbounded no-payload-leak-before-valid property; final-netlist LEC with
-`rdata_q` sliced per bank and reset-reachability invariants; per-corner RC
-extraction, complete `check_timing`, LVS/EM, SRAM macro signoff. That is a
-signoff workflow, deliberately out of scope for this academic project.
+The current timing source set is pinned by
+[`reports/manifest_v4.sha256`](../reports/manifest_v4.sha256). The TT 1 GHz
+diagnostic reports setup WNS -333.53 ps. The SS 2 ns diagnostic reports setup
+WNS +76.89 ps; its hold result is not meaningful because SS is not the hold
+corner. These cross-corner reports reuse route parasitics rather than
+extracting an RC view for every corner.
 
-## Third-party reproduction assets
+## What remains for stronger closure
 
-Final physical netlists and SPEF parasitics for all three implementations
-(BC base / WC full-ICG / WC selective-gating) are published as gzipped
-GitHub release assets with SHA-256 sums, so final-netlist LEC and STA can
-be reproduced without re-running the flow. The exact Liberty inputs are
-pinned by `reports/liberty_manifest.sha256` against the ORFS ASAP7
-platform files named in `reports/TOOL_VERSIONS.txt`.
+1. Prove transaction-level FIR equivalence with a bounded-memory or
+   assume-guarantee formal harness, and slice `rdata_q` by bank for LEC.
+2. Publish the v4 mapped/final netlist, simulation libraries and SDF; run
+   final-netlist LEC, zero-delay GLS and a small SDF smoke.
+3. Repair the 243 max-slew violations, incrementally route, re-extract SPEF,
+   and run setup/hold/DRV plus constraint coverage across real extracted
+   corners.
+4. Add integration-level reset synchronization, SRAM models/macros, LVS and
+   EM/IR checks if the project target changes from academic flow evidence to
+   tapeout readiness.

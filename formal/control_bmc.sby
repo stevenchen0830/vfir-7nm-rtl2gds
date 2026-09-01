@@ -1,0 +1,15 @@
+[options]
+mode bmc
+depth 40
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal -D FORMAL_PROPERTIES -I . img_filter_def.v img_filter.v
+prep -top IMG_FILTER
+
+[files]
+rtl/img_filter_def.v
+rtl/img_filter.v
+formal/img_filter_properties.vh

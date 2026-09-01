@@ -1,0 +1,3 @@
+GLS SMOKE beats=144 errors=0
+GLS TEST PASSED
+Scope: zero-delay generic Yosys netlist with simcells.v; not the unpublished v4 ORFS mapped netlist and not SDF timing simulation.

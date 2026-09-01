@@ -1,0 +1,40 @@
+name: extended-verification
+on:
+  workflow_dispatch:
+
+jobs:
+  multiseed-smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [12345678, 0badc0de, 49a517c3, deadbeef]
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog
+      - name: 13-frame constrained-random regression
+        run: |
+          iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/img_filter_tb.v
+          vvp tb.vvp +SMOKE +SEED=${{ matrix.seed }} | tee sim-${{ matrix.seed }}.log
+          grep -q "TEST PASSED" sim-${{ matrix.seed }}.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ matrix.seed }}
+          path: sim-${{ matrix.seed }}.log
+
+  full-54-frame:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog
+      - name: Full release regression
+        run: |
+          iverilog -g2005 -o full.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/img_filter_tb.v
+          vvp full.vvp +SEED=12345678 | tee v4-54-frame.log
+          grep -q "TEST PASSED" v4-54-frame.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v4-54-frame
+          path: v4-54-frame.log

@@ -102,6 +102,10 @@ module img_filter_tb;
     reg [7:0]   wgt [0:24];          // half coefficient set
     integer     W, H, BV, HV, NB;
     integer     errors, checks, frames;
+    integer     align_checks, align_errors, bank_wrap_frames;
+    reg [49:0]  cov_blk_v;
+    reg [3:0]   cov_width_mod4;
+    reg [48:0]  cov_s1, cov_s2, cov_s3;
 
     function integer mirror_row;
         input integer pos;
@@ -138,6 +142,87 @@ module img_filter_tb;
             golden_comp = acc[9:0];
         end
     endfunction
+
+    //-----------------------------------------------------------------------
+    // White-box v4 PREP alignment assertion.  At every c_load, independently
+    // rebuild the effective bank weights from mirror_row and check that the
+    // two-stage split rotator delivered the vector for the intended row.
+    //-----------------------------------------------------------------------
+    reg [391:0] align_expected;
+    reg [7:0]   align_bypass;
+    integer align_y, align_h, align_hv, align_k, align_m, align_bank;
+    integer align_coef, align_s1, align_s2, align_s3, align_mismatch;
+
+    always @(posedge clk) begin
+        // The final output-row boundary also performs one harmless look-ahead
+        // load that is never consumed.  Exclude it explicitly: at H=4096 the
+        // 12-bit rem_f underflow wraps to 4095 and otherwise resembles y=0.
+        if (rst_n && (img_filter_tb.u_dut.c_load === 1'b1) &&
+            ((img_filter_tb.u_dut.state == 3'd1) || // S_PREP
+             (img_filter_tb.u_dut.adv_row &&
+              (img_filter_tb.u_dut.rem_q != 12'd0))) &&
+            (img_filter_tb.u_dut.rem_f <= img_filter_tb.u_dut.h_m1_q)) begin
+            align_y  = img_filter_tb.u_dut.h_m1_q - img_filter_tb.u_dut.rem_f;
+            align_h  = img_filter_tb.u_dut.h_m1_q + 1;
+            align_hv = img_filter_tb.u_dut.hv_q;
+            align_expected = 392'd0;
+            align_bypass = 8'd0;
+            for (align_k = -align_hv; align_k <= align_hv; align_k = align_k + 1) begin
+                align_coef = cf[align_k + 24];
+                if ((align_k == align_hv) && ((align_y + align_hv) < align_h)) begin
+                    align_bypass = align_coef[7:0];
+                end else begin
+                    align_m = mirror_row(align_y + align_k, align_h);
+                    align_bank = align_m % 49;
+                    align_expected[align_bank*8 +: 8] =
+                        align_expected[align_bank*8 +: 8] + align_coef[7:0];
+                end
+            end
+
+            align_s1 = (align_y + 25) % 49;
+            align_s2 = (23 - align_y) % 49;
+            if (align_s2 < 0) align_s2 = align_s2 + 49;
+            align_s3 = (((2*align_h + 23) % 49) - align_y) % 49;
+            if (align_s3 < 0) align_s3 = align_s3 + 49;
+            cov_s1[align_s1] = 1'b1;
+            cov_s2[align_s2] = 1'b1;
+            cov_s3[align_s3] = 1'b1;
+
+            #0.05;
+            align_checks = align_checks + 50;
+            align_mismatch = (img_filter_tb.u_dut.cbp_cur !== align_bypass);
+            for (align_bank = 0; align_bank < 49; align_bank = align_bank + 1) begin
+                if (img_filter_tb.u_dut.ce_cur[align_bank] !==
+                    (align_expected[align_bank*8 +: 8] != 8'd0))
+                    align_mismatch = 1;
+                if ((align_expected[align_bank*8 +: 8] != 8'd0) &&
+                    (img_filter_tb.u_dut.c_cur[align_bank*8 +: 8] !==
+                     align_expected[align_bank*8 +: 8]))
+                    align_mismatch = 1;
+            end
+            if (align_mismatch) begin
+                align_errors = align_errors + 1;
+                errors = errors + 1;
+                if (align_errors < 20)
+                    $display("ALIGN ERROR y=%0d H=%0d hv=%0d cbp exp/got=%0d/%0d",
+                             align_y, align_h, align_hv, align_bypass,
+                             img_filter_tb.u_dut.cbp_cur);
+                if (align_errors < 4)
+                    for (align_bank = 0; align_bank < 49; align_bank = align_bank + 1)
+                        if ((img_filter_tb.u_dut.ce_cur[align_bank] !==
+                             (align_expected[align_bank*8 +: 8] != 8'd0)) ||
+                            ((align_expected[align_bank*8 +: 8] != 8'd0) &&
+                             (img_filter_tb.u_dut.c_cur[align_bank*8 +: 8] !==
+                              align_expected[align_bank*8 +: 8])))
+                            $display("  ALIGN bank=%0d exp=%0d/%b got=%0d/%b",
+                                     align_bank,
+                                     align_expected[align_bank*8 +: 8],
+                                     (align_expected[align_bank*8 +: 8] != 8'd0),
+                                     img_filter_tb.u_dut.c_cur[align_bank*8 +: 8],
+                                     img_filter_tb.u_dut.ce_cur[align_bank]);
+            end
+        end
+    end
 
     //-----------------------------------------------------------------------
     // Cycle / handshake monitors
@@ -271,6 +356,9 @@ module img_filter_tb;
         begin
             W  = width;  H = height;  BV = bv;  HV = (bv-1)/2;
             NB = (W + 3) / 4;
+            cov_blk_v[bv] = 1'b1;
+            cov_width_mod4[width % 4] = 1'b1;
+            if (height > 49) bank_wrap_frames = bank_wrap_frames + 1;
             in_gap = ingap;  out_gap = outgap;
             make_coef(bv);
 
@@ -392,7 +480,11 @@ module img_filter_tb;
     //-----------------------------------------------------------------------
     initial begin
         seed = 32'h1234_5678;
+        if ($value$plusargs("SEED=%h", seed)) begin end
         errors = 0; checks = 0; frames = 0;
+        align_checks = 0; align_errors = 0; bank_wrap_frames = 0;
+        cov_blk_v = 50'd0; cov_width_mod4 = 4'd0;
+        cov_s1 = 49'd0; cov_s2 = 49'd0; cov_s3 = 49'd0;
         mem_reads = 0; mem_writes = 0;
         cyc = 0; dead = 0; dead_max = 0;
         o_row = 0; o_beat = 0; o_cnt = 0;
@@ -405,9 +497,33 @@ module img_filter_tb;
         rst_n = 1;
         repeat (5) @(negedge clk);
 
-        $display("== IMG_FILTER regression ==");
+        $display("== IMG_FILTER regression seed=0x%08x ==", seed);
         $fflush;
 
+        if ($test$plusargs("ALIGN4096_ONLY")) begin
+            W = 24; H = 4096; BV = 3; HV = 1; NB = 6;
+            make_coef(3);
+            @(negedge clk);
+            frm_start  <= 1'b1;
+            img_width  <= 11'd23;
+            img_height <= 12'd4095;
+            blk_v      <= 6'd3;
+            coef       <= coef_v;
+            @(negedge clk);
+            frm_start  <= 1'b0;
+            wait (align_checks != 0);
+            repeat (2) @(negedge clk);
+            $display("ALIGN4096 checks=%0d errors=%0d", align_checks, align_errors);
+            if (align_errors == 0) begin
+                $display("ALIGN4096 TEST PASSED");
+                $finish;
+            end
+            $fatal(1, "ALIGN4096 TEST FAILED");
+        end
+
+        if ($test$plusargs("H4096_ONLY")) begin
+        run_frame(  24,4096,  3,  0,  0, 0);
+        end else begin
         run_frame(  32,  24,  1,  0,  0, 0);   // pass through
         run_frame(  32,  24,  3,  0,  0, 0);
         run_frame(  28,  25,  5,  0,  0, 0);
@@ -447,10 +563,16 @@ module img_filter_tb;
         run_random(14, 0);
         run_random(14, 1);
         end
+        end
 
         $display(
 "== %0d frames, %0d component checks, %0d errors, longest dead run %0d ==",
                  frames, checks, errors, dead_max);
+        $display("ALIGNMENT checks=%0d errors=%0d", align_checks, align_errors);
+        $display("COVERAGE blk_v=%013h width_mod4=%h bank_wrap_frames=%0d",
+                 cov_blk_v, cov_width_mod4, bank_wrap_frames);
+        $display("COVERAGE shifts s1=%013h s2=%013h s3=%013h",
+                 cov_s1, cov_s2, cov_s3);
         if (errors == 0) begin
             $display("TEST PASSED");
             $fflush;

@@ -1,0 +1,8 @@
+SBY task: formal/control_bmc.sby
+Mode/depth: BMC, 40 cycles
+Engine: smtbmc boolector
+Properties: control/counter bounds, SRAM write one-hot and read/write exclusion, reset quiescence, stalled-valid preservation, split-rotator data/enable/tag pipeline alignment
+Status: passed
+Elapsed wall time: 0:02:24 (144 seconds)
+Engine status: PASS; no traces produced
+Final: DONE (PASS, rc=0)

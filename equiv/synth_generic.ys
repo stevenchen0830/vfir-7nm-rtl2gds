@@ -1,0 +1,6 @@
+read_verilog -Irtl rtl/img_filter_def.v rtl/img_filter.v
+hierarchy -check -top IMG_FILTER
+synth -top IMG_FILTER
+check -assert
+write_verilog -noattr -noexpr -nodec work/equiv/img_filter_generic_synth.v
+write_json work/equiv/img_filter_generic_synth.json

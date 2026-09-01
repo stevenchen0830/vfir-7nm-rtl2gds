@@ -1,0 +1,27 @@
+[gold]
+read_verilog -formal -I rtl rtl/img_filter_def.v rtl/img_filter.v
+hierarchy -check -top IMG_FILTER
+proc
+memory -nomap
+prep -top IMG_FILTER
+memory_map
+rename -hide t:$dff %co x:* %% w:* %D
+
+[gate]
+read_verilog -formal -icells work/equiv/img_filter_generic_synth.v
+prep -top IMG_FILTER
+
+[collect *]
+# Keep the complete v4 split-rotator pipeline in one partition.  If these
+# unreset stage registers are cut into independent partitions, arbitrary
+# initial states can create a false base-case mismatch at c_fut.
+group cvlo*_q,shi*_q,c_fut,ce_fut,cbp_mid_q,cbp_fut
+
+[strategy sat]
+use sat
+depth 5
+
+[strategy sby]
+use sby
+depth 2
+engine smtbmc boolector

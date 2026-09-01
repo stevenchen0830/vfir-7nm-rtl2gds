@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install simulators
         run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog verilator
-      - name: Reference model + architectural equivalence proof
+      - name: Reference-model executable cross-check
         run: python3 verification/reference_model.py
       # Full 54-frame set takes hours under Icarus - it is a pre-release
       # local run; see the +SMOKE note in the testbench.
@@ -19,8 +19,33 @@ jobs:
         run: |
           iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
                    verification/img_filter_tb.v
-          vvp tb.vvp +SMOKE | tee sim.log
+          vvp tb.vvp +SMOKE +SEED=12345678 | tee sim.log
           grep -q "TEST PASSED" sim.log
+          grep -q "ALIGNMENT checks=" sim.log
+      - name: Split-rotator exhaustive shift test
+        run: |
+          iverilog -g2012 -o rotator.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/rotator_tb.v
+          vvp rotator.vvp | tee rotator.log
+          grep -q "ROTATOR TEST PASSED" rotator.log
+      - name: Runtime reset recovery
+        run: |
+          iverilog -g2012 -o reset.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/reset_recovery_tb.sv
+          vvp reset.vvp | tee reset.log
+          grep -q "RESET TEST PASSED" reset.log
+      - name: PREP height-boundary alignment
+        run: |
+          iverilog -g2012 -o prep-boundary.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/prep_boundary_tb.sv
+          vvp prep-boundary.vvp | tee prep-boundary.log
+          grep -q "PREP BOUNDARY TEST PASSED" prep-boundary.log
+      - name: PREP consecutive-frame transition
+        run: |
+          iverilog -g2012 -o prep-transition.vvp rtl/img_filter_def.v rtl/img_filter.v \
+                   verification/prep_transition_tb.sv
+          vvp prep-transition.vvp | tee prep-transition.log
+          grep -q "PREP TRANSITION TEST PASSED" prep-transition.log
       # -Irtl resolves the `include of img_filter_def.v (a define file, not
       # a compile unit). UNSIGNED waiver: generate-loop indices make one
       # comparison constant in some instances - benign, verified v4/v5.
@@ -30,4 +55,4 @@ jobs:
       - name: Manifest integrity (LF-normalized checkout)
         run: |
           cd reports
-          sha256sum -c manifest_planv3.sha256
+          sha256sum -c manifest_v4.sha256

@@ -2,7 +2,9 @@
 *.vvp
 *.vcd
 *.log
+!docs/audit/*.log
 obj_dir/
+work/
 # large physical-design artifacts (regenerate with the flow)
 *.gds
 *.odb

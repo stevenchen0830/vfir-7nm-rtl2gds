@@ -670,4 +670,8 @@ module IMG_FILTER (
     end
     assign out_pix_rdy = out_v_q;
 
+`ifdef FORMAL_PROPERTIES
+`include "img_filter_properties.vh"
+`endif
+
 endmodule
