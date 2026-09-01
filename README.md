@@ -1,9 +1,19 @@
 # vfir-7nm-rtl2gds
 
-A 49-tap streaming vertical FIR video-filter ASIC block, taken from Verilog RTL
-through a complete open-source RTL-to-GDSII flow (OpenROAD + Yosys) on the
-ASAP7 7 nm predictive PDK — with measured area, timing, congestion, and the
-timing-bottleneck hunt documented along the way.
+A 49-tap streaming vertical FIR video-filter ASIC block, taken from Verilog
+RTL through **five complete open-source RTL-to-GDSII implementations**
+(OpenROAD + Yosys) on the ASAP7 7 nm predictive PDK — ending in **1 GHz
+timing closure at the fast corner** with every number backed by raw reports,
+SHA-256 manifests, independent audits and CI.
+
+| Final result (v4, post-route SPEF) | |
+| --- | --- |
+| 1 GHz @ FF/BC, documented 100 ps setup uncertainty | **setup +34.3 ps / hold +4.9 ps, both TNS 0** |
+| Same netlist, legacy conservative 150 ps view | 984.5 MHz (−15.7 ps; both views published) |
+| True slow corner (SS 0.63 V/100 °C) | **520 MHz** measured limit; ≤ 500 MHz recommended operating point |
+| Power / area / instances | **45.6 mW · 0.047 mm² · 468 k** |
+| Hold, max-cap, max-fanout, geometric routing DRC | **0 violations** (DRC clean in all five implementations) |
+| Journey | 830 → 952 → 1000 MHz · 3.28 W → 45.6 mW |
 
 ![Routed die](docs/img/final_all.webp)
 
@@ -48,8 +58,16 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
   physical-design iteration proved why: a combinational
   `ready → pipe_en → 7840 register enables` path was the walk-away timing
   wall of the whole design (repair gained 6 ps per 1000 iterations on it).
+- **Pipelined weight rotator (v4)**: the mod-49 rotate is a 6-level log
+  shifter; splitting it at its midpoint (`rot49_lo`/`rot49_hi`, 1,193
+  pipeline bits, one PREP count shifted) halves the cone depth, kills the
+  `mod_x` rotation-amount bottleneck structurally, and removes the need
+  for any multicycle constraint — bit-identical over the full regression.
 - **Clock gating**: register-enable muxes are inferred into ICG cells
-  (29 gates), removing 7840 feedback muxes and cutting idle clock power.
+  (30 gates), removing 7840 feedback muxes and cutting idle clock power —
+  and creating the gated-subtree skew problem whose diagnosis and
+  quantified trade-off (3.5× power vs. hold-repairability) became the
+  [hold-closure study](docs/hold-study.md).
 - **SRAM interface constraints**: the `mem_*` pins are constrained as
   same-clock synchronous pins with the common tree insertion modeled
   explicitly — three progressively subtler SDC bugs (generic IO budget,
@@ -76,25 +94,52 @@ iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
          verification/img_filter_tb.v && vvp tb.vvp   # +SMOKE for 13-frame CI subset
 ```
 
-**Verification scorecard** (independent third-party audit, tools incl.
-SBY/EQY/Boolector — full reports in [`docs/audit/`](docs/audit/), scorecard
-detail in [`docs/verification-status.md`](docs/verification-status.md)):
+Beyond the regression, the repo carries **runnable verification harnesses**,
+all independently re-run (2026-09-01) with Icarus 14 / Verilator 5 /
+Yosys-SBY-EQY 0.68 / Boolector:
+
+- [`formal/`](formal/) — 40-cycle control-safety + split-rotator BMC
+  (SBY; properties bound into the RTL under `` `ifdef FORMAL_PROPERTIES ``)
+- [`equiv/`](equiv/) — EQY RTL-vs-generic-synthesis equivalence setup
+- [`verification/`](verification/) — targeted testbenches: 0–48 rotation
+  coverage (`rotator_tb.v`), PREP boundary/transition alignment
+  (399,650 checks), runtime reset injection, zero-delay GLS smoke, and a
+  CDC/RDC structural analyzer
+
+**Verification scorecard** (current v4 status — full detail and evidence in
+[`docs/verification-status.md`](docs/verification-status.md), raw audit
+files in [`docs/audit/`](docs/audit/)):
 
 | Check | Status |
 | --- | --- |
-| RTL dynamic (54-frame regression + golden model) | **PASS** |
-| Formal functional completeness | **PARTIAL** — 40-cycle control-safety BMC passes; no unbounded end-to-end proof |
+| RTL dynamic (54-frame regression, seeds, rotation/PREP/reset targeted TBs) | **PASS** |
+| Formal functional completeness | **PARTIAL** — bounded control-safety + pipeline BMC; no unbounded end-to-end proof |
 | CDC | **PASS** (single clock domain, no internal crossings) |
-| RDC | **CONDITIONAL** — 20,178/21,416 state bits deliberately unreset; relies on declared external reset-synchronizer contract |
-| Synthesis equivalence | **PARTIAL** — 532/682 EQY partitions proven, 149 unknown, 0 counterexamples |
-| Timing at 1 GHz | **FAIL / NOT CLOSED** (see results below) |
+| RDC | **CONDITIONAL** — 21,371 datapath bits deliberately unreset; reset-injection + bounded-formal evidence; external reset-synchronizer contract |
+| Synthesis equivalence | **PARTIAL / INCONCLUSIVE** — 532/680 EQY partitions proven, 147 unknown, 1 resource error (`rdata_q`), 0 counterexamples |
+| Zero-delay GLS (generic netlist) | **PASS** — mapped-netlist/SDF GLS not yet run |
+| 1 GHz FF/BC operating view | **PASS** (documented 100 ps uncertainty; legacy 150 ps view −15.7 ps, both published) |
+| MMMC / electrical / physical signoff | **NOT CLOSED** — 243 max-slew, single RC extraction, no LVS/EM |
 
 ## Physical implementation (OpenROAD-flow-scripts + ASAP7)
 
-Flow configuration in [`flow/asap7/`](flow/asap7/): 1 GHz SDC, 150 ps clock
-uncertainty, RVT cells, 22 % core utilization. **Timing corner**: the flow
-signs off at the ORFS ASAP7 default `CORNER=BC` (FF libraries, 0.77 V / 25 °C)
-— see the corner note below the results.
+Flow configuration in [`flow/asap7/`](flow/asap7/): 1 GHz SDC (three
+constraint views kept side by side — `constraint_reported.sdc` with the
+historical blanket 150 ps uncertainty, `constraint_recommended.sdc` with the
+corrected `-setup 150 / -hold 30` split, and the frozen-IO `sweep_*.sdc`
+set), RVT cells, 22 % core utilization. **Timing corner**: the flow signs
+off at the ORFS ASAP7 default `CORNER=BC` (FF libraries, 0.77 V / 25 °C) —
+see the corner note below the results.
+
+### Five implementations, one honest trajectory
+
+| Leg | What changed | What it established |
+| --- | --- | --- |
+| `base` (v3 RTL) | baseline, blanket SDC | 952 MHz BC fmax; hold/slew debt under phantom-taxed constraints |
+| `wc` | true slow corner | honest 1 GHz gap: WNS −950.6 ps → 513 MHz measured limit |
+| `sel` | `clockgate -min_net_size 2000` (ICGs 30 → 2) | controlled gating ablation: 44.2 ↔ 155.1 mW (3.5×) vs. hold-repairability |
+| `mcp` | multicycle exception + corrected hold uncertainty | first fully hold-clean post-route signoff (2,426 phantom hold endpoints → **0**) |
+| **`v4`** | pipelined rotator RTL, clean split-uncertainty SDC, repair margins | **1 GHz closure at BC** · 520 MHz WC · 45.6 mW · 0.047 mm² |
 
 ```sh
 # inside an OpenROAD-flow-scripts checkout
@@ -122,7 +167,7 @@ run (post-route parasitics, BC corner = ORFS ASAP7 default):
 | True slow-corner setup (SS 0.63 V/100 °C, standalone STA) | — | −998 ps → **≈ 500 MHz** |
 | Hold at the fast corner (proper hold corner) | — | −38 ps residual |
 | WC implementation @ 1 GHz SDC | — | setup WNS −950.6 ps over 10,694 endpoints → feasible ≈ **513 MHz** |
-| **1 GHz timing status (both corners)** | — | **FAIL / NOT CLOSED** — 952 MHz (BC) and 513 MHz (WC) are the honest achieved numbers |
+| **1 GHz timing status (v2/v3-era table above)** | — | historical: superseded by the v4 leg — **1 GHz closed at BC** (documented uncertainty view), 520 MHz WC; see the headline box and the five-leg table |
 
 ¹ All historical reports were produced with a blanket
 `set_clock_uncertainty 150` that also taxes every hold check with the full
@@ -190,9 +235,9 @@ summarized here, with the complete investigation in
   flow: **hold WNS +26.6 ps / TNS 0 / 0 endpoints at the fast corner —
   the first fully hold-clean post-route signoff** (clean at TT too;
   routed SPEF; `reports/mcp_6_finish.rpt` + three-corner matrix in
-  `reports/matrix_mcp_*.rpt`). Setup at 1 GHz remains open at −51 ps on
-  the `mod_x` rotation-amount cone; its structural fix (pipelined
-  rotator) is regression-tested on the `v4-cfut-pipe` branch.
+  `reports/matrix_mcp_*.rpt`). Its setup residual (−51 ps on the `mod_x`
+  rotation-amount cone) was then retired structurally by the v4
+  pipelined rotator — see the next bullet.
 - **The v4 finish line**: the pipelined-rotator RTL ran as a fifth, fully
   clean-provenance implementation (recommended SDC from synthesis, no
   multicycle constraints, positive repair margins). Signoff: **hold 0 /
@@ -233,10 +278,15 @@ pins, ideal-launch vs. propagated-capture skew, silently failing SDC
 collection arithmetic — each diagnosed from repair-log behavior and fixed
 with explicit, insertion-tracking pin constraints).  The clean rerun closed at 847 MHz / 75 mW with the MAC compressor tree as
 the one honest limiter, and a third MAC pipeline stage then took signoff to
-**952 MHz / 72 mW** (BC corner) — the remaining 50 ps is the RVT MAC floor,
-with SLVT cells as the obvious next lever. At the true SS corner the same
-netlist runs at ≈ 500 MHz, which is the number a worst-case product spec
-would quote. Layout gallery in [`docs/img/`](docs/img/).
+**952 MHz / 72 mW** (BC corner). The presumed "RVT MAC floor" turned out to
+be the weight-rotator cone instead: a multicycle exception moved the wall to
+the rotation-amount (`mod_x`) fanout, and the structural fix — pipelining
+the rotator itself — retired both at once. The v4 spin closes **1 GHz at
+the fast corner** (with the corrected, documented uncertainty split), lifts
+the true-slow-corner limit to **520 MHz** (now genuinely MAC-limited, SLVT
+the next lever), and is simultaneously the smallest and lowest-power
+implementation of the series at **45.6 mW / 0.047 mm²**. Layout gallery in
+[`docs/img/`](docs/img/).
 
 | | |
 |---|---|
@@ -245,13 +295,20 @@ would quote. Layout gallery in [`docs/img/`](docs/img/).
 ## Repository layout
 
 ```
-rtl/               synthesizable Verilog (top: IMG_FILTER)
-verification/      golden model + self-checking testbench (CI-fatal on fail)
-flow/asap7/        design config + SDCs (reported / recommended / sweep set)
+rtl/               synthesizable Verilog (top: IMG_FILTER; formal
+                   properties bind under `ifdef FORMAL_PROPERTIES)
+verification/      golden model, 54-frame self-checking TB (CI-fatal on
+                   fail, +SMOKE subset), rotation/PREP/reset targeted TBs,
+                   GLS smoke, CDC-RDC analyzer
+formal/            SBY bounded-model-check harness + property file
+equiv/             EQY equivalence setup (RTL vs generic synthesis)
+flow/asap7/        design config + SDC views (reported / recommended /
+                   mcp / sweep set)
 flow/experiments/  reproduction drivers for the hold-closure study
-reports/           raw evidence + provenance map (reports/README.md)
-docs/              hold-study.md, verification-status.md, third-party
-                   audit reports (docs/audit/), routed-database renders
+reports/           raw evidence + provenance map (reports/README.md),
+                   three SHA-256 manifests (v4 checked by CI)
+docs/              hold-study.md, verification-status.md, audit archives
+                   (docs/audit/), routed-database renders
 ```
 
 The [`reports/`](reports/) directory carries the unedited tool output backing
