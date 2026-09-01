@@ -127,9 +127,12 @@ Flow configuration in [`flow/asap7/`](flow/asap7/): 1 GHz SDC (three
 constraint views kept side by side — `constraint_reported.sdc` with the
 historical blanket 150 ps uncertainty, `constraint_recommended.sdc` with the
 corrected `-setup 150 / -hold 30` split, and the frozen-IO `sweep_*.sdc`
-set), RVT cells, 22 % core utilization. **Timing corner**: the flow signs
-off at the ORFS ASAP7 default `CORNER=BC` (FF libraries, 0.77 V / 25 °C) —
-see the corner note below the results.
+set), **`asap7sc7p5t` 7.5-track RVT cells** with NLDM Liberty views
+(FF 0.77 V/25 °C · TT · SS 0.63 V/100 °C; exact files pinned in
+`reports/liberty_manifest.sha256`), the platform's single RCX extraction
+model, 22 % core utilization. **Timing corner**: the flow signs off at the
+ORFS ASAP7 default `CORNER=BC` (FF libraries) — see the corner note below
+the results.
 
 ### Five implementations, one honest trajectory
 
