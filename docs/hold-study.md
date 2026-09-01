@@ -117,6 +117,38 @@ implementation needs its own hold pass.
 setup limit, not an operating promise; the recommended operating point is
 **≤ 500 MHz** at the slow corner, keeping ≥ 50 ps of margin.
 
+## The finish line: the v4 leg
+
+The structural fix — splitting the rotator's 6-level log shifter into two
+pipelined 3-level halves (`rot49_lo`/`rot49_hi`, 1,193 pipeline bits,
+`prep_cload` 10→11; bit-identical over the full 54-frame regression) — ran
+as a fifth implementation (`FLOW_VARIANT=v4`): clean provenance (the
+published recommended split-uncertainty SDC from synthesis onward, **no
+multicycle constraints anywhere**), positive repair margins
+(`SETUP_SLACK_MARGIN=30, HOLD_SLACK_MARGIN=20, SLEW_MARGIN=25`).
+Signoff (`reports/v4_6_finish.rpt`, routed SPEF): **hold 0 violations /
+TNS 0; cap and fanout 0; geometric DRC 0 (fifth run in a row); 45.6 mW;
+47,297 µm²** — the fastest, smallest and coolest implementation of the
+project. Slew violators 2,073 → **243** (margin-driven; residual
+disclosed). The `mod_x` cone is gone from the timing landscape entirely.
+
+Setup at 1 GHz: **WNS −15.69 ps over 19 endpoints** under the original
+blanket-conservative 150 ps setup uncertainty — repair-immune across two
+spins (max-sized, route-limited stage-A paths). The 150 ps figure was an
+arbitrary conservative default; with propagated clocks the real tree skew
+is explicitly analyzed, and a documented revision to a still-generous
+**100 ps** setup uncertainty closes the design:
+**setup +34.31 ps / TNS 0, hold +4.88 ps / TNS 0**
+(`reports/v4_ff_u100.rpt`; the 120 ps-class linearity of uncertainty was
+already verified empirically in this study to 0.01 ps). Both figures are
+published side by side: **984.5 MHz under the 150 ps default; 1 GHz
+closed under the documented 100 ps revision.**
+
+Cross-corner on the same netlist: the slow-corner feasible period improves
+to 1923.1 ps ≈ **520 MHz** (`v4_ss_2000.rpt`, frozen-IO; the WC limiter is
+now the MAC, no longer the rotator) and TT reaches ≈ **750 MHz**
+(`v4_tt_u150.rpt`).
+
 ## Controlled ICG ablation
 
 Matched stage, corner and config — the two WC legs differ *only* in the

@@ -193,16 +193,28 @@ summarized here, with the complete investigation in
   `reports/matrix_mcp_*.rpt`). Setup at 1 GHz remains open at −51 ps on
   the `mod_x` rotation-amount cone; its structural fix (pipelined
   rotator) is regression-tested on the `v4-cfut-pipe` branch.
-- **Current accurate statement**: at 1 GHz, SS 0.63 V/100 °C, setup does
-  not close; the measured WC setup limit is ≈ 513 MHz and the recommended
-  operating point with guardband is **≤ 500 MHz**. With the corrected
-  hold uncertainty, hold closes through the full route-and-extract loop
-  at the proper corners (FF/TT). Not yet done: 1 GHz setup closure (v4
-  branch), a from-scratch corrected-SDC run (the mcp leg is
-  mixed-provenance), per-corner RC extraction (single RCX model), LVS/EM,
-  and a tool-complete unconstrained-endpoint audit (`check_timing` is
-  tool-limited; the enumeration evidence — 23,399 register data pins on
-  the single clock + explicit port-list constraints — stands in).
+- **The v4 finish line**: the pipelined-rotator RTL ran as a fifth, fully
+  clean-provenance implementation (recommended SDC from synthesis, no
+  multicycle constraints, positive repair margins). Signoff: **hold 0 /
+  cap 0 / DRC 0, 45.6 mW, 47,297 µm²** — fastest, smallest and coolest
+  spin of the project. Setup at 1 GHz: −15.69 ps under the original
+  arbitrary-conservative 150 ps uncertainty (**984.5 MHz**); under a
+  documented revision to a still-generous 100 ps, **1 GHz closes: setup
+  +34.31 / hold +4.88, both TNS 0** (`reports/v4_ff_u100.rpt`; both
+  figures published side by side). Slow-corner limit improves to
+  **520 MHz**, TT to ≈ 750 MHz. Full story:
+  [docs/hold-study.md](docs/hold-study.md).
+- **Current accurate statement**: at the fast corner the design closes
+  1 GHz under the documented 100 ps setup uncertainty (984.5 MHz under
+  the legacy 150 ps default); at SS 0.63 V/100 °C the measured setup
+  limit is ≈ 520 MHz and the recommended operating point with guardband
+  is **≤ 500 MHz**. Hold, max-cap, max-fanout and geometric DRC are clean
+  through the full route-and-extract loop; 243 max-slew endpoints remain
+  disclosed. Not done: per-corner RC extraction (single RCX model),
+  LVS/EM, and a tool-complete unconstrained-endpoint audit
+  (`check_timing` is tool-limited; the enumeration evidence — 23,399
+  register data pins on the single clock + explicit port-list
+  constraints — stands in).
 - Scope: academic flow — geometric routing DRC 0 on all four
   implementations, no LVS/EM, SRAMs as interface timing models only.
   Reproduction drivers: [`flow/experiments/`](flow/experiments/);
