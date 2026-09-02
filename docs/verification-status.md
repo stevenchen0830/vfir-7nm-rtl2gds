@@ -5,10 +5,12 @@ on `main`. Evidence was independently re-run on 2026-09-01 with Icarus
 Verilog 14, Verilator 5.051, Yosys/SBY/EQY 0.68 and Boolector 3.2.4. Historical
 audit files for commit `cc60e8a` remain in [`audit/`](audit/) but do not define
 the current v4 status. Nothing on this page is a tapeout-signoff claim.
+A native UVM pass-through smoke was additionally run on 2026-09-02 with
+Verilator 5.050 and the Verilator-compatible Accellera UVM 2020.3.1 library.
 
 | Check | Status | Current v4 evidence |
 | --- | --- | --- |
-| RTL dynamic verification | **PASS** | Complete 54-frame self-checking regression, four independent 13-frame seeds, 0..48 split-rotator test, PREP boundary/consecutive-frame checks and five runtime-reset injection sites. Independent Python model: 117 shape-by-kernel checks. See [`audit/dynamic_verification_v4.md`](audit/dynamic_verification_v4.md). |
+| RTL dynamic verification | **PASS** | Complete 54-frame self-checking regression, four independent 13-frame seeds, 0..48 split-rotator test, PREP boundary/consecutive-frame checks and five runtime-reset injection sites. Independent Python model: 117 shape-by-kernel checks. Native UVM smoke: 144 accepted beats with input starvation/output backpressure, 0 errors/fatals. See [`audit/dynamic_verification_v4.md`](audit/dynamic_verification_v4.md) and [`audit/uvm_smoke_v4.log`](audit/uvm_smoke_v4.log). |
 | Functional coverage | **PARTIAL** | The testbench records legal kernel values, width modulo 4, bank wrap and all three rotation-shift masks. These are targeted functional counters, not code/toggle/branch coverage and not proof of every legal input sequence. |
 | Formal functional completeness | **PARTIAL** | Forty-cycle BMC passes the control-safety and split-rotator pipeline/tag assertions. It does not prove every output transaction against the mathematical FIR reference and is not an unbounded proof. |
 | CDC | **PASS (module level)** | 562 sequential cells / 22,577 state bits all use the sole top-level `clk`; no internal clock crossing exists. |

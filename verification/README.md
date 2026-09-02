@@ -1,7 +1,9 @@
 # Verification
 
-The project uses a self-checking Verilog testbench plus an independent Python
-reference model; it is not a UVM environment.
+The primary release regression uses a self-checking Verilog testbench plus an
+independent Python reference model.  A native SystemVerilog UVM smoke layer is
+also available under `verification/uvm/`; it complements rather than replaces
+the broader 54-frame regression.
 
 ## Dynamic suites
 
@@ -21,6 +23,11 @@ reference model; it is not a UVM environment.
   on the next frame without an intervening reset.
 - `gls_smoke_tb.sv`: public-interface-only pass-through smoke for a zero-delay
   synthesized netlist.
+- `uvm/`: driver, sequencer, input/output monitors and an independent
+  scoreboard for a 24x24 `blk_v=1` pass-through frame.  It checks all 144
+  accepted beats while deterministic input starvation and output backpressure
+  exercise both ready/valid directions.  See `uvm/README.md` for the tested
+  open-source toolchain and run command.
 
 The normal CI runs one seeded smoke plus rotator/reset tests.  The manually
 triggered `extended-verification` workflow runs four smoke seeds in parallel

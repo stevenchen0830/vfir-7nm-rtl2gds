@@ -13,6 +13,7 @@ are pinned by `reports/manifest_v4.sha256`.
 | `cdc_rdc_structural_v4.md` | Single-clock/reset structural census |
 | `equivalence_v4_report.md` | RTL-to-generic-synthesis EQY result and limits |
 | `generic_gls_v4.log` | Zero-delay generic-synthesis public-interface smoke |
+| `uvm_smoke_v4.log` | Native UVM 24x24 pass-through smoke: 144 beats, input/output stalls, 0 errors/fatals |
 | `tool_environment_v4.md` | Host-specific Yosys/Verilator execution notes |
 
 These artifacts are verification evidence, not silicon/tapeout signoff.

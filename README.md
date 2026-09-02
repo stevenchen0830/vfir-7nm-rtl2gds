@@ -141,6 +141,19 @@ iverilog -g2005 -o tb.vvp rtl/img_filter_def.v rtl/img_filter.v \
          verification/img_filter_tb.v && vvp tb.vvp   # +SMOKE for 13-frame CI subset
 ```
 
+- **Native UVM smoke** ([`verification/uvm/`](verification/uvm/)): a
+  SystemVerilog UVM sequencer/driver, independent input and output monitors,
+  and an in-order scoreboard.  The current 24×24 `blk_v=1` pass-through test
+  checks all 144 accepted beats while deterministic input starvation and
+  output backpressure exercise both ready/valid directions.  On WSL2 Ubuntu
+  with Verilator 5.050 and the Verilator-compatible Accellera UVM 2020.3.1
+  library it completes with **144/144 matches, 0 UVM errors and 0 fatals**.
+  The [run instructions](verification/uvm/README.md) and
+  [raw audit log](docs/audit/uvm_smoke_v4.log) are committed.  This is an
+  integration smoke layer, not a claim of full UVM functional-coverage
+  closure; the broader 54-frame and targeted suites remain the release-level
+  dynamic evidence.
+
 Beyond the regression, the repo carries **runnable verification harnesses**,
 all independently re-run (2026-09-01) with Icarus 14 / Verilator 5 /
 Yosys-SBY-EQY 0.68 / Boolector:
@@ -159,7 +172,7 @@ files in [`docs/audit/`](docs/audit/)):
 
 | Check | Status |
 | --- | --- |
-| RTL dynamic (54-frame regression, seeds, rotation/PREP/reset targeted TBs) | **PASS** |
+| RTL dynamic (54-frame regression, seeds, rotation/PREP/reset targeted TBs, native UVM smoke) | **PASS** |
 | Formal functional completeness | **PARTIAL** — bounded control-safety + pipeline BMC; no unbounded end-to-end proof |
 | CDC | **PASS** (single clock domain, no internal crossings) |
 | RDC | **CONDITIONAL** — 21,371 datapath bits deliberately unreset; reset-injection + bounded-formal evidence; external reset-synchronizer contract |
@@ -361,7 +374,7 @@ rtl/               synthesizable Verilog (top: IMG_FILTER; formal
                    properties bind under `ifdef FORMAL_PROPERTIES)
 verification/      golden model, 54-frame self-checking TB (CI-fatal on
                    fail, +SMOKE subset), rotation/PREP/reset targeted TBs,
-                   GLS smoke, CDC-RDC analyzer
+                   GLS smoke, native UVM smoke, CDC-RDC analyzer
 formal/            SBY bounded-model-check harness + property file
 equiv/             EQY equivalence setup (RTL vs generic synthesis)
 flow/asap7/        design config + SDC views (reported / recommended /
@@ -399,7 +412,9 @@ This project stands on open-source EDA infrastructure built by others:
   Microelectronics Journal 53 (2016).
 - **[Icarus Verilog](https://github.com/steveicarus/iverilog)** and
   **[Verilator](https://github.com/verilator/verilator)** — simulation and
-  lint.
+  lint; the native UVM smoke uses Verilator's
+  **[UVM compatibility library](https://github.com/verilator/uvm)** based on
+  Accellera UVM 2020.3.1.
 
 All results in this repository were produced with these tools at the exact
 versions pinned in [`reports/TOOL_VERSIONS.txt`](reports/TOOL_VERSIONS.txt);
@@ -407,8 +422,9 @@ any errors in their use are this project's own.
 
 ## Toolchain
 
-Icarus Verilog · Verilator (lint) · Yosys 0.68 · OpenROAD 26Q3 · OpenSTA ·
-ASAP7 7 nm predictive PDK · WSL2 Ubuntu 22.04
+Icarus Verilog · Verilator (lint + native UVM smoke) · Accellera UVM 2020.3.1
+compatibility library · Yosys 0.68 · OpenROAD 26Q3 · OpenSTA · ASAP7 7 nm
+predictive PDK · WSL2 Ubuntu 22.04
 
 ## License
 
