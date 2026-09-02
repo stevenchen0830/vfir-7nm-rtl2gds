@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1450 390" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#444"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1450" height="390" fill="#ffffff"/>
+
+  <!-- entry -->
+  <circle cx="52" cy="193" r="8" fill="#1c2733"/>
+  <line x1="60" y1="193" x2="86" y2="193" stroke="#444" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- states -->
+  <g stroke-width="2">
+    <rect x="90"   y="150" width="130" height="86" rx="20" fill="#ffffff" stroke="#3A5A8C"/>
+    <rect x="330"  y="150" width="170" height="86" rx="20" fill="#ffffff" stroke="#3A5A8C"/>
+    <rect x="610"  y="150" width="190" height="86" rx="20" fill="#ffffff" stroke="#3A5A8C"/>
+    <rect x="910"  y="150" width="180" height="86" rx="20" fill="#EDF2FB" stroke="#3A5A8C" stroke-width="3"/>
+    <rect x="1200" y="150" width="170" height="86" rx="20" fill="#ffffff" stroke="#3A5A8C"/>
+  </g>
+
+  <g text-anchor="middle" fill="#1c2733">
+    <text x="155"  y="185" font-size="18" font-weight="bold">IDLE</text>
+    <text x="155"  y="210" font-size="13">wait for frame</text>
+    <text x="415"  y="180" font-size="18" font-weight="bold">PREP</text>
+    <text x="415"  y="202" font-size="13">mirror params +</text>
+    <text x="415"  y="219" font-size="13">first weight vector</text>
+    <text x="705"  y="180" font-size="18" font-weight="bold">FILL</text>
+    <text x="705"  y="202" font-size="13">buffer upper history</text>
+    <text x="705"  y="219" font-size="13">rows &#8212; input only</text>
+    <text x="1000" y="180" font-size="18" font-weight="bold">MAIN</text>
+    <text x="1000" y="202" font-size="13">stream in + out</text>
+    <text x="1000" y="219" font-size="13">4 pixels / cycle</text>
+    <text x="1285" y="180" font-size="18" font-weight="bold">DRAIN</text>
+    <text x="1285" y="202" font-size="13">flush bottom mirror</text>
+    <text x="1285" y="219" font-size="13">rows &#8212; output only</text>
+  </g>
+
+  <!-- forward transitions -->
+  <g stroke="#444" stroke-width="2" fill="none" marker-end="url(#ah)">
+    <line x1="220"  y1="193" x2="328"  y2="193"/>
+    <line x1="500"  y1="193" x2="608"  y2="193"/>
+    <line x1="800"  y1="193" x2="908"  y2="193"/>
+    <line x1="1090" y1="193" x2="1198" y2="193"/>
+  </g>
+  <g font-size="13" fill="#555" text-anchor="middle">
+    <text x="274"  y="172">frm_start</text>
+    <text x="554"  y="160">prep_done</text>
+    <text x="554"  y="177">(13 cycles)</text>
+    <text x="854"  y="160">(blk_v&#8722;1)/2 rows</text>
+    <text x="854"  y="177">buffered</text>
+    <text x="1144" y="160">last input row</text>
+    <text x="1144" y="177">accepted</text>
+  </g>
+
+  <!-- return arc -->
+  <polyline points="1285,236 1285,320 155,320 155,238" stroke="#444" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+  <text x="720" y="342" font-size="13" fill="#555" text-anchor="middle">bottom mirror rows drained &#8594; frame complete</text>
+
+  <!-- side note -->
+  <text x="1000" y="135" font-size="12.5" fill="#3A5A8C" text-anchor="middle">steady state: 48 reads + 1 write + bypass each beat</text>
+</svg>

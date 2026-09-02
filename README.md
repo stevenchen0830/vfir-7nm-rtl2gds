@@ -99,15 +99,7 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
 
 ### Control flow
 
-```mermaid
-stateDiagram-v2
-  [*] --> IDLE
-  IDLE --> PREP: frm_start
-  PREP --> FILL: prep_done (13 cycles)
-  FILL --> MAIN: first (blk_v-1)/2 rows stored
-  MAIN --> DRAIN: last input row accepted
-  DRAIN --> IDLE: bottom mirror rows drained
-```
+<p align="center"><img src="docs/img/fsm.svg" width="100%" alt="Frame FSM: IDLE, PREP (13 cycles), FILL, MAIN steady state, DRAIN, back to IDLE"></p>
 
 PREP-phase alignment of the v4 two-stage weight pipeline (why
 `prep_cload` sits at count 11):
