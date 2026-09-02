@@ -1,6 +1,8 @@
 name: extended-verification
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 1'   # weekly Monday 03:17 UTC
 
 jobs:
   multiseed-smoke:

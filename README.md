@@ -4,7 +4,7 @@ A 49-tap streaming vertical FIR video-filter ASIC block, taken from Verilog
 RTL through **five complete open-source RTL-to-GDSII implementations**
 (OpenROAD + Yosys) on the ASAP7 7 nm predictive PDK — ending in **1 GHz
 timing closure at the fast corner** with every number backed by raw reports,
-SHA-256 manifests, independent audits and CI.
+SHA-256 manifests, independently re-run verification audits and CI.
 
 | Final result (v4, post-route SPEF) | |
 | --- | --- |
@@ -51,6 +51,31 @@ currently streaming in, freeing its bank for that cycle's write). Bank read
 enables derive from `C`, so external-memory traffic scales with `blk_v`, not
 with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
 
+
+```mermaid
+flowchart LR
+  subgraph ROWCTL [once per output row]
+    CFG[frame config] --> PR[PREP mod-49 params]
+    PR --> RA[rotator stage A fine]
+    RA --> RB[rotator stage B coarse + sum]
+    RB --> CV[weight vector C 392b]
+  end
+  IN[input stream] --> FIFO[2-slot input FIFO]
+  FIFO --> BYP[bypass tap = current row]
+  FIFO --> WR[1 bank write]
+  CV --> RE[read enables C_j != 0]
+  RE --> MEM[(49 x single-port SRAM)]
+  WR --> MEM
+  MEM --> RQ[rdata_q 7840b]
+  RQ --> M1[MAC1 25 pairs]
+  BYP --> M1
+  CV --> M1
+  M1 --> M2[MAC2 5 partials]
+  M2 --> M3[MAC3 sum round sat]
+  M3 --> SK[output skid]
+  SK --> OUT[output stream]
+```
+
 ### Micro-architecture notes that came from measurement, not intuition
 
 - **MAC pipelining**: two balanced MAC stages measured ~35 logic levels each
@@ -68,7 +93,7 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
   `mod_x` rotation-amount bottleneck structurally, and removes the need
   for any multicycle constraint — bit-identical over the full regression.
 - **Clock gating**: register-enable muxes are inferred into ICG cells
-  (30 gates), removing 7840 feedback muxes and cutting idle clock power —
+  (34 in the v4 signoff netlist; 30–34 across spins), removing 7840 feedback muxes and cutting idle clock power —
   and creating the gated-subtree skew problem whose diagnosis and
   quantified trade-off (3.5× power vs. hold-repairability) became the
   [hold-closure study](docs/hold-study.md).
@@ -79,12 +104,52 @@ with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
   skew) each fabricated thousands of unfixable violations before being
   diagnosed from the repair logs.
 
+### Legal configuration (the integration contract)
+
+- `img_width` carries **W − 1** (11 bit) and `img_height` carries **H − 1**
+  (12 bit) — so the architectural ceiling is 2048 × 4096; both dimensions
+  must be ≥ 24 (the spec guarantees at most one mirror fold).
+- `blk_v` is odd, 1…49; coefficients are symmetric about the centre tap and
+  sum to 128 (normalization is `+64 >> 7`).
+- `frm_start` arrives at least one cycle before the first beat; the module
+  then spends 13 PREP cycles with `in_pix_need` low. A frame is exactly
+  `H × ⌈W/4⌉` input beats; trailing-lane contents are ignored.
+- `rst_n` asserts asynchronously and must be **released through an external
+  synchronizer** (declared SDC false-path contract).
+- The external SRAMs are single-port, 160 bit × 1440, and hold the last
+  read data while `ce` is low.
+
+### Control flow
+
+```mermaid
+stateDiagram-v2
+  [*] --> IDLE
+  IDLE --> PREP: frm_start
+  PREP --> FILL: prep_done (13 cycles)
+  FILL --> MAIN: first (blk_v-1)/2 rows stored
+  MAIN --> DRAIN: last input row accepted
+  DRAIN --> IDLE: bottom mirror rows drained
+```
+
+PREP-phase alignment of the v4 two-stage weight pipeline (why
+`prep_cload` sits at count 11):
+
+| PREP count | Event |
+| --- | --- |
+| 0 | `a_sym` coefficient table loaded from `coef_q` |
+| 1–8 | `(2H+23) mod 49` — one conditional subtraction per cycle |
+| 9 | rotator **stage A** latches (all sources final since count 8) |
+| 10 | `c_fut` latches the first effective weight vector |
+| 11 | `prep_cload`: `c_cur` captures it; look-ahead steps to row 1 |
+| 12 | `prep_done` → FILL/MAIN |
+
 ## Verification
 
 - **Golden model** (`verification/reference_model.py`): an executable
-  specification plus an *architectural equivalence proof* — the weight-vector
-  formulation is shown identical to the per-tap mirrored expansion across 117
-  (shape × kernel) combinations, along with the storage invariants (a read
+  specification plus an *architectural cross-validation* — the weight-vector
+  formulation is checked identical to the per-tap mirrored expansion across
+  117 (shape × kernel) combinations (a finite test space, not a proof over
+  all legal inputs), along with the storage invariants (a read
   bank always holds a written row; read and write banks never collide).
 - **Self-checking testbench** (`verification/img_filter_tb.v`): behavioural
   single-port SRAM model with X-initialized contents, randomized
@@ -155,11 +220,25 @@ cp flow/asap7/* $ORFS/flow/designs/asap7/img_filter/
 cd $ORFS/flow && make DESIGN_CONFIG=./designs/asap7/img_filter/config.mk
 ```
 
-### Measured results
+### Measured results — v4 signoff (the current design)
 
-All numbers from `6_finish` signoff reports of completed RTL-to-GDSII runs
-(post-route parasitics, BC corner = ORFS ASAP7 default; v4 evidence pinned
-by `manifest_v4.sha256`):
+All v4 numbers from the `6_finish` signoff report (post-route parasitics,
+BC corner = ORFS ASAP7 default) and the standalone audits pinned by
+`manifest_v4.sha256`:
+
+| Metric | v4 |
+| --- | --- |
+| **1 GHz @ FF/BC, documented 100 ps setup / 30 ps hold uncertainty** | **setup +34.3 ps, hold +4.9 ps — both TNS 0** |
+| Legacy conservative 150 ps setup-uncertainty view | −15.7 ps → 984.5 MHz (both views published) |
+| True slow corner (SS 0.63 V/100 °C, frozen-IO @ 2000 ps) | +76.9 ps → **520 MHz** limit; ≤ 500 MHz recommended |
+| Typical corner (TT, diagnostic) | ≈ 750 MHz |
+| Hold / max-cap / max-fanout / geometric routing DRC | **0 / 0 / 0 / 0** |
+| Electrical residual (disclosed) | 243 max-slew endpoints |
+| Congestion overflow | 0 on all layers (M3 peak 26.2 %) |
+| Area | 43,063 µm² synth · **47,297 µm² post-route, 468 k instances** |
+| Power (vectorless, 1 GHz) / worst IR drop | **45.6 mW** / 5.8 mV (0.75 %) |
+
+### The optimization journey (v2 → v3 → v4)
 
 | Metric | v2 (2-stage MAC) | v3 (3-stage MAC) | **v4 (pipelined rotator, final)** |
 | --- | --- | --- | --- |
