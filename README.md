@@ -15,7 +15,11 @@ SHA-256 manifests, independent audits and CI.
 | Hold, max-cap, max-fanout, geometric routing DRC | **0 violations** (DRC clean in all five implementations) |
 | Journey | 830 → 952 → 1000 MHz · 3.28 W → 45.6 mW |
 
-![Routed die](docs/img/final_all.webp)
+<p align="center">
+  <img src="docs/img/final_all.webp"     width="32%" alt="Routed die">
+  <img src="docs/img/final_clocks.webp"  width="32%" alt="Clock tree">
+  <img src="docs/img/final_ir_drop.webp" width="32%" alt="IR drop">
+</p>
 
 ## The design
 
@@ -292,9 +296,6 @@ the next lever), and is simultaneously the smallest and lowest-power
 implementation of the series at **45.6 mW / 0.047 mm²**. Layout gallery in
 [`docs/img/`](docs/img/).
 
-| | |
-|---|---|
-| ![Clock tree](docs/img/final_clocks.webp) | ![IR drop](docs/img/final_ir_drop.webp) |
 
 ## Repository layout
 
