@@ -52,29 +52,7 @@ enables derive from `C`, so external-memory traffic scales with `blk_v`, not
 with the bank count — a `blk_v = 1` frame performs zero SRAM accesses.
 
 
-```mermaid
-flowchart LR
-  subgraph ROWCTL [once per output row]
-    CFG[frame config] --> PR[PREP mod-49 params]
-    PR --> RA[rotator stage A fine]
-    RA --> RB[rotator stage B coarse + sum]
-    RB --> CV[weight vector C 392b]
-  end
-  IN[input stream] --> FIFO[2-slot input FIFO]
-  FIFO --> BYP[bypass tap = current row]
-  FIFO --> WR[1 bank write]
-  CV --> RE[read enables C_j != 0]
-  RE --> MEM[(49 x single-port SRAM)]
-  WR --> MEM
-  MEM --> RQ[rdata_q 7840b]
-  RQ --> M1[MAC1 25 pairs]
-  BYP --> M1
-  CV --> M1
-  M1 --> M2[MAC2 5 partials]
-  M2 --> M3[MAC3 sum round sat]
-  M3 --> SK[output skid]
-  SK --> OUT[output stream]
-```
+<p align="center"><img src="docs/img/architecture.svg" width="100%" alt="Architecture: control plane computes the 392-bit weight vector once per row; the datapath is a fixed 49-bank SRAM ring feeding a 3-stage MAC array"></p>
 
 ### Micro-architecture notes that came from measurement, not intuition
 
