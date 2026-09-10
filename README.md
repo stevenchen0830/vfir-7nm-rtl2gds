@@ -125,9 +125,9 @@ memory, checkpoint recovery and failure interpretation are in the
 [Physical assets](docs/physical-assets.md) explain final netlist/SPEF/SDC/DEF,
 derived SDF, upstream licenses and hashes. Checking a report manifest proves
 integrity only. Independently rerunning STA/GLS requires all relevant inputs.
-The new v4 asset release is currently an **owner-visible draft**, uploaded and
-hash-verified; public asset download awaits explicit owner approval. Source,
-reports and manifests are already public.
+The [v4 reproduction assets](https://github.com/stevenchen0830/vfir-7nm-rtl2gds/releases/tag/v4-reproduction-20260910)
+are **publicly downloadable**: eight uploaded files, verified against their
+SHA-256 hashes. Publication enables reproduction; it does not change signoff status.
 
 ## Optimization journey
 

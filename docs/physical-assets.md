@@ -9,13 +9,12 @@ unchanged. These upstream models are not relicensed under this repo's MIT
 license and imply no endorsement by their authors.
 
 Large files belong in a GitHub Release, not normal Git history.
-**Availability (2026-09-10): uploaded and checksum-verified as an owner-visible
-draft; public publication is pending explicit owner approval.** Repository
-visitors cannot yet independently download this v4 set. The public source,
-reports and input manifests are available, but that is not a complete public
-STA reproduction bundle until the asset release is published.
-The owner can inspect the draft through [GitHub Releases](https://github.com/stevenchen0830/vfir-7nm-rtl2gds/releases).
-Its intended tag is `v4-reproduction-20260910`.
+**Availability (2026-09-10): publicly released with the owner's explicit
+approval.** All eight uploaded files were checked against GitHub's SHA-256
+digests. Download from the [v4 reproduction release](https://github.com/stevenchen0830/vfir-7nm-rtl2gds/releases/tag/v4-reproduction-20260910),
+tag `v4-reproduction-20260910`. No repository access grant is needed for the
+browser downloads. Tool installation and the documented timing setup remain
+necessary for independent STA; asset availability alone is not verification.
 Use the asset manifest to distinguish v4 from the earlier
 `signoff-evidence-v1` release containing v3/wc/sel inputs.
 
@@ -37,8 +36,7 @@ cell models; do not treat the name as an SS/FF timing characterization.
 
 ## Commands
 
-The public download command below is for **after** the draft is published;
-it is not currently available to unauthenticated repository visitors.
+Download through the release page, or with GitHub CLI from the repository root:
 
 ```bash
 gh release download v4-reproduction-20260910 --repo stevenchen0830/vfir-7nm-rtl2gds --dir work/v4-assets
