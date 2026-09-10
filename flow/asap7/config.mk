@@ -5,7 +5,10 @@ export DESIGN_NICKNAME        = img_filter
 # order matters: the macro definitions must be read first
 export VERILOG_FILES          = $(DESIGN_HOME)/src/img_filter/img_filter_def.v \
                                 $(DESIGN_HOME)/src/img_filter/img_filter.v
-export SDC_FILE               = $(DESIGN_HOME)/$(PLATFORM)/img_filter/constraint.sdc
+# Default is the explicit v4 150/30 implementation model. The historical
+# blanket model is selected only through config_historical.mk.
+export SDC_FILE              := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))constraint_v4.sdc
+export CORNER                 = BC
 
 # 16873 top level port bits: leave room for pin placement
 export CORE_UTILIZATION       = 22

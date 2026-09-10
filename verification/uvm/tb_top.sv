@@ -30,11 +30,21 @@ module tb_top;
         .mem_rdata    (vif.mem_rdata)
     );
 
-    assign vif.mem_rdata = '0;
+    img_sram_model sram(vif);
+    final begin
+        uvm_report_server server;
+        server=uvm_report_server::get_server();
+        $display("SRAM COVERAGE reads=%0d writes=%0d banks_written=%0d", sram.reads, sram.writes, $countones(sram.banks_written));
+        if(server.get_severity_count(UVM_ERROR)!=0 || server.get_severity_count(UVM_FATAL)!=0)
+            $fatal(1,"UVM failure propagated to simulator exit status");
+        if(int'(vif.blk_v)>1 && (sram.reads==0 || sram.writes==0))
+            $fatal(1,"Nontrivial filter did not access SRAM");
+    end
 
     initial begin
         vif.rst_n = 1'b0;
         repeat (5) @(posedge clk);
+        @(negedge clk);
         vif.rst_n = 1'b1;
     end
 

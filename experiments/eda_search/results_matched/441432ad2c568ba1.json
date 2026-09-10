@@ -1,0 +1,16 @@
+{
+  "point": [
+    0.4,
+    0.45
+  ],
+  "area_um2": 44.6877,
+  "setup_ws_ps": -35.9094,
+  "power_w": 0.00127043,
+  "setup_pass": false,
+  "hold_ws_ps": 41.4757,
+  "objective": 0.0805971,
+  "wall_seconds": 15.217268622999999,
+  "metrics_sha256": "c702c53177821d654528cace3c5a5c93131153cbe6ce2307c2b0c9f6cd19fc34",
+  "variant": "ai_search_441432ad2c568ba1",
+  "cache_hit": false
+}

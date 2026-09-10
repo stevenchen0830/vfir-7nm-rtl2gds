@@ -1,0 +1,10 @@
+export PLATFORM = asap7
+export DESIGN_NAME = int8_dw3x1
+export DESIGN_NICKNAME = int8_dw3x1
+export CORNER = BC
+export VERILOG_FILES := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../rtl/int8_dw3x1.sv
+export SDC_FILE := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))constraint.sdc
+export CORE_UTILIZATION = 30
+export PLACE_DENSITY = 0.50
+export NUM_CORES = 2
+export CORE_MARGIN = 2

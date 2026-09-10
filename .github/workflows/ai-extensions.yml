@@ -1,0 +1,46 @@
+name: ai-extensions
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-experiments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install lightweight dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq iverilog
+          python -m pip install numpy==2.3.5
+      - name: Public evidence and documentation checks
+        run: |
+          python tools/check_reproduction.py
+          python tools/check_flow_views.py
+      - name: Reproduce constrained FIR learning
+        run: python experiments/learned_fir/train.py --output work/learned-ci
+      - name: Signed CNN integer and handshake tests
+        run: bash experiments/cnn/run_tests.sh work/cnn-ci
+      - name: Check historical v4 report integrity
+        run: cd reports && sha256sum -c manifest_v4.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-extension-checks
+          path: |
+            work/learned-ci/*.json
+            work/cnn-ci/**/*.json
+            work/cnn-ci/**/*.log
+
+# Native UVM needs pinned Verilator 5.050 + UVM sources; run its documented
+# local suite separately. ORFS placement trials and large physical assets
+# are not rerun/downloaded in this lightweight workflow.

@@ -1,0 +1,91 @@
+{
+  "scope": "ASAP7 BC, placement estimate, ideal clocks, not routed or signed off",
+  "configuration": "WIDTH=8 HEIGHT=8 CHANNELS=2 QSHIFT=7 RELU=0",
+  "period_ps": 1000,
+  "uncertainty_setup_hold_ps": [
+    100,
+    30
+  ],
+  "stdcell_area_um2": 782.713,
+  "setup_ws_ps": -268.924,
+  "hold_ws_ps": 5.53226,
+  "vectorless_power_w": 0.174282,
+  "stage_costs": [
+    {
+      "stage": "1_1_yosys_canonicalize",
+      "wall_seconds": 0.64,
+      "peak_memory_kib": 86076,
+      "log_sha256": "1f915cef1baf4161b79e0bec58a72c947fe56d269a61fc0a68b24d0b3b725f92"
+    },
+    {
+      "stage": "1_2_yosys",
+      "wall_seconds": 9.49,
+      "peak_memory_kib": 172100,
+      "log_sha256": "a4ea1b369366f9d7c421efed451a8fa8c4509f9e07c4cae37a47d9982094e2a3"
+    },
+    {
+      "stage": "1_synth",
+      "wall_seconds": 1.15,
+      "peak_memory_kib": 214812,
+      "log_sha256": "e6d47cfc4d7e2f07bf6f4cc66894a002c991e0228d012998c37b77b442995ad7"
+    },
+    {
+      "stage": "2_1_floorplan",
+      "wall_seconds": 6.44,
+      "peak_memory_kib": 242932,
+      "log_sha256": "f361a6abaa13523c7b6dd2e102135d9494e56391f893e5cb2e0ad54c18cfa425"
+    },
+    {
+      "stage": "2_2_floorplan_macro",
+      "wall_seconds": 1.14,
+      "peak_memory_kib": 208368,
+      "log_sha256": "106cee01a8e581830d8fe893a5918666b8977dc751f820166a3350e895897857"
+    },
+    {
+      "stage": "2_3_floorplan_tapcell",
+      "wall_seconds": 1.23,
+      "peak_memory_kib": 205268,
+      "log_sha256": "86895a66b03e22ed7c8656dfde4b3acaf4026feff05478d84c5b1e508e3abc1c"
+    },
+    {
+      "stage": "2_4_floorplan_pdn",
+      "wall_seconds": 1.14,
+      "peak_memory_kib": 212444,
+      "log_sha256": "fed3ee5811cf3e2cf87e138ca59427e89868e60612c9344e6bfe2b7b5b3179fd"
+    },
+    {
+      "stage": "3_1_place_gp_skip_io",
+      "wall_seconds": 1.83,
+      "peak_memory_kib": 215620,
+      "log_sha256": "8c7023486902061a1c9c8116ee56f731ecffa2aecd91db53147511a128e583a4"
+    },
+    {
+      "stage": "3_2_place_iop",
+      "wall_seconds": 1.04,
+      "peak_memory_kib": 210188,
+      "log_sha256": "e772f8fe3f1d94e1273ab2b19f4a43bfe903ff7c585c6bbcc5e9a969ca76e8c4"
+    },
+    {
+      "stage": "3_3_place_gp",
+      "wall_seconds": 7.74,
+      "peak_memory_kib": 400672,
+      "log_sha256": "1b2212344d39e3a13b8306bd4fb905a7d578061146f57c35e8eb15078aaaf574"
+    },
+    {
+      "stage": "3_4_place_resized",
+      "wall_seconds": 3.82,
+      "peak_memory_kib": 249092,
+      "log_sha256": "999a088b68433175d1c2c8d4f8a63c7031b6760fe85a08032eceb3bf4618a5e2"
+    },
+    {
+      "stage": "3_5_place_dp",
+      "wall_seconds": 5.12,
+      "peak_memory_kib": 254516,
+      "log_sha256": "c42b148a68645ed441e3aef7e1ac013c67d7faa504abbc2b606a0349f6da1aae"
+    }
+  ],
+  "source_hashes": {
+    "experiments/cnn/rtl/int8_dw3x1.sv": "da1886797f36ac06b4c653c64e94712f832c5d37f783e034630821c28d49a59f"
+  },
+  "metrics_sha256": "f2ef624d6e239572c22329eff7af39d3cf58845a343970973f1e6093504e8c3d"
+}

@@ -1,173 +1,100 @@
-# The slow-corner implementation and the hold-closure study
+# Hold study: physical skew, constraint sensitivity, and evidence limits
 
-A second full RTL-to-GDS run at the true slow corner (`CORNER=WC`,
-SS 0.63 V/100 °C libraries, 1 GHz SDC, bounded repair) put honest numbers on
-the 1 GHz gap, and turned hold repair into a controlled experiment. Raw
-evidence for every claim: [`../reports/`](../reports/) — see
-[`reports/README.md`](../reports/README.md) for the per-report provenance
-map (run, corner, parasitic view, SDC, completion status) and
-`manifest_planv3.sha256` for integrity. Reproduction drivers:
-[`../flow/experiments/`](../flow/experiments/).
+This is a historical experiment record, not a tapeout signoff certificate.
+The current v4 result is in [README](../README.md); exact SDC assumptions
+and entry points are in [constraint assumptions](constraint-assumptions.md).
+Original logs and checksums are preserved in [reports](../reports/README.md)
+and runnable historical experiment sources in [flow/experiments](../flow/experiments/).
 
-## WC @ 1000 ps — the violation report
+## 1. WC implementation: a real 1 GHz setup failure
 
-Never a "1 GHz closure": setup WNS **−950.6 ps** / TNS −4.61 ms over 10,694
-endpoints, geometric routing DRC 0, 44.2 mW, 518 k instances. A period sweep
-with IO delays **frozen as absolutes** (sweeping %-of-period IO budgets
-widens them and fakes fmax) walks in exact 100 ps steps — −150.6 / −50.6 /
-**+49.4** / +149.4 ps at 1800/1900/2000/2100 ps — so the feasible period is
-1950.6 ps ≈ **513 MHz**, matching the signoff WNS to 0.01 ps. At every sweep
-point the sole limiter is the `c_fut` weight-rotator cone; all four IO
-groups clear by ≥ 270 ps.
+The `wc` implementation used SS libraries, 1000 ps, and historical
+150/150 ps setup/hold uncertainty. Setup WNS was **−950.6 ps** over
+10,694 endpoints; TNS was about **−4.61 microseconds**, not milliseconds
+(−4,608,623 ps). Geometric routing DRC = 0 did not remove the timing failure.
 
-## Hold, experiment A — full-ICG netlist
+With absolute IO delays fixed, the archived 1800/1900/2000/2100 ps sweep
+reported setup WNS −150.6/−50.6/+49.4/+149.4 ps. The approximately
+1950.6 ps / 513 MHz crossing is a **setup-only limit for that candidate
+and view**. It does not establish hold, DRV, IO contract validity or safe
+operation at 500 MHz. All corners need min and max checks; SS hold is meaningful.
 
-Checked at the fast corner, as hold must be: baseline −160.9 ps WNS /
-−371 ns TNS, all core-internal. Dual-corner `repair_timing -hold` (FF hold
-target + SS setup guard) inserted 25,268 buffers (+5.0 % area), cut TNS
-98 %, then **plateaued at −114.7 ps** and gave up (`RSZ-0064`). The obvious
-hypothesis — the setup guard blocks the fixes — was tested and **refuted**:
-the pinned endpoint has +1672 ps of setup slack. The real cause is ~200 ps
-of structural skew between the ungated flat clock subtree and the ICG-gated
-subtrees (CTS balances them with 15-deep `delaybuf` chains and still
-loses). The post-repair database of this run was lost to a script defect
-(`DPL-0038`: detailed placement attempted with filler cells present); the
-repair trajectory and result summary survive in
-`reports/step5_holdfix_fullicg.log`, and the published experiment scripts
-fix the defect (`remove_fillers` first, `write_db` before reporting).
+## 2. Full versus selective ICG repair
 
-## Hold, experiment B — selective gating
+The full-ICG repair started with FF hold WNS about −160.9 ps and TNS
+about −371 ns. It inserted 25,268 buffers, then plateaued near −114.7 ps.
+The trace survives in [full-ICG log](../reports/step5_holdfix_fullicg.log).
+The post-repair database was not successfully preserved in that run:
+detailed placement encountered filler cells (`DPL-0038`). Do not claim a
+reproducible final repaired full-ICG netlist from this log alone.
 
-Re-synthesized with yosys `clockgate -min_net_size 2000` (a 3-line ORFS
-hook, `flow/experiments/selective_icg/synth_hook.patch`), keeping ICGs only
-on the two ≥2000-flop data register groups (`rdata_q`, MAC pipe): ICG count
-**30 → 2**. Full WC flow, geometric routing DRC 0. Repair dynamics
-transformed — no rejection-spinning, TNS 468 → 28.7 ns (94 %) at a steady
-~40 ns per 500 iterations, 26,731 buffers — with residual WNS −104.5 ps on
-the `c_cur` cluster. The timing/area recheck matrix completed; the final
-post-repair power query terminated with `STA-0103` (missing multi-corner
-scene argument) and **is not used for any published power claim** — power
-numbers below come from the in-flow single-corner reports.
+Clock-expanded paths exposed different gated and ungated insertion delays.
+This is evidence of a structural skew contribution, not proof that every
+residual endpoint has the same cause. The reported +1672 ps setup slack
+at a diagnosed `c_d1` endpoint refuted a particular **baseline** setup-guard
+hypothesis; it does not establish setup headroom after every buffer insertion.
 
-## Root cause of the residual — an 8th SDC artifact class
+Selective gating used `clockgate -min_net_size 2000`, reducing the reported
+ICG count from 30 to 2 for those historical legs. Repair inserted 26,731
+buffers; TNS decreased substantially, with residual WNS around −104.5 ps.
+The [selective log](../reports/step5b_holdfix_sel.log) contains a timing/area
+recheck under **GRT-estimated parasitics**. Its final power query failed with
+`STA-0103`; that query provides no usable published power result.
 
-`report_clock_skew -hold` decomposes the worst path's "skew" as ~95 ps
-genuine subtree latency offset **+ 150 ps of clock uncertainty charged to
-hold**. The SDC's blanket `set_clock_uncertainty 150` (no `-setup`/`-hold`
-split) silently taxes every hold check with the full setup margin;
-same-edge hold checks see almost no jitter, and practice keeps hold
-uncertainty at ~20–50 ps. Under the corrected constraint
-(`flow/asap7/constraint_recommended.sdc`, `-setup 150 -hold 30`) the
-repaired netlist's residual is **analytically adjusted** from −104.5 ps to
-**+15.5 ps — hold closed** (uncertainty enters hold slack as an exact
-linear term; CRPR unchanged), and the 120 ps linear shift was **empirically
-validated** on the unrepaired netlist: −127.56 → −7.56 ps, exact to
-0.01 ps (`reports/verify_hold_uncertainty.log`). No new full STA of the
-repaired netlist was run — the historical reports were all produced with
-the blanket-uncertainty SDC, preserved verbatim as
-`constraint_reported.sdc` so the report ↔ constraint correspondence stays
-intact.
+The two in-flow WC power estimates were about 44.2 and 155.1 mW. These are
+vectorless, separate implementations with different clock structures. They
+motivate a gating/repairability trade-off, but are **not** an activity-matched
+VCD/SAIF causal measurement isolating ICG power. Likewise v1-to-v2 “44x”
+comparisons also changed architecture and constraints and are not an ICG-only gain.
 
-## The closed loop: hold signoff through route + extraction
+## 3. Uncertainty sensitivity: a changed model, not faster silicon
 
-A follow-up implementation leg (`FLOW_VARIANT=mcp`, BC corner, 1 GHz SDC +
-the evidence-backed multicycle exception on the weight-rotator sources,
-`flow/asap7/constraint_mcp.sdc`) completed the loop this study had left
-open — repair inside the flow, then detailed routing, RCX extraction and
-final STA on the same database:
+Blanket `set_clock_uncertainty 150` applies to setup and hold. The alternative
+model explicitly sets setup 150 ps and hold 30 ps. On the archived unrepaired
+candidate, [the sensitivity run](../reports/verify_hold_uncertainty.log)
+changed hold slack −127.56 → −7.56 ps: a +120 ps shift for the affected paths.
+That verifies the arithmetic of the model, **not the physical correctness
+of a 30 ps uncertainty budget**. Jitter correlation, residual skew/variation
+and the interface contract must justify a real budget. Do not call the old
+violations “fiction,” nor describe 20–50 ps as a universally valid hold budget.
 
-- Under the blanket-150 ps scenario the in-flow hold repair had found
-  **2,426 violating endpoints** and was still inserting buffers after
-  3,500+ moves. The stage was stopped, the corrected
-  `-setup 150 / -hold 30` scenario applied (last-write-wins override on
-  the stage SDC), and the stage re-run: the hold repair found **zero
-  violating endpoints** — the entire workload had been constraint fiction.
-- Final signoff (`reports/mcp_6_finish.rpt`, routed SPEF): **hold WNS
-  +26.6 ps, TNS 0, 0 violating endpoints** — the first fully hold-clean
-  post-route signoff of this project. Geometric routing DRC 0 (fourth
-  implementation in a row), 67.1 mW, 499 k instances.
-- Setup at 1 GHz remains open at **−51.07 ps / 112 endpoints**, all on the
-  deliberately single-cycle-checked `mod_x → c_fut` cone (the rotation
-  amount feeding 392 bits of mux control — too much fanout to size away).
-  The structural fix — splitting the rotator's 6-level log shifter into
-  two pipelined halves, which shortens the `mod_x` cone as a side effect —
-  is implemented and regression-tested on the `v4-cfut-pipe` branch.
-- Provenance label: stages 1–4 of this leg were built under the blanket
-  scenario, stage 5 onward under the corrected one — a **mixed-provenance
-  quick-closure experiment**, not equivalent to a from-scratch run under
-  the corrected SDC (that from-scratch run is the v4 leg's job).
+Applying the same sensitivity to repaired residual −104.496 ps yields
+**+15.504 ps analytically**. The linear shift was empirically checked on the
+unrepaired candidate, but there was no new full STA of the repaired netlist
+under 30 ps. It is therefore not a measured repaired-netlist signoff pass.
+The repaired selective database was not detailed-routed and re-extracted.
 
-**Three-corner matrix** on this leg's final netlist + routed SPEF
-(`reports/matrix_mcp_{ff,ss,tt}.rpt`; single RC model — an ASAP7/ORFS
-platform limitation; includes recovery/removal/min-pulse-width checks and
-the endpoint enumeration: 23,399 register data pins, all on the single
-`core_clock`, plus the explicit port-list constraints):
+## 4. MCP leg and v4: separate candidates
 
-| Corner | Setup WNS / TNS | Hold WNS / TNS |
-| --- | --- | --- |
-| FF (hold corner) | −51.07 ps / −1.27 ns (112 eps, `mod_x` cone) | **+26.6 ps / 0 — clean** |
-| TT | −401.7 ps / −974 ns (≈ 714 MHz) | **+52.8 ps / 0 — clean** |
-| SS (cross-corner audit on this BC-optimized layout) | −1033.8 ps / −5.87 ms (≈ 492 MHz) | −139.3 ps / −758 ns¹ |
+The MCP leg completed route and extraction, with FF hold +26.6 ps / TNS 0
+under its split-uncertainty view. Setup still had −51.07 ps / 112 endpoints.
+Its stages 1–4 used blanket uncertainty while later stages used split
+uncertainty: **mixed provenance**, not a matched from-scratch comparison.
+Its cross-corner SS hold (−139.3 ps) remains a violation; it is not dismissed
+because hold was optimized at FF. Its SS setup TNS of about −5.87 million ps
+is approximately −5.87 microseconds, not milliseconds.
 
-¹ SS hold on a BC-optimized layout whose hold buffers were sized at FF —
-a documented limitation of this leg, not a signoff claim; a WC-targeted
-implementation needs its own hold pass.
+v4 instead physically pipelines the coefficient rotator and has no MCP
+exception in its normal constraint entry. It retained the 7,840-bit `rdata_q`.
+The original scripts used slew margin 15 in early stages and 25 in the
+stage-5/6 rerun. The new consistent-margin reproduction recipe is disclosed
+as a recipe, not a promise of byte-identical recreation of the historical run.
 
-**Frequency commitment with guardband**: 513 MHz is the *measured* WC
-setup limit, not an operating promise; the recommended operating point is
-**≤ 500 MHz** at the slow corner, keeping ≥ 50 ps of margin.
+| v4 view, same routed SPEF | Setup WNS | Hold WNS | Interpretation |
+| --- | ---: | ---: | --- |
+| FF @ 1000 ps, 150/30 ps uncertainty | −15.69 ps | +4.88 ps | Setup not closed |
+| FF @ 1000 ps, 100/30 ps override | +34.31 ps | +4.88 ps | Limited min/max timing pass |
+| TT @ 1000 ps, 150/30 ps | −333.53 ps | +15.27 ps | Setup not closed |
+| Archived SS @ 2000 ps, **150/150 ps** | +76.89 ps | **−303.10 ps** | Hold not closed |
 
-## The finish line: the v4 leg
+The SS report sourced the archived `sweep_2000.sdc` blanket model; do not
+label it 150/30. Its hold TNS is −1,570,621.12 ps. The approximately 520 MHz
+setup crossing is not a safe operating-frequency claim. Reducing FF setup
+uncertainty from 150 to 100 ps adds 50 ps slack without changing a transistor.
 
-The structural fix — splitting the rotator's 6-level log shifter into two
-pipelined 3-level halves (`rot49_lo`/`rot49_hi`, 1,193 pipeline bits,
-`prep_cload` 10→11; bit-identical over the full 54-frame regression) — ran
-as a fifth implementation (`FLOW_VARIANT=v4`): clean provenance (the
-published recommended split-uncertainty SDC from synthesis onward, **no
-multicycle constraints anywhere**), positive repair margins
-(`SETUP_SLACK_MARGIN=30, HOLD_SLACK_MARGIN=20, SLEW_MARGIN=25`).
-Signoff (`reports/v4_6_finish.rpt`, routed SPEF): **hold 0 violations /
-TNS 0; cap and fanout 0; geometric DRC 0 (fifth run in a row); 45.6 mW;
-47,297 µm²** — the fastest, smallest and coolest implementation of the
-project. Slew violators 2,073 → **243** (margin-driven; residual
-disclosed). The `mod_x` cone is gone from the timing landscape entirely.
-
-Setup at 1 GHz: **WNS −15.69 ps over 19 endpoints** under the original
-blanket-conservative 150 ps setup uncertainty — repair-immune across two
-spins (max-sized, route-limited stage-A paths). The 150 ps figure was an
-arbitrary conservative default; with propagated clocks the real tree skew
-is explicitly analyzed, and a documented revision to a still-generous
-**100 ps** setup uncertainty closes the design:
-**setup +34.31 ps / TNS 0, hold +4.88 ps / TNS 0**
-(`reports/v4_ff_u100.rpt`; the 120 ps-class linearity of uncertainty was
-already verified empirically in this study to 0.01 ps). Both figures are
-published side by side: **984.5 MHz under the 150 ps default; 1 GHz
-closed under the documented 100 ps revision.**
-
-Cross-corner on the same netlist: the slow-corner feasible period improves
-to 1923.1 ps ≈ **520 MHz** (`v4_ss_2000.rpt`, frozen-IO; the WC limiter is
-now the MAC, no longer the rotator) and TT reaches ≈ **750 MHz**
-(`v4_tt_u150.rpt`).
-
-## Controlled ICG ablation
-
-Matched stage, corner and config — the two WC legs differ *only* in the
-gating threshold: 30 ICGs → **44.2 mW**; 2 ICGs → **155.1 mW**. Gating the
-small metadata registers is worth 3.5× total power on this design, and buys
-exactly the hold-repairability problem above — a quantified
-power-vs-closure trade. (The earlier "44× vs v1" stays a cross-spin
-observation: v1 also lacked the elastic skid buffers.)
-
-## View discipline and scope
-
-Repair-trajectory numbers are from the SPEF-annotated view; the post-repair
-recheck matrix in `step5b_holdfix_sel.log` uses GRT-estimated parasitics
-(labeled — cross-view hold TNS moves by >100 ns on this design, which is
-itself the lesson). The repaired database was not re-routed or
-re-extracted: academic flow, no LVS/EM, no post-repair route re-signoff —
-**not tapeout-ready**. "DRC 0" throughout means *geometric routing DRC*
-(TritonRoute spacing/via/antenna, `reports/drc_summary.txt`); electrical
-checks (max slew/cap) and timing residuals are reported separately. The 49
-external SRAMs are modeled by interface timing models only; the layout
-contains zero macros (`instance__count__macros = 0`), so nothing here signs
-off the SRAMs themselves.
+The 2026-09-10 [fresh standalone FF audit](../reports/v4_reproduced_ff_u100.rpt)
+reproduced +34.31/+4.88 ps with exact input and Liberty hashes. It does not
+resolve the remaining 243 max-slew violations, missing per-RC MMMC, incomplete
+coverage audit, final mapped equivalence, or LVS/EM. SRAM macros remain
+external interface models (`macros = 0`). This is a research RTL-to-GDS project,
+not a tapeout-ready chip.

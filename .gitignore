@@ -3,6 +3,13 @@
 *.vcd
 *.log
 !docs/audit/*.log
+!docs/audit/uvm_functional/*.log
+!experiments/**/results/**/*.log
+__pycache__/
+*.pyc
+# Superseded preliminary EDA cache; the published run is results_matched/.
+experiments/eda_search/results/
+!experiments/eda_search/results_matched/*.log
 obj_dir/
 work/
 # large physical-design artifacts (regenerate with the flow)

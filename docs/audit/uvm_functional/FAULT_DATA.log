@@ -1,0 +1,44 @@
+UVM_INFO /mnt/c/Users/26598/Documents/Codex/2026-08-29/sel-hold-2-bc-hold-wns/work/tools/uvm-verilator-2020-3.1/src/base/uvm_root.svh(476) @ 0: reporter [UVM/RELNOTES] 
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  This implementation of the UVM Library deviates from the 1800.2-2020
+  standard.  See the DEVIATIONS.md file contained in the release
+  for more details.
+
+----------------------------------------------------------------
+Accellera:1800.2:UVM:2020.3.1
+
+All copyright owners for this kit are listed in NOTICE.txt
+All Rights Reserved Worldwide
+----------------------------------------------------------------
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_WARNING /mnt/c/Users/26598/Documents/Codex/2026-08-29/sel-hold-2-bc-hold-wns/work/tools/uvm-verilator-2020-3.1/src/base/uvm_root.svh(549) @ 0: reporter [NO_DPI_USED] We are thinking of removing support for UVM_NO_DPI.  Please try this test without it and evaluate the impact
+UVM_INFO @ 0: reporter [RNTST] Running test img_filter_smoke_test...
+UVM_INFO /mnt/c/Users/26598/Documents/Codex/2026-08-29/sel-hold-2-bc-hold-wns/work/tools/uvm-verilator-2020-3.1/src/base/uvm_traversal.svh(345) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
+UVM_WARNING /mnt/c/Users/26598/Documents/Codex/2026-08-29/sel-hold-2-bc-hold-wns/work/tools/uvm-verilator-2020-3.1/src/base/uvm_traversal.svh(314) @ 0: reporter [NO_VISIT_CHECK] Because UVM_REGEX_NO_DPI is defined, no uvm component name constraints will be checked
+UVM_ERROR /mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/verification/uvm/img_filter_functional_pkg.sv(203) @ 925500: uvm_test_top.env.scoreboard [MISMATCH] beat 0 expected=48a1654e17b050994625921c97c241a960ad0977 actual=48a1654e17b050994625921c97c241a960ad0976
+UVM_FATAL /mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/verification/uvm/img_filter_functional_pkg.sv(245) @ 961500: uvm_test_top [FAILED] Mismatch, protocol error, or extra output
+UVM_INFO /mnt/c/Users/26598/Documents/Codex/2026-08-29/sel-hold-2-bc-hold-wns/work/tools/uvm-verilator-2020-3.1/src/base/uvm_report_server.svh(1009) @ 961500: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :    3
+UVM_WARNING :    2
+UVM_ERROR :    1
+UVM_FATAL :    1
+** Report counts by id
+[FAILED]     1
+[MISMATCH]     1
+[NO_DPI_USED]     1
+[NO_VISIT_CHECK]     1
+[RNTST]     1
+[UVM/COMP/NAMECHECK]     1
+[UVM/RELNOTES]     1
+
+- /mnt/c/Users/26598/Documents/Codex/2026-08-29/sel-hold-2-bc-hold-wns/work/tools/uvm-verilator-2020-3.1/src/base/uvm_root.svh:183: Verilog $finish
+SRAM COVERAGE reads=777 writes=392 banks_written=49
+[962000] %Fatal: tb_top.sv:39: Assertion failed in tb_top.unnamedblk1: UVM failure propagated to simulator exit status
+%Error: /mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/verification/uvm/tb_top.sv:39: Verilog $stop
+Aborting...

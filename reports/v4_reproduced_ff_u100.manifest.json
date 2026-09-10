@@ -1,0 +1,30 @@
+{
+  "corner": "FF",
+  "u100_override": true,
+  "parasitics": "single routed SPEF",
+  "checks": "timing and DRV; coverage not certified",
+  "inputs": {
+    "6_final.v": "5e2732842ae6817cba05d9d1f86a744582c096a511b64130f50560ad1244cfcf",
+    "6_final.spef": "513882d0015583ed3fd9c21442e4465de411fe0e95275f415d0eebdcd3d6463e",
+    "6_final.sdc": "52adeefbe3ac3fc76a095b2a7d65326a4c9de6725d4bdf1ee08b50541063f169"
+  },
+  "liberty": {
+    "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz": "9e3848d247f9bbc8d405ee55617af98797b6d5be9a1af02988ec5d59ca9dad99",
+    "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz": "e0c65688e6067ee485b0693651298636ae9ef5a0512154bcd4b7c4914d1a0ac6",
+    "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz": "cc9651e9235bcd29bba0737b7ba7a8afddde7462df3ff48d3870c22d05c86fb3",
+    "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz": "0c93d44fcc6a30182d71031997771ea3fc0d09235201e9252f71daf48a1c7a38",
+    "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib": "d9b6e75c8720cdd450cff15178528502cc8df34c5ab6b0ffb53fc99d664b5302"
+  },
+  "scripts": {
+    "tools/run_sta_audit.py": "8d25aaf4375f3b652a75bf757f2611f6065392a3e69ad9db029be77ba204f7eb",
+    "flow/sta/run_candidate.tcl": "0fff3f560be287a25ba769e35c6e63caafca149633f34825bb5b07ba9f63686d",
+    "flow/asap7/audit_ff_u100.tcl": "a392f9cc0cf03e12d314c1e1ad81ee8ad44482d683b29aa766f6041951c01799"
+  },
+  "sta_version": "3.1.0",
+  "report_sha256": "3cadc8e3c834ce569fda64c43cfae6dbeb102eeb9f1764cf28b6f176b0d9646e",
+  "derived_sdf": {
+    "file": "v4_ff.sdf",
+    "sha256": "25c9fe5c5f6f777d9fd97bc204f747aad9cc5f0bb503f1379ca677e32b5aa2c9",
+    "scope": "newly exported single-corner audit artifact; not timing-simulation evidence"
+  }
+}

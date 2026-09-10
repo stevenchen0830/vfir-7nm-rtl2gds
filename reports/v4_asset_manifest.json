@@ -1,0 +1,157 @@
+{
+  "source_variant": "v4",
+  "files": [
+    {
+      "file": "6_final.v.gz",
+      "sha256": "65bfefee76b7b8b8277efdba0a4a2a57f22c208376e24fced586d94ae2bfe7e0",
+      "uncompressed_sha256": "5e2732842ae6817cba05d9d1f86a744582c096a511b64130f50560ad1244cfcf",
+      "bytes": 46527593
+    },
+    {
+      "file": "6_final.sdc.gz",
+      "sha256": "b289fa9f27e72194e3e3e7d0eb58f4a534415d2bc2b679e951e4caf0219de453",
+      "uncompressed_sha256": "52adeefbe3ac3fc76a095b2a7d65326a4c9de6725d4bdf1ee08b50541063f169",
+      "bytes": 3450108
+    },
+    {
+      "file": "6_final.spef.gz",
+      "sha256": "ac343d5a020f62c7dc1c6660001d6d7de0b93896311ade3a2bdcbeee52b5e912",
+      "uncompressed_sha256": "513882d0015583ed3fd9c21442e4465de411fe0e95275f415d0eebdcd3d6463e",
+      "bytes": 520069269
+    },
+    {
+      "file": "6_final.def.gz",
+      "sha256": "52184288089c299ace87b0247fff497bcc94e117794db14ec4d1c8736cca6d2c",
+      "uncompressed_sha256": "eeffa94e8951343929bd4252e68df1690722935e483c58871159bcb5c6df7cc5",
+      "bytes": 450161445
+    },
+    {
+      "file": "asap7_rvt_views.tar.gz",
+      "sha256": "a093742fdb5ddb7cc2711b10ac4d57b5b5bc8f27f39211445a3336bc14e291c1"
+    },
+    {
+      "file": "v4_ff_derived_20260910.sdf.gz",
+      "sha256": "a46a09a0cd0bc9199140cb3676884f3e061e4316cc177b15dcf46a77a6907686",
+      "uncompressed_sha256": "25c9fe5c5f6f777d9fd97bc204f747aad9cc5f0bb503f1379ca677e32b5aa2c9",
+      "bytes": 257305344,
+      "provenance": "new FF audit export, 2026-09-10; not original flow SDF, no SDF GLS claim"
+    }
+  ],
+  "sdf": "original run had no SDF; new derived single-FF export supplied separately",
+  "vendor_views": [
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz",
+      "sha256": "9e3848d247f9bbc8d405ee55617af98797b6d5be9a1af02988ec5d59ca9dad99"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_TT_nldm_211120.lib.gz",
+      "sha256": "fe9f1c18e88ab129d63ad82adc256f3a85c7e38e47dabbe0a96749b41087dea1"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_SS_nldm_211120.lib.gz",
+      "sha256": "9ac9c70139da3c4c72b2ed6113f011d8d96de2b30f9b261a237d2ed58ffa1ff5"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz",
+      "sha256": "e0c65688e6067ee485b0693651298636ae9ef5a0512154bcd4b7c4914d1a0ac6"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_TT_nldm_220122.lib.gz",
+      "sha256": "8d6db2c2f83c3c162be54a5e102b2d379fcaaaef2db5f0b1d4152c395d01fea1"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_SS_nldm_220122.lib.gz",
+      "sha256": "339371d339fc0e3f4f50fa493ce82b984743af46d26823263dcca7a391e64408"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz",
+      "sha256": "cc9651e9235bcd29bba0737b7ba7a8afddde7462df3ff48d3870c22d05c86fb3"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_TT_nldm_211120.lib.gz",
+      "sha256": "bbe6d904d58c7367de1ed7639e4eae386c65fa0a5af26ae62dc5e4e2ec52b08b"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_SS_nldm_211120.lib.gz",
+      "sha256": "6912520ffc1ae5bf69103d0286bcb7867fc90de80365dfc8ec0d6b55a9113f27"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz",
+      "sha256": "0c93d44fcc6a30182d71031997771ea3fc0d09235201e9252f71daf48a1c7a38"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_250407.lib.gz",
+      "sha256": "0c93d44fcc6a30182d71031997771ea3fc0d09235201e9252f71daf48a1c7a38"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_TT_nldm_211120.lib.gz",
+      "sha256": "073ac4b6b08f272b6953b0ad54d1d9743767a7d15a0e2964ed86cf44c3dbe00e"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz",
+      "sha256": "71e55ce94cde9d10ad726cf7131e7356501aa1c380ae4e138f47c2f8ca7ca7db"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib",
+      "sha256": "d9b6e75c8720cdd450cff15178528502cc8df34c5ab6b0ffb53fc99d664b5302"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_TT_nldm_220123.lib",
+      "sha256": "57a0b403485b99ebd676942af4673ac086b86c7c75fbdc3e5c0038501dd22ba3"
+    },
+    {
+      "path": "flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_SS_nldm_220123.lib",
+      "sha256": "c6a6d9ad22bfb1bc9cf1c4ac66d09ce575ca18648ce4e50597d92174bc290d78"
+    },
+    {
+      "path": "flow/platforms/asap7/verilog/stdcell/asap7sc7p5t_AO_RVT_TT_201020.v",
+      "sha256": "7d60ca80e150189367085daffcca59e2eb768ac4739c50ad04c318d8a3bb9d48"
+    },
+    {
+      "path": "flow/platforms/asap7/verilog/stdcell/asap7sc7p5t_INVBUF_RVT_TT_201020.v",
+      "sha256": "8804a647af1e2161c13fffcaef9ec50786494534872ec50adaae593967a3b459"
+    },
+    {
+      "path": "flow/platforms/asap7/verilog/stdcell/asap7sc7p5t_OA_RVT_TT_201020.v",
+      "sha256": "d98d028cdc47061912c4dffe12af420b65d3ce3f89f728c5a03d9819967b77b4"
+    },
+    {
+      "path": "flow/platforms/asap7/verilog/stdcell/asap7sc7p5t_SEQ_RVT_TT_220101.v",
+      "sha256": "6e63ff4b5587097a76bf395c6f2383035368d5c8d95dbf551ba324d3a9537fde"
+    },
+    {
+      "path": "flow/platforms/asap7/verilog/stdcell/asap7sc7p5t_SIMPLE_RVT_TT_201020.v",
+      "sha256": "849946d9b648ef58f39a97027de5e7f24051f6ef4fded598dec861e3257ea4b6"
+    }
+  ],
+  "audit": {
+    "corner": "FF",
+    "u100_override": true,
+    "parasitics": "single routed SPEF",
+    "checks": "timing and DRV; coverage not certified",
+    "inputs": {
+      "6_final.v": "5e2732842ae6817cba05d9d1f86a744582c096a511b64130f50560ad1244cfcf",
+      "6_final.spef": "513882d0015583ed3fd9c21442e4465de411fe0e95275f415d0eebdcd3d6463e",
+      "6_final.sdc": "52adeefbe3ac3fc76a095b2a7d65326a4c9de6725d4bdf1ee08b50541063f169"
+    },
+    "liberty": {
+      "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_FF_nldm_211120.lib.gz": "9e3848d247f9bbc8d405ee55617af98797b6d5be9a1af02988ec5d59ca9dad99",
+      "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_FF_nldm_220122.lib.gz": "e0c65688e6067ee485b0693651298636ae9ef5a0512154bcd4b7c4914d1a0ac6",
+      "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_FF_nldm_211120.lib.gz": "cc9651e9235bcd29bba0737b7ba7a8afddde7462df3ff48d3870c22d05c86fb3",
+      "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_FF_nldm_211120.lib.gz": "0c93d44fcc6a30182d71031997771ea3fc0d09235201e9252f71daf48a1c7a38",
+      "/root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_FF_nldm_220123.lib": "d9b6e75c8720cdd450cff15178528502cc8df34c5ab6b0ffb53fc99d664b5302"
+    },
+    "scripts": {
+      "tools/run_sta_audit.py": "8d25aaf4375f3b652a75bf757f2611f6065392a3e69ad9db029be77ba204f7eb",
+      "flow/sta/run_candidate.tcl": "0fff3f560be287a25ba769e35c6e63caafca149633f34825bb5b07ba9f63686d",
+      "flow/asap7/audit_ff_u100.tcl": "a392f9cc0cf03e12d314c1e1ad81ee8ad44482d683b29aa766f6041951c01799"
+    },
+    "sta_version": "3.1.0",
+    "report_sha256": "3cadc8e3c834ce569fda64c43cfae6dbeb102eeb9f1764cf28b6f176b0d9646e",
+    "derived_sdf": {
+      "file": "v4_ff.sdf",
+      "sha256": "25c9fe5c5f6f777d9fd97bc204f747aad9cc5f0bb503f1379ca677e32b5aa2c9",
+      "scope": "newly exported single-corner audit artifact; not timing-simulation evidence"
+    }
+  }
+}
