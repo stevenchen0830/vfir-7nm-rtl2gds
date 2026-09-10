@@ -8,8 +8,14 @@ and cell-model views with their BSD 3-Clause copyright/license headers
 unchanged. These upstream models are not relicensed under this repo's MIT
 license and imply no endorsement by their authors.
 
-Large files belong in a GitHub Release, not normal Git history:
-[v4 reproduction release](https://github.com/stevenchen0830/vfir-7nm-rtl2gds/releases/tag/v4-reproduction-20260910).
+Large files belong in a GitHub Release, not normal Git history.
+**Availability (2026-09-10): uploaded and checksum-verified as an owner-visible
+draft; public publication is pending explicit owner approval.** Repository
+visitors cannot yet independently download this v4 set. The public source,
+reports and input manifests are available, but that is not a complete public
+STA reproduction bundle until the asset release is published.
+The owner can inspect the draft through [GitHub Releases](https://github.com/stevenchen0830/vfir-7nm-rtl2gds/releases).
+Its intended tag is `v4-reproduction-20260910`.
 Use the asset manifest to distinguish v4 from the earlier
 `signoff-evidence-v1` release containing v3/wc/sel inputs.
 
@@ -30,6 +36,9 @@ per-RC-corner extraction. The supplied TT-named Verilog models are functional
 cell models; do not treat the name as an SS/FF timing characterization.
 
 ## Commands
+
+The public download command below is for **after** the draft is published;
+it is not currently available to unauthenticated repository visitors.
 
 ```bash
 gh release download v4-reproduction-20260910 --repo stevenchen0830/vfir-7nm-rtl2gds --dir work/v4-assets

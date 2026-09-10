@@ -125,6 +125,9 @@ memory, checkpoint recovery and failure interpretation are in the
 [Physical assets](docs/physical-assets.md) explain final netlist/SPEF/SDC/DEF,
 derived SDF, upstream licenses and hashes. Checking a report manifest proves
 integrity only. Independently rerunning STA/GLS requires all relevant inputs.
+The new v4 asset release is currently an **owner-visible draft**, uploaded and
+hash-verified; public asset download awaits explicit owner approval. Source,
+reports and manifests are already public.
 
 ## Optimization journey
 
