@@ -9,7 +9,8 @@ repo=Path(__file__).resolve().parents[1]
 errors=[]
 docs=['README.md','docs/rtl-to-gds-walkthrough.md','docs/constraint-assumptions.md',
       'docs/physical-assets.md','docs/hold-study.md','docs/verification-status.md',
-      'reports/README.md','verification/uvm/README.md','experiments/README.md','docs/closure-progress.md']
+      'reports/README.md','verification/uvm/README.md','experiments/README.md','docs/closure-progress.md',
+      'docs/reproduce-from-scratch.md','docs/sram-interface-contract.md','experiments/fir_pipeline/README.md']
 for name in docs:
     p=repo/name; text=p.read_text(encoding='utf-8')
     for link in re.findall(r'\]\(([^)]+)\)',text)+re.findall(r'src="([^"]+)"',text):
@@ -76,5 +77,28 @@ for relative in ['reports/closure_20260911/matrix/matrix.json',
 physical=repo/'experiments/cnn/results/final_20260911/physical'
 for name,h in json.loads((physical/'summary.json').read_text())['evidence_files'].items():
     if hashlib.sha256((physical/name).read_bytes()).hexdigest()!=h: errors.append(f'CNN physical evidence mismatch: {name}')
+for meta_path in (repo/'experiments/fir_pipeline/results').glob('*/verification.json'):
+    meta=json.loads(meta_path.read_text())
+    if meta['status']!='FUNCTIONAL_PASS_NOT_PHYSICAL_SIGNOFF': errors.append(f'Incomplete FIR regression: {meta_path}')
+    for name,h in meta['sources'].items():
+        if hashlib.sha256((repo/name).read_bytes()).hexdigest()!=h: errors.append(f'FIR candidate source hash mismatch: {name}')
+    for row in meta['commands']:
+        if hashlib.sha256((meta_path.parent/row['log']).read_bytes()).hexdigest()!=row['sha256']:
+            errors.append(f'FIR candidate log hash mismatch: {row["log"]}')
+public_dir=repo/'reports/public_reproduction_20260911'
+structure_dir=repo/'experiments/fir_pipeline/results/structure'
+structure=json.loads((structure_dir/'structure.json').read_text())
+if hashlib.sha256((structure_dir/'yosys.log').read_bytes()).hexdigest()!=structure['log_sha256']:
+    errors.append('FIR generic structure log hash mismatch')
+for name,h in structure['sources'].items():
+    if hashlib.sha256((repo/name).read_bytes()).hexdigest()!=h: errors.append('FIR generic source mismatch: '+name)
+public=json.loads((public_dir/'FF_u100.manifest.json').read_text())
+if hashlib.sha256((public_dir/'FF_u100.rpt').read_bytes()).hexdigest()!=public['report_sha256']:
+    errors.append('Anonymous-public-input STA report hash mismatch')
+for name,h in public['inputs'].items():
+    if h!=audit['inputs'][name]: errors.append('Public download / original candidate mismatch: '+name)
+inventory=json.loads((repo/'reports/toolchain_inventory_20260911.json').read_text())
+if hashlib.sha256((repo/'flow/toolchain/clockgate-min-net-size.patch').read_bytes()).hexdigest()!=inventory['tracked_diff_sha256']['.']:
+    errors.append('Archived ORFS patch differs from measured toolchain diff')
 if errors: raise SystemExit('\n'.join(errors))
 print('REPRODUCTION CHECKS PASSED: links, exact STA inputs/scripts, UVM logs, legal coefficients, EDA raw hashes/cache/summary/budget')

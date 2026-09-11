@@ -5,3 +5,4 @@
 # Preserve raw tool-log spacing; source/style checks still apply elsewhere.
 *.log -whitespace
 *.rpt -whitespace
+*.patch -whitespace

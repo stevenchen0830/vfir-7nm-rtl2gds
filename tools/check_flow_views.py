@@ -2,6 +2,9 @@
 """Parse each config with GNU Make without invoking an implementation stage."""
 from pathlib import Path
 import subprocess
+import shutil
+if shutil.which('make') is None:
+    raise SystemExit('GNU Make is required. Run this check in Linux/WSL after installing build-essential.')
 repo=Path(__file__).resolve().parents[1]
 for config,sdc in [('config.mk','constraint_v4.sdc'),('config_v4.mk','constraint_v4.sdc'),('config_historical.mk','constraint_reported.sdc')]:
     make=f'include {repo}/flow/asap7/{config}\nprint:\n\t@echo $(SDC_FILE)\n'

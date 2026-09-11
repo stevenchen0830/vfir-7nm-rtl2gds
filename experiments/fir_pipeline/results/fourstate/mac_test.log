@@ -1,0 +1,2 @@
+MAC PASS checks=26592 resets=2 stall_cycles=460
+/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/verification/mac_tb.sv:70: $finish called at 2420000 (1ps)

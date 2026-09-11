@@ -36,6 +36,16 @@ cell models; do not treat the name as an SS/FF timing characterization.
 
 ## Commands
 
+No account or GitHub CLI is required for the three STA inputs:
+
+```bash
+python3 tools/fetch_v4_release.py --selection sta --unpack --output work/v4-public
+```
+
+This verifies compressed and uncompressed hashes against the committed
+manifest. It does not overwrite corrupted existing files. See the
+[cold-start guide](reproduce-from-scratch.md) for tools and follow-up STA.
+
 Download through the release page, or with GitHub CLI from the repository root:
 
 ```bash

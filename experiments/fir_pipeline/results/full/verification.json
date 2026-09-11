@@ -1,0 +1,155 @@
+{
+  "status": "FUNCTIONAL_PASS_NOT_PHYSICAL_SIGNOFF",
+  "suite": "full",
+  "engine": "verilator",
+  "simulation_semantics": "two-state; does not prove X behavior",
+  "physical_status": "NOT_RUN",
+  "commands": [
+    {
+      "name": "tools",
+      "argv": [
+        "iverilog",
+        "-V"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.01692938899999996,
+      "log": "tools.log",
+      "sha256": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946",
+      "pass": true
+    },
+    {
+      "name": "generate",
+      "argv": [
+        "python3",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/build_variant.py",
+        "/home/ibex/vfir-v5-full-20260911/generated"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.11489841700000003,
+      "log": "generate.log",
+      "sha256": "7a9c600645362e7dfc19bc4bd7de64bc8f565ef88b9abd580412d6696c100063",
+      "pass": true
+    },
+    {
+      "name": "mac_compile",
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "mac_tb",
+        "-o",
+        "/home/ibex/vfir-v5-full-20260911/mac.vvp",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/rtl/fir_mac_pipeline.v",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/verification/mac_tb.sv"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.566433264,
+      "log": "mac_compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "pass": true
+    },
+    {
+      "name": "mac_test",
+      "argv": [
+        "vvp",
+        "/home/ibex/vfir-v5-full-20260911/mac.vvp"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 16.172429458,
+      "log": "mac_test.log",
+      "sha256": "4195024f9efeca736df32fa17bb52cf3dda539e895cc6c3db7bd500c8783e651",
+      "pass": true
+    },
+    {
+      "name": "mac_negative",
+      "argv": [
+        "vvp",
+        "/home/ibex/vfir-v5-full-20260911/mac.vvp",
+        "+FAULT"
+      ],
+      "exit_code": 1,
+      "wall_seconds": 0.16555218599999932,
+      "log": "mac_negative.log",
+      "sha256": "1bcef7a207dce31e455132fbd665d7a9771a8b0fd20cec3114912ed7f1f93271",
+      "pass": true
+    },
+    {
+      "name": "lint",
+      "argv": [
+        "/home/ibex/.local/opt/verilator-v5.050/bin/verilator",
+        "--lint-only",
+        "-I/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/rtl",
+        "-Wno-UNSIGNED",
+        "--top-module",
+        "IMG_FILTER",
+        "/home/ibex/vfir-v5-full-20260911/generated/img_filter.v",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/rtl/fir_mac_pipeline.v"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.4208674919999993,
+      "log": "lint.log",
+      "sha256": "e5570603b516d2452781a00c5eb706fc3b1cd5750af5cbeb100791e72f787416",
+      "pass": true
+    },
+    {
+      "name": "verilator_version",
+      "argv": [
+        "/home/ibex/.local/opt/verilator-v5.050/bin/verilator",
+        "--version"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.06516526100000064,
+      "log": "verilator_version.log",
+      "sha256": "46aedd5b30efdd94426c9eebbcf4a6ae7a9680526cc90ce8fec95977c2d6b12d",
+      "pass": true
+    },
+    {
+      "name": "compile",
+      "argv": [
+        "/home/ibex/.local/opt/verilator-v5.050/bin/verilator",
+        "--binary",
+        "--timing",
+        "-j",
+        "2",
+        "-Wno-fatal",
+        "-I/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/rtl",
+        "--top-module",
+        "img_filter_tb",
+        "--Mdir",
+        "/home/ibex/vfir-v5-full-20260911/obj_dir",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/rtl/img_filter_def.v",
+        "/home/ibex/vfir-v5-full-20260911/generated/img_filter.v",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/rtl/fir_mac_pipeline.v",
+        "/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/verification/img_filter_tb.v"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 13.311373194000002,
+      "log": "compile.log",
+      "sha256": "7103ed05f49372a2c95f98eeb50dc93915569fd0eaee07cfa0db702d9d121a9b",
+      "pass": true
+    },
+    {
+      "name": "frames",
+      "argv": [
+        "/home/ibex/vfir-v5-full-20260911/obj_dir/Vimg_filter_tb",
+        "+SEED=12345678"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.9685451020000002,
+      "log": "frames.log",
+      "sha256": "b7b075baf22de62b1c1dfbf2a25a86121c3e1b2d53a2ce161c1963dd9cd08889",
+      "pass": true
+    }
+  ],
+  "sources": {
+    "experiments/fir_pipeline/run_verification.py": "c4cc95aa9c4dc78130aeb0c37e9285a38da62468452efebd297cdd6b6206991a",
+    "experiments/fir_pipeline/build_variant.py": "578c0724b9d31c761f040469562d4c9cbaea545ed0a0dea956974ba51fc2e380",
+    "rtl/img_filter.v": "b1ffeaf5fccad2442519b58076420b3a723d9c800e29ad7f26974ca817566283",
+    "rtl/img_filter_def.v": "b14716cadcc1f058debacf5775843ae3d0682abfe01a59e3c181f3e8f189c0fa",
+    "verification/img_filter_tb.v": "39fa1e7324a8e6d124e17328bd58622332a0842001ad234752dc51123c10ed6d",
+    "experiments/fir_pipeline/rtl/fir_mac_pipeline.v": "13fd6af8814c2cd79b83904781a6f2c70ca530f3c4df83ccac5c856d51c17d43",
+    "experiments/fir_pipeline/verification/mac_tb.sv": "0164c70dc9f04e9fc7d22a179de555a4eb09f5af99f0f87206f94f2a23caed52"
+  },
+  "frames": 54,
+  "component_checks": 2474888
+}

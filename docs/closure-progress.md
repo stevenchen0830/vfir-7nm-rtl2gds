@@ -165,6 +165,26 @@ summary/report mismatches and any nonzero timing/DRV count fail the gate.
 
 ## Remaining hard gates
 
+### New isolated FIR MAC candidate and public reproduction
+
+The [v5 MAC candidate](../experiments/fir_pipeline/README.md) separates
+10x4 partial multiplication, recombination and each binary reduction level.
+It adds six enabled cycles. Fresh Verilator 5.050 full regression passed
+54 frames / 2,474,888 component comparisons; this is two-state evidence, not
+an inherited v4 test result or physical timing result. Icarus MAC tests cover
+stalls, reset and a negative control. Historical v4 RTL is unchanged.
+
+The received interface audit explicitly labels actual PVT SRAM/clock values
+N/A. It confirms the missing characterization rather than supplying it.
+The final physical leg is gated on the [interface contract](sram-interface-contract.md).
+No final-route claim is made for either the new RTL or the saved BC ECO.
+
+[Cold-start guide](reproduce-from-scratch.md) now distinguishes report checks,
+anonymous release downloads, standalone STA and a fresh GDS flow. The installed
+ORFS clock-gating hook was discovered and archived, rather than pretending
+the pinned commit alone describes the local toolchain. The inventory correctly
+retains `REVIEW_REQUIRED` for this source patch.
+
 - FIR WC 1 GHz requires structural MAC/coefficient-distribution optimization;
   a small BC ECO cannot remove ~923 ps of SS setup deficit.
 - SRAM hold needs a justified external clock/SRAM timing contract and/or a

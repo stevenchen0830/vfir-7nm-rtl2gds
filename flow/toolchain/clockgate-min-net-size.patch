@@ -1,0 +1,14 @@
+diff --git a/flow/scripts/synth.tcl b/flow/scripts/synth.tcl
+index 14b5617..e3b5993 100644
+--- a/flow/scripts/synth.tcl
++++ b/flow/scripts/synth.tcl
+@@ -254,6 +254,9 @@ if { [env_var_equals INFER_CLKGATES 1] } {
+     # Let yosys decide on which clock gating cell to use
+     lappend clkgate_args {*}$lib_args
+   }
++  if { [env_var_exists_and_non_empty CLKGATE_MIN_NET_SIZE] } {
++    lappend clkgate_args -min_net_size $::env(CLKGATE_MIN_NET_SIZE)
++  }
+   log_cmd clockgate {*}$clkgate_args
+ }
+ 

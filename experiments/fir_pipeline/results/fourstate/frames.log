@@ -1,0 +1,20 @@
+== IMG_FILTER regression seed=0x12345678 ==
+    32x24   blk_v= 1 gap= 0/0  :    221 cyc (ideal   192), rd=      0 wr=     0, 1st out +28
+    32x24   blk_v= 3 gap= 0/0  :    229 cyc (ideal   192), rd=    376 wr=   192, 1st out +36
+    28x25   blk_v= 5 gap= 0/0  :    218 cyc (ideal   175), rd=    672 wr=   175, 1st out +42
+    26x24   blk_v= 7 gap= 0/0  :    218 cyc (ideal   168), rd=    945 wr=   168, 1st out +49
+    25x27   blk_v= 9 gap= 0/0  :    246 cyc (ideal   189), rd=   1400 wr=   189, 1st out +56
+    24x24   blk_v=49 gap= 0/0  :    317 cyc (ideal   144), rd=   3432 wr=   144, 1st out +173
+    24x25   blk_v=49 gap= 0/0  :    323 cyc (ideal   150), rd=   3744 wr=   150, 1st out +173
+    32x48   blk_v=49 gap= 0/0  :    605 cyc (ideal   384), rd=  13456 wr=   384, 1st out +221
+    24x30   blk_v=47 gap= 0/0  :    347 cyc (ideal   180), rd=   5106 wr=   180, 1st out +167
+    32x30   blk_v=25 gap=40/0  :    518 cyc (ideal   240), rd=   4608 wr=   240, 1st out +185
+    32x30   blk_v=25 gap= 0/40 :    484 cyc (ideal   240), rd=   4608 wr=   240, 1st out +124
+    40x32   blk_v=49 gap=30/30 :    822 cyc (ideal   320), rd=   9200 wr=   320, 1st out +369
+    24x24   blk_v=49 gap=60/60 :    707 cyc (ideal   144), rd=   3420 wr=   144, 1st out +396
+== 13 frames, 42972 component checks, 0 errors, longest dead run 39 ==
+ALIGNMENT checks=18350 errors=0
+COVERAGE blk_v=28000020002aa width_mod4=7 bank_wrap_frames=0
+COVERAGE shifts s1=1fffffeffffff s2=1fffffeffffff s3=1ffffffffffff
+TEST PASSED
+/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/verification/img_filter_tb.v:579: $finish called at 5564000 (1ps)

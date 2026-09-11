@@ -1,0 +1,31 @@
+name: fir-pipeline-candidate
+on:
+  push:
+    branches: [main]
+    paths: ['experiments/fir_pipeline/**', 'tools/fetch_v4_release.py', 'tools/preflight.py', '.github/workflows/fir-pipeline.yml']
+  pull_request:
+    paths: ['experiments/fir_pipeline/**', '.github/workflows/fir-pipeline.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: fir-candidate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  candidate-functional:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install simulators and compiler
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog verilator g++ make
+      - name: Full compiled frame regression and four-state MAC tests
+        run: python3 experiments/fir_pipeline/run_verification.py --engine verilator --suite full --timeout 1200 --output work/fir-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fir-candidate-functional-evidence
+          path: |
+            work/fir-ci/*.json
+            work/fir-ci/*.log
+            work/fir-ci/generated/*.json

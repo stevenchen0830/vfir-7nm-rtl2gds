@@ -1,6 +1,8 @@
 # IMG_FILTER：从规格到 GDS 的分阶段实践手册
 
 本文对应 v4 split-rotator RTL，介绍如何阅读、验证和重现本项目。
+从空环境开始请先看[公开复现安装与命令入口](reproduce-from-scratch.md)；
+最新的[独立 MAC 候选](../experiments/fir_pipeline/README.md)不继承本页 v4 PPA。
 它是学术 RTL-to-GDS 流程：ASAP7 是预测性 7 nm PDK，SRAM 仍为外部接口，
 没有 foundry-qualified LVS/EM 与完整 MMMC 签核。先阅读
 [约束假设与历史更正](constraint-assumptions.md)，再解释任何频率或 PASS。
@@ -246,6 +248,9 @@ python3 tools/run_sta_audit.py --orfs-root "$ORFS_ROOT" --result-dir "$RESULT_DI
 slew/cap/fanout、时钟检查、意外 unconstrained endpoints 和所有有效例外。
 v4 仍有 243 slew 违例；几何 routing DRC=0 不替代这些电气/时序检查。
 check_timing 的历史超时不应永久归因于所有版本，应对新工具和分组检查重评估。
+2026-09-11 已在独立、限时进程中完成 `check_setup -verbose`，返回 true，
+见[新覆盖报告](../reports/closure_20260911/coverage.rpt)。这解决工具执行缺口，
+不是证明外部 reset、SRAM 和 uncertainty 假设已经具备物理依据。
 
 面积 47,297.3 µm² 是 post-route standard-cell area，排除了外部 SRAM 宏。
 45.58 mW 是该 FF view 的 vectorless 估计，既不是测得硅功耗，也不是

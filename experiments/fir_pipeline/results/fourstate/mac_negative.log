@@ -1,0 +1,2 @@
+FATAL: /mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/fir_pipeline/verification/mac_tb.sv:23: MAC MISMATCH beat=0
+       Time: 18500  Scope: mac_tb

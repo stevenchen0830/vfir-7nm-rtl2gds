@@ -6,6 +6,7 @@ predictive 7 nm PDK**. The project records both working results and remaining
 limitations. It is an academic RTL-to-GDS study, not a tapeout-ready chip.
 
 **Start here:** [step-by-step RTL-to-GDS walkthrough / 中文实践手册](docs/rtl-to-gds-walkthrough.md)
+· [reproduce from scratch / 公开复现入口](docs/reproduce-from-scratch.md)
 · [timing assumptions](docs/constraint-assumptions.md)
 · [verification status](docs/verification-status.md)
 · [AI experiments](experiments/README.md)
@@ -15,6 +16,14 @@ limitations. It is an academic RTL-to-GDS study, not a tapeout-ready chip.
 the new CNN pipeline has a routed BC timing/DRV-clean candidate. FIR and
 all-corner acceptance are **not yet closed**. The ledger separates preserved
 historical results, newly measured candidates and unverified signoff items.
+
+**New FIR MAC candidate:** split multiplication and a registered binary
+reduction tree passed a fresh 54-frame compiled regression (2,474,888
+component checks, zero errors). It adds six enabled cycles and has **not**
+been physically implemented. The original v4 RTL/PPA remain unchanged.
+[Candidate and tests](experiments/fir_pipeline/README.md) ·
+[real SRAM/clock timing inputs needed before final closure](docs/sram-interface-contract.md).
+No zero-violation or all-corner 1 GHz claim is made for the candidate.
 
 | v4 evidence | Result and scope |
 | --- | --- |
@@ -98,6 +107,12 @@ hashes. Weekly 54-frame simulation can exceed the runner budget; a cancelled
 run is not PASS. Historical evidence and new UVM evidence are kept separate.
 
 ## Physical flow and reproducibility
+
+For a new machine, start with the [complete installation/download/run guide](docs/reproduce-from-scratch.md).
+It provides anonymous hash-verified release downloads, a toolchain preflight,
+the previously local clock-gating patch, stage commands, failure criteria and
+resume rules. Report integrity, rerunning STA and regenerating GDS are
+separate reproduction levels; none by itself implies timing signoff.
 
 ASAP7 uses the asap7sc7p5t 7.5T RVT standard-cell library, NLDM timing models
 and OpenRCX extraction. The pinned ORFS default BC uses FF libraries at

@@ -11,6 +11,15 @@ experiments with **placement** estimates, not a replacement post-route result.
 existing exceptions. The old crashing attempt remains under `baseline/`.
 Input/output/script hashes are in the corresponding JSON manifests.
 
+`public_reproduction_20260911/FF_u100.rpt` is a **new actual STA run** using
+anonymously downloaded v4 release V/SDC/SPEF, verified against the committed
+compressed/raw asset hashes, and the pinned local OpenSTA/Liberty set.
+It reproduced +34.31 ps setup / +4.88 ps hold, both TNS 0, while retaining
+the electrical violations. Its manifest identifies exact inputs/scripts/libs.
+This validates the public-input path, not an empty-machine toolchain rebuild
+or full timing signoff. `toolchain_inventory_20260911.json` records installed
+commits, binary/model hashes and the reviewed local clockgate patch warning.
+
 New CNN physical results are separate from FIR:
 [`experiments/cnn/results/final_20260911/`](../experiments/cnn/results/final_20260911/).
 Only its BC timing/DRV/geometric-routing view is clean; TT/SS fail. Historical
