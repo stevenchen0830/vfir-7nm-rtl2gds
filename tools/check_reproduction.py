@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from evidence_paths import evidence_path
 
 repo=Path(__file__).resolve().parents[1]
 errors=[]
@@ -23,7 +24,7 @@ report=repo/'reports/v4_reproduced_ff_u100.rpt'
 if hashlib.sha256(report.read_bytes()).hexdigest()!=audit['report_sha256']: errors.append('New STA report hash mismatch')
 if 'DONE_MARKER' not in report.read_text(): errors.append('New STA report incomplete')
 for name,h in audit['scripts'].items():
-    if hashlib.sha256((repo/name).read_bytes()).hexdigest()!=h: errors.append(f'Audit script hash mismatch: {name}')
+    if hashlib.sha256(evidence_path(repo,name).read_bytes()).hexdigest()!=h: errors.append(f'Audit script hash mismatch: {name}')
 if len(audit['liberty'])!=5: errors.append('Expected exactly five pinned audit libraries')
 
 assets=json.loads((repo/'reports/v4_asset_manifest.json').read_text())
@@ -64,10 +65,10 @@ for algorithm in comparison['algorithms'].values():
 suite_path=repo/'experiments/cnn/results/final_20260911/suite_manifest.json'
 suite=json.loads(suite_path.read_text())
 for name,h in suite['sources'].items():
-    if hashlib.sha256((repo/name).read_bytes()).hexdigest()!=h: errors.append(f'CNN suite source mismatch: {name}')
+    if hashlib.sha256(evidence_path(repo,name).read_bytes()).hexdigest()!=h: errors.append(f'CNN suite source mismatch: {name}')
 for case in suite['cases']:
     for name,h in case['files'].items():
-        if hashlib.sha256((suite_path.parent/name).read_bytes()).hexdigest()!=h: errors.append(f'CNN test artifact mismatch: {name}')
+        if hashlib.sha256(evidence_path(suite_path.parent,name).read_bytes()).hexdigest()!=h: errors.append(f'CNN test artifact mismatch: {name}')
 for relative in ['reports/closure_20260911/matrix/matrix.json',
                  'experiments/cnn/results/final_20260911/audit/matrix.json']:
     matrix=repo/relative
@@ -76,12 +77,12 @@ for relative in ['reports/closure_20260911/matrix/matrix.json',
             errors.append(f'Closure report hash mismatch: {relative} {row["corner"]}')
 physical=repo/'experiments/cnn/results/final_20260911/physical'
 for name,h in json.loads((physical/'summary.json').read_text())['evidence_files'].items():
-    if hashlib.sha256((physical/name).read_bytes()).hexdigest()!=h: errors.append(f'CNN physical evidence mismatch: {name}')
+    if hashlib.sha256(evidence_path(physical,name).read_bytes()).hexdigest()!=h: errors.append(f'CNN physical evidence mismatch: {name}')
 for meta_path in (repo/'experiments/fir_pipeline/results').glob('*/verification.json'):
     meta=json.loads(meta_path.read_text())
     if meta['status']!='FUNCTIONAL_PASS_NOT_PHYSICAL_SIGNOFF': errors.append(f'Incomplete FIR regression: {meta_path}')
     for name,h in meta['sources'].items():
-        if hashlib.sha256((repo/name).read_bytes()).hexdigest()!=h: errors.append(f'FIR candidate source hash mismatch: {name}')
+        if hashlib.sha256(evidence_path(repo,name).read_bytes()).hexdigest()!=h: errors.append(f'FIR candidate source hash mismatch: {name}')
     for row in meta['commands']:
         if hashlib.sha256((meta_path.parent/row['log']).read_bytes()).hexdigest()!=row['sha256']:
             errors.append(f'FIR candidate log hash mismatch: {row["log"]}')
@@ -91,7 +92,7 @@ structure=json.loads((structure_dir/'structure.json').read_text())
 if hashlib.sha256((structure_dir/'yosys.log').read_bytes()).hexdigest()!=structure['log_sha256']:
     errors.append('FIR generic structure log hash mismatch')
 for name,h in structure['sources'].items():
-    if hashlib.sha256((repo/name).read_bytes()).hexdigest()!=h: errors.append('FIR generic source mismatch: '+name)
+    if hashlib.sha256(evidence_path(repo,name).read_bytes()).hexdigest()!=h: errors.append('FIR generic source mismatch: '+name)
 public=json.loads((public_dir/'FF_u100.manifest.json').read_text())
 if hashlib.sha256((public_dir/'FF_u100.rpt').read_bytes()).hexdigest()!=public['report_sha256']:
     errors.append('Anonymous-public-input STA report hash mismatch')

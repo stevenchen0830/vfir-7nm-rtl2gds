@@ -10,6 +10,11 @@ REPO=Path(__file__).resolve().parents[1]
 PINS={'.':'8c009b0b663703fc3fe2f474eab918b12fffbaf6',
       'tools/OpenROAD':'46ab99414e396fbdd379a432ac664357355bd932',
       'tools/yosys':'a5af9d690a43744bf6b2cc3dea2717c16b54621c'}
+VERSION_MARKERS={'openroad':'g46ab99414e','sta':'3.1.0','yosys':'a5af9d690'}
+
+
+def version_matches(tool,version):
+    return version.strip()=='3.1.0' if tool=='sta' else VERSION_MARKERS[tool] in version
 
 
 def sha(path):
@@ -44,7 +49,11 @@ def main():
                           ('tools/install/OpenROAD/bin/sta',['-version']),
                           ('tools/install/yosys/bin/yosys',['-V'])]:
         path=a.orfs_root/relative
-        try: report['tool_binaries'][relative]={'sha256':sha(path),'version':command([str(path),*args])}
+        try:
+            version=command([str(path),*args])
+            report['tool_binaries'][relative]={'sha256':sha(path),'version':version}
+            if not version_matches(path.name,version):
+                report['missing_or_mismatched'].append(relative+' binary version does not match pin')
         except (OSError,subprocess.SubprocessError) as exc: report['missing_or_mismatched'].append(relative+': '+str(exc))
     report['liberty_views']={}
     for row in json.loads((REPO/'reports/v4_asset_manifest.json').read_text())['vendor_views']:
