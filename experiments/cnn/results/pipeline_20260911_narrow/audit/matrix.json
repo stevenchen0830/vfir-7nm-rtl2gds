@@ -1,0 +1,65 @@
+{
+  "scope": "1000ps, original CNN 100/30ps SDC, one extracted RC view; not foundry MMMC",
+  "views": [
+    {
+      "corner": "FF",
+      "timing_drv_pass": true,
+      "metrics": {
+        "setup_ws_ps": 170.86415683981954,
+        "setup_tns_ps": 0.0,
+        "setup_endpoints": 0.0,
+        "hold_ws_ps": 0.14902662496969654,
+        "hold_tns_ps": 0.0,
+        "hold_endpoints": 0.0,
+        "slew_violations": 0.0,
+        "cap_violations": 0.0,
+        "fanout_violations": 0.0
+      },
+      "constraint_check_pass": true,
+      "wall_seconds": 1.8328095690001192,
+      "report_sha256": "bdb3cfa4b6f1ef8151057fac42df55ab02d69aabbed8fe01b8b15fddc9a18d77"
+    },
+    {
+      "corner": "TT",
+      "timing_drv_pass": false,
+      "metrics": {
+        "setup_ws_ps": -111.67145031123108,
+        "setup_tns_ps": -1193.4512315018846,
+        "setup_endpoints": 21.0,
+        "hold_ws_ps": 17.509008202206306,
+        "hold_tns_ps": 0.0,
+        "hold_endpoints": 0.0,
+        "slew_violations": 176.0,
+        "cap_violations": 0.0,
+        "fanout_violations": 0.0
+      },
+      "constraint_check_pass": true,
+      "wall_seconds": 1.9295973630000844,
+      "report_sha256": "512d495e7266f5fb9fc6cb73495e464d7b907debb7de5acf12745eb4157ce4c1"
+    },
+    {
+      "corner": "SS",
+      "timing_drv_pass": false,
+      "metrics": {
+        "setup_ws_ps": -629.9635283061336,
+        "setup_tns_ps": -38046.94530200018,
+        "setup_endpoints": 273.0,
+        "hold_ws_ps": 38.37162547493477,
+        "hold_tns_ps": 0.0,
+        "hold_endpoints": 0.0,
+        "slew_violations": 453.0,
+        "cap_violations": 0.0,
+        "fanout_violations": 0.0
+      },
+      "constraint_check_pass": true,
+      "wall_seconds": 2.083564070999955,
+      "report_sha256": "3533b5e12b492ae8eb32d0a50f8b8221316a982222892d8fa0ee780f96272498"
+    }
+  ],
+  "inputs": {
+    "6_final.v": "0a9f36322cf121c19dfc77d4eb56a2e1a6db42400658c63160cb15209d6d3a05",
+    "6_final.sdc": "1b9da3ca144811b42e311af0cb0b2e5bf3090458b41e71eff18627f4985074df",
+    "6_final.spef": "2fcfc3159439ca4026f7db6cbf18c93f3fa057835b91ee8f7c9f720a45096ee6"
+  },
+  "script_sha256": "fe7e81a28e561979e8fd5e77063287992f1896b3da06651cdce07d650ef1f65a"
+}

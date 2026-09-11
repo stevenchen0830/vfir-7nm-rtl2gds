@@ -1,0 +1,244 @@
+`timescale 1ns/1ps
+module tb;
+reg clk=0; always #5 clk=~clk;
+reg rst_n=0,iv=0,ready=0; wire ir,ov; reg [15:0] din=0; wire [15:0] dout;
+reg [15:0] stim[0:191],gold[0:191];
+reg [47:0] wstim[0:2],wreg;
+reg [63:0] bstim[0:2],breg;
+integer active_frame=0,reset_left=0; reg reset_done=0;
+integer sent=0,got=0,cycles=0,stalls=0,done_at=0; reg blocked=0,taken=0; reg [15:0] held;
+int8_dw3x1 #(.WIDTH(8),.HEIGHT(8),.CHANNELS(2),.QSHIFT(7),.RELU(0)) dut
+(clk,rst_n,iv,ir,din,wreg,breg,ov,ready,dout);
+initial begin
+stim[0]=16'h6e80; gold[0]=16'h4aa6;
+stim[1]=16'he167; gold[1]=16'h557f;
+stim[2]=16'h73de; gold[2]=16'h503;
+stim[3]=16'hb0df; gold[3]=16'hb004;
+stim[4]=16'h1b64; gold[4]=16'hb87f;
+stim[5]=16'haec8; gold[5]=16'h9ed;
+stim[6]=16'h4a95; gold[6]=16'ha1ba;
+stim[7]=16'hd067; gold[7]=16'h437f;
+stim[8]=16'ha087; gold[8]=16'hf92b;
+stim[9]=16'h929e; gold[9]=16'h4480;
+stim[10]=16'hfbe1; gold[10]=16'hea27;
+stim[11]=16'h6d8f; gold[11]=16'hf2d5;
+stim[12]=16'h6127; gold[12]=16'h48e8;
+stim[13]=16'hf7e4; gold[13]=16'hc741;
+stim[14]=16'h7f16; gold[14]=16'hf27f;
+stim[15]=16'hab82; gold[15]=16'h4980;
+stim[16]=16'he6a; gold[16]=16'h627f;
+stim[17]=16'haa50; gold[17]=16'h127f;
+stim[18]=16'h2102; gold[18]=16'had46;
+stim[19]=16'h13f5; gold[19]=16'hca7f;
+stim[20]=16'ha38f; gold[20]=16'h488c;
+stim[21]=16'h4db7; gold[21]=16'hfaf8;
+stim[22]=16'h14b7; gold[22]=16'h42c5;
+stim[23]=16'ha245; gold[23]=16'he27f;
+stim[24]=16'h8088; gold[24]=16'hc680;
+stim[25]=16'hebed; gold[25]=16'h2fc2;
+stim[26]=16'h709a; gold[26]=16'h3cbd;
+stim[27]=16'h4b40; gold[27]=16'h4c70;
+stim[28]=16'ha556; gold[28]=16'ha67f;
+stim[29]=16'hae5; gold[29]=16'h1b53;
+stim[30]=16'hac2c; gold[30]=16'h1a7f;
+stim[31]=16'h2a1f; gold[31]=16'hc0fe;
+stim[32]=16'h5187; gold[32]=16'h3424;
+stim[33]=16'hc4bc; gold[33]=16'hc0f3;
+stim[34]=16'hb3fe; gold[34]=16'h647f;
+stim[35]=16'h9e85; gold[35]=16'hef80;
+stim[36]=16'h796e; gold[36]=16'h103c;
+stim[37]=16'he0da; gold[37]=16'hcb1a;
+stim[38]=16'he165; gold[38]=16'h525d;
+stim[39]=16'h56c3; gold[39]=16'h10c9;
+stim[40]=16'hbb44; gold[40]=16'h7f;
+stim[41]=16'h574a; gold[41]=16'he27f;
+stim[42]=16'h80ec; gold[42]=16'hce12;
+stim[43]=16'h1b0a; gold[43]=16'h457f;
+stim[44]=16'heb8a; gold[44]=16'h1480;
+stim[45]=16'h49df; gold[45]=16'h5d2a;
+stim[46]=16'h95b3; gold[46]=16'hd380;
+stim[47]=16'hedca; gold[47]=16'h322b;
+stim[48]=16'h462; gold[48]=16'h2e41;
+stim[49]=16'h2884; gold[49]=16'h1d80;
+stim[50]=16'h4517; gold[50]=16'he94f;
+stim[51]=16'ha6a5; gold[51]=16'h3c0;
+stim[52]=16'heaae; gold[52]=16'h2549;
+stim[53]=16'h87fc; gold[53]=16'hce42;
+stim[54]=16'h3e3c; gold[54]=16'h437f;
+stim[55]=16'hc168; gold[55]=16'h517f;
+stim[56]=16'hc577; gold[56]=16'h238;
+stim[57]=16'hdd45; gold[57]=16'h27f;
+stim[58]=16'h1fce; gold[58]=16'h2dc;
+stim[59]=16'hfff4; gold[59]=16'h173;
+stim[60]=16'hd1e1; gold[60]=16'h257;
+stim[61]=16'h46e4; gold[61]=16'hc;
+stim[62]=16'ha877; gold[62]=16'h35e;
+stim[63]=16'h9857; gold[63]=16'h213;
+stim[64]=16'h7b81; gold[64]=16'h5d80;
+stim[65]=16'hd916; gold[65]=16'hbb27;
+stim[66]=16'hc0a3; gold[66]=16'ha3ec;
+stim[67]=16'h75f4; gold[67]=16'h5689;
+stim[68]=16'hfa5; gold[68]=16'hf217;
+stim[69]=16'he8ec; gold[69]=16'hccff;
+stim[70]=16'ha388; gold[70]=16'h869d;
+stim[71]=16'h5209; gold[71]=16'h3334;
+stim[72]=16'hff64; gold[72]=16'h2080;
+stim[73]=16'h979e; gold[73]=16'h80bc;
+stim[74]=16'h10da; gold[74]=16'hd2df;
+stim[75]=16'hc33c; gold[75]=16'he080;
+stim[76]=16'h39af; gold[76]=16'h2380;
+stim[77]=16'h66c6; gold[77]=16'h3bec;
+stim[78]=16'hc729; gold[78]=16'h80a8;
+stim[79]=16'h8991; gold[79]=16'h9593;
+stim[80]=16'h3773; gold[80]=16'h1965;
+stim[81]=16'h911f; gold[81]=16'h8080;
+stim[82]=16'ha68a; gold[82]=16'h9180;
+stim[83]=16'ha276; gold[83]=16'h80aa;
+stim[84]=16'h231f; gold[84]=16'h2180;
+stim[85]=16'ha5c5; gold[85]=16'hbc80;
+stim[86]=16'h67a6; gold[86]=16'h2c68;
+stim[87]=16'h963c; gold[87]=16'h80ad;
+stim[88]=16'h2ec2; gold[88]=16'h2c7c;
+stim[89]=16'hab34; gold[89]=16'h808e;
+stim[90]=16'ha772; gold[90]=16'h8080;
+stim[91]=16'h8f55; gold[91]=16'h80d8;
+stim[92]=16'h877f; gold[92]=16'h8039;
+stim[93]=16'h4243; gold[93]=16'hf680;
+stim[94]=16'ha486; gold[94]=16'hba80;
+stim[95]=16'haea9; gold[95]=16'h800c;
+stim[96]=16'h3bb; gold[96]=16'hfe80;
+stim[97]=16'h2955; gold[97]=16'he0f6;
+stim[98]=16'h6a46; gold[98]=16'h20f9;
+stim[99]=16'h6c61; gold[99]=16'h154f;
+stim[100]=16'h8faa; gold[100]=16'h806e;
+stim[101]=16'hac1e; gold[101]=16'hb1a5;
+stim[102]=16'h8b76; gold[102]=16'h8080;
+stim[103]=16'hb9f5; gold[103]=16'h8080;
+stim[104]=16'h787e; gold[104]=16'h5c9a;
+stim[105]=16'h8502; gold[105]=16'h8033;
+stim[106]=16'h1a3c; gold[106]=16'h31c6;
+stim[107]=16'he7c9; gold[107]=16'h4;
+stim[108]=16'h2fd6; gold[108]=16'hd8ab;
+stim[109]=16'h7f62; gold[109]=16'h3780;
+stim[110]=16'h27fb; gold[110]=16'hce7f;
+stim[111]=16'h4f; gold[111]=16'hbfac;
+stim[112]=16'h5ce5; gold[112]=16'h7b7f;
+stim[113]=16'hede6; gold[113]=16'h9380;
+stim[114]=16'hf044; gold[114]=16'he113;
+stim[115]=16'heb22; gold[115]=16'hc280;
+stim[116]=16'hc4c5; gold[116]=16'hc080;
+stim[117]=16'h337e; gold[117]=16'h5401;
+stim[118]=16'ha094; gold[118]=16'h9731;
+stim[119]=16'hd60d; gold[119]=16'hb97e;
+stim[120]=16'h66b9; gold[120]=16'h76ab;
+stim[121]=16'hc71; gold[121]=16'he5aa;
+stim[122]=16'h53ed; gold[122]=16'h2d09;
+stim[123]=16'h7c43; gold[123]=16'h53e6;
+stim[124]=16'h6721; gold[124]=16'h2b8a;
+stim[125]=16'ha624; gold[125]=16'ha342;
+stim[126]=16'he90; gold[126]=16'hc180;
+stim[127]=16'hf95; gold[127]=16'hddd3;
+stim[128]=16'h6882; gold[128]=16'hf383;
+stim[129]=16'h8ce1; gold[129]=16'hf3e2;
+stim[130]=16'hf908; gold[130]=16'hf209;
+stim[131]=16'h98c8; gold[131]=16'hf2c9;
+stim[132]=16'h64bb; gold[132]=16'hf3bb;
+stim[133]=16'h3cb7; gold[133]=16'hf3b7;
+stim[134]=16'he5a7; gold[134]=16'hf3a8;
+stim[135]=16'h73e6; gold[135]=16'hf3e6;
+stim[136]=16'hdb03; gold[136]=16'h5a7f;
+stim[137]=16'h7185; gold[137]=16'h80a5;
+stim[138]=16'hdb92; gold[138]=16'hec8a;
+stim[139]=16'hbf3; gold[139]=16'h8c2a;
+stim[140]=16'hd131; gold[140]=16'h5576;
+stim[141]=16'hf249; gold[141]=16'h2e7f;
+stim[142]=16'h52ac; gold[142]=16'hd906;
+stim[143]=16'hc246; gold[143]=16'h6460;
+stim[144]=16'h6866; gold[144]=16'hcf62;
+stim[145]=16'h83e4; gold[145]=16'h6260;
+stim[146]=16'h2f40; gold[146]=16'hcd7f;
+stim[147]=16'h276d; gold[147]=16'hfe79;
+stim[148]=16'hb2e8; gold[148]=16'hc3b7;
+stim[149]=16'hedbf; gold[149]=16'he480;
+stim[150]=16'h47fc; gold[150]=16'h4450;
+stim[151]=16'h1eac; gold[151]=16'hb480;
+stim[152]=16'h624; gold[152]=16'h5abe;
+stim[153]=16'h3288; gold[153]=16'h80a6;
+stim[154]=16'h93aa; gold[154]=16'h2180;
+stim[155]=16'h2f61; gold[155]=16'h19f2;
+stim[156]=16'hc57; gold[156]=16'ha66f;
+stim[157]=16'h8e79; gold[157]=16'hdf7f;
+stim[158]=16'ha0ef; gold[158]=16'h39f3;
+stim[159]=16'h915b; gold[159]=16'hf7f;
+stim[160]=16'h2bd8; gold[160]=16'hf8b4;
+stim[161]=16'h70c7; gold[161]=16'h2640;
+stim[162]=16'h61cc; gold[162]=16'h8823;
+stim[163]=16'hac7c; gold[163]=16'h201b;
+stim[164]=16'h60f1; gold[164]=16'hfe9a;
+stim[165]=16'hd414; gold[165]=16'h829c;
+stim[166]=16'h1f03; gold[166]=16'h9515;
+stim[167]=16'hea43; gold[167]=16'h84e8;
+stim[168]=16'hc81b; gold[168]=16'h1e44;
+stim[169]=16'h7e0b; gold[169]=16'h6343;
+stim[170]=16'h52e6; gold[170]=16'h531a;
+stim[171]=16'h82ba; gold[171]=16'h9f80;
+stim[172]=16'h8e41; gold[172]=16'h5150;
+stim[173]=16'h4d96; gold[173]=16'hc882;
+stim[174]=16'h7bbe; gold[174]=16'h12bb;
+stim[175]=16'hd5af; gold[175]=16'hdd80;
+stim[176]=16'h6aa1; gold[176]=16'hbc88;
+stim[177]=16'h4e53; gold[177]=16'h6f48;
+stim[178]=16'hfe09; gold[178]=16'h4424;
+stim[179]=16'h7c72; gold[179]=16'h807f;
+stim[180]=16'h2dc1; gold[180]=16'h8282;
+stim[181]=16'h735e; gold[181]=16'h407f;
+stim[182]=16'hb722; gold[182]=16'h6d64;
+stim[183]=16'h56e2; gold[183]=16'hca34;
+stim[184]=16'h58f; gold[184]=16'h5cef;
+stim[185]=16'h8bc2; gold[185]=16'h3f80;
+stim[186]=16'he392; gold[186]=16'hf08a;
+stim[187]=16'hf4cf; gold[187]=16'h6e80;
+stim[188]=16'h1186; gold[188]=16'h1fc6;
+stim[189]=16'h3524; gold[189]=16'h65c6;
+stim[190]=16'h7ffd; gold[190]=16'habdb;
+stim[191]=16'h7fb5; gold[191]=16'h49d4;
+wstim[0]=48'h9fff01ff7f80; bstim[0]=64'he400001220;wstim[1]=48'h17f4080ff7f; bstim[1]=64'hfffff164ffffe272;wstim[2]=48'h1017fff7f80; bstim[2]=64'hfffff94f00000012;
+wreg=wstim[0]; breg=bstim[0];
+repeat(3) @(negedge clk); rst_n=1;
+end
+always @(negedge clk) begin
+if(1 && rst_n && !reset_done && sent>=32) begin
+rst_n=0; reset_done=1; reset_left=2; sent=0; got=0; iv=0; blocked=0; taken=0; active_frame=0;
+wreg=wstim[0]; breg=bstim[0];
+end else if(reset_left>0) begin reset_left=reset_left-1; if(reset_left==0) rst_n=1; end
+else if(rst_n) begin
+// Do not reload frame-static parameters until its final output was accepted.
+if(active_frame+1<3 && got>=(active_frame+1)*64) begin
+active_frame=active_frame+1; wreg=wstim[active_frame]; breg=bstim[active_frame];
+end
+ready=(cycles%7!=2 && cycles%7!=3);
+if(ov && got==0 && stalls<2) ready=0;
+if(!iv || taken) begin iv=(sent<(active_frame+1)*64 && sent<192 && cycles%5!=1); if(sent<192) din=stim[sent]; end
+end
+end
+always @(posedge clk) if(rst_n) begin
+cycles=cycles+1;
+if(blocked && (!ov || dout!==held)) $fatal(1,"unstable output");
+blocked=ov&&!ready; held=dout; if(blocked) stalls=stalls+1;
+taken=iv&&ir;
+if(taken) sent=sent+1;
+if(ov&&ready) begin
+if(got>=192 || dout!==gold[got]) $fatal(1,"CNN mismatch beat %0d got %h expected %h",got,dout,gold[got]);
+got=got+1;
+end
+if(got==192) begin
+if(done_at==0) done_at=cycles;
+if(cycles>=done_at+10) begin
+if(stalls==0) $fatal(1,"stall coverage missing");
+if(1 && !reset_done) $fatal(1,"reset coverage missing");
+$display("CNN PASS beats=%0d cycles=%0d stalled=%0d",got,cycles,stalls); $finish;
+end
+end
+if(cycles>10000) $fatal(1,"timeout");
+end
+endmodule

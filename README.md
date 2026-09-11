@@ -9,6 +9,12 @@ limitations. It is an academic RTL-to-GDS study, not a tapeout-ready chip.
 · [timing assumptions](docs/constraint-assumptions.md)
 · [verification status](docs/verification-status.md)
 · [AI experiments](experiments/README.md)
+· [2026-09-11 repair ledger and remaining gates](docs/closure-progress.md)
+
+**Repair status:** engineering reproducibility/CI/test fixes are implemented;
+the new CNN pipeline has a routed BC timing/DRV-clean candidate. FIR and
+all-corner acceptance are **not yet closed**. The ledger separates preserved
+historical results, newly measured candidates and unverified signoff items.
 
 | v4 evidence | Result and scope |
 | --- | --- |
@@ -17,7 +23,7 @@ limitations. It is an academic RTL-to-GDS study, not a tapeout-ready chip.
 | SS, 2 ns, historical sweep with blanket 150/150 ps | Setup **+76.89 ps**; hold **−303.10 ps**, hold TNS −1,570,621.12 ps; single-SPEF diagnostic |
 | Area / power | **47,297.3 µm²** standard-cell area; **45.58 mW** vectorless estimate in the FF view; external SRAM excluded |
 | Electrical / routing | **243 max-slew violations**; max-cap/fanout and geometric routing DRC 0 in the reported FF implementation |
-| Full MMMC / physical signoff | **NOT CLOSED**: incomplete constraint coverage, single RC extraction, no foundry LVS/EM or SRAM-macro signoff |
+| Full MMMC / physical signoff | **NOT CLOSED**: interface/exception assumptions unvalidated, single RC extraction, no foundry LVS/EM or SRAM-macro signoff; new tool-level constraint-coverage check passed |
 
 Changing uncertainty changes the STA model, not the circuit. The 100/30 ps
 budget is an assumption awaiting physical jitter/variation/interface sources.

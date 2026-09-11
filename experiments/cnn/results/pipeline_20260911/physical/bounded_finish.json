@@ -1,0 +1,19 @@
+{
+  "stage": "finish",
+  "variant": "cnn_guarded_20260911",
+  "exit_code": 0,
+  "timeout": false,
+  "wall_seconds": 214.556200821,
+  "log_sha256": "09d5485bc71c18815b11def80c886968aa0bacafcb43b3b4f9cb5914c226e5d7",
+  "input_stamp_sha256": "bd699aa7d385180db83012643e0a06c2646c0d1c59ba4d7162dc78fff43af195",
+  "command": [
+    "make",
+    "-C",
+    "/root/ORFS/flow",
+    "DESIGN_CONFIG=/mnt/c/Users/26598/Desktop/img_filter_submission/work/vfir-docs-uvm/experiments/cnn/flow/config.mk",
+    "FLOW_VARIANT=cnn_guarded_20260911",
+    "NUM_CORES=2",
+    "CORNER=BC",
+    "finish"
+  ]
+}

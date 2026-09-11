@@ -1,0 +1,810 @@
+LIBERTY /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_AO_RVT_SS_nldm_211120.lib.gz
+LIBERTY /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_INVBUF_RVT_SS_nldm_220122.lib.gz
+LIBERTY /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_OA_RVT_SS_nldm_211120.lib.gz
+LIBERTY /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13156, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13189, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13222, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13255, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13288, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13321, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 13354, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 14748, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 14781, timing group from output port.
+Warning 1212: /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SIMPLE_RVT_SS_nldm_211120.lib.gz line 14814, timing group from output port.
+LIBERTY /root/ORFS/flow/platforms/asap7/lib/NLDM/asap7sc7p5t_SEQ_RVT_SS_nldm_220123.lib
+MODEL SS original final SDC, 1000ps 100/30ps, single routed SPEF
+METRIC setup_ws_ps -629.9635283061336
+METRIC setup_tns_ps -38046.94530200018
+METRIC setup_endpoints 273
+METRIC hold_ws_ps 38.37162547493477
+METRIC hold_tns_ps 0.0
+METRIC hold_endpoints 0
+METRIC slew_violations 453
+METRIC cap_violations 0
+METRIC fanout_violations 0
+Startpoint: out_ready (input port clocked by core_clock)
+Endpoint: sum_valid$_DFFE_PN0P_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: min
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock network delay (propagated)
+  20.00   20.00 ^ input external delay
+   0.00   20.00 ^ out_ready (in)
+  19.35   39.35 ^ hold527/Y (BUFx2_ASAP7_75t_R)
+  23.82   63.17 ^ hold482/Y (BUFx2_ASAP7_75t_R)
+  24.02   87.19 ^ hold528/Y (BUFx2_ASAP7_75t_R)
+  23.52  110.71 ^ input109/Y (BUFx2_ASAP7_75t_R)
+  24.89  135.60 ^ hold483/Y (BUFx2_ASAP7_75t_R)
+  30.72  166.32 v _07933_/Y (NOR2x1_ASAP7_75t_R)
+  46.22  212.54 v _09758_/Y (OA21x2_ASAP7_75t_R)
+   0.03  212.57 v sum_valid$_DFFE_PN0P_/D (DFFASRHQNx1_ASAP7_75t_R)
+         212.57   data arrival time
+
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock source latency
+   0.00    0.00 ^ clk (in)
+  26.08   26.08 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  41.82   67.90 ^ clkbuf_1_1__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  50.33  118.23 ^ clkbuf_leaf_18_clk/Y (BUFx24_ASAP7_75t_R)
+   2.30  120.52 ^ sum_valid$_DFFE_PN0P_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+  30.00  150.52   clock uncertainty
+   0.00  150.52   clock reconvergence pessimism
+  23.68  174.20   library hold time
+         174.20   data required time
+---------------------------------------------------------
+         174.20   data required time
+        -212.57   data arrival time
+---------------------------------------------------------
+          38.37   slack (MET)
+
+
+Startpoint: weights[34] (input port clocked by core_clock)
+Endpoint: product1[1][2]$_DFFE_PP_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: min
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock network delay (propagated)
+  20.00   20.00 ^ input external delay
+   0.00   20.00 ^ weights[34] (in)
+  18.78   38.78 ^ hold644/Y (BUFx2_ASAP7_75t_R)
+  38.67   77.45 ^ input138/Y (BUFx2_ASAP7_75t_R)
+  38.82  116.27 ^ _07054_/Y (AND2x2_ASAP7_75t_R)
+  17.59  133.87 v _10387_/CON (HAxp5_ASAP7_75t_R)
+  36.08  169.94 ^ _10387_/SN (HAxp5_ASAP7_75t_R)
+  20.52  190.47 v _09543_/Y (NAND2x1_ASAP7_75t_R)
+  24.64  215.11 v _09544_/Y (OA21x2_ASAP7_75t_R)
+   0.03  215.15 v product1[1][2]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)
+         215.15   data arrival time
+
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock source latency
+   0.00    0.00 ^ clk (in)
+  26.08   26.08 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  41.82   67.90 ^ clkbuf_1_1__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  52.15  120.05 ^ clkbuf_leaf_17_clk/Y (BUFx24_ASAP7_75t_R)
+   1.66  121.71 ^ product1[1][2]$_DFFE_PP_/CLK (DFFHQNx1_ASAP7_75t_R)
+  30.00  151.71   clock uncertainty
+   0.00  151.71   clock reconvergence pessimism
+  21.18  172.89   library hold time
+         172.89   data required time
+---------------------------------------------------------
+         172.89   data required time
+        -215.15   data arrival time
+---------------------------------------------------------
+          42.25   slack (MET)
+
+
+Startpoint: weights[8] (input port clocked by core_clock)
+Endpoint: product1[0][1]$_DFFE_PP_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: min
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock network delay (propagated)
+  20.00   20.00 v input external delay
+   0.00   20.00 v weights[8] (in)
+  27.62   47.62 v hold551/Y (BUFx2_ASAP7_75t_R)
+  39.09   86.71 v input157/Y (BUFx2_ASAP7_75t_R)
+  35.31  122.03 v hold552/Y (BUFx2_ASAP7_75t_R)
+  30.56  152.59 v _07411_/Y (AND2x2_ASAP7_75t_R)
+  26.49  179.08 ^ _10422_/SN (HAxp5_ASAP7_75t_R)
+  14.71  193.79 v _07741_/Y (NAND2x1_ASAP7_75t_R)
+  23.33  217.12 v _07742_/Y (OA21x2_ASAP7_75t_R)
+   0.04  217.16 v product1[0][1]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)
+         217.16   data arrival time
+
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock source latency
+   0.00    0.00 ^ clk (in)
+  26.08   26.08 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  41.82   67.90 ^ clkbuf_1_1__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  52.15  120.05 ^ clkbuf_leaf_17_clk/Y (BUFx24_ASAP7_75t_R)
+   1.55  121.60 ^ product1[0][1]$_DFFE_PP_/CLK (DFFHQNx1_ASAP7_75t_R)
+  30.00  151.60   clock uncertainty
+   0.00  151.60   clock reconvergence pessimism
+  21.15  172.75   library hold time
+         172.75   data required time
+---------------------------------------------------------
+         172.75   data required time
+        -217.16   data arrival time
+---------------------------------------------------------
+          44.41   slack (MET)
+
+
+Startpoint: x[0]$_DFFE_PN0P_
+            (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: product1[0][15]$_DFFE_PP_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock source latency
+   0.00    0.00 ^ clk (in)
+  26.08   26.08 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  41.32   67.41 ^ clkbuf_1_0__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  53.54  120.95 ^ clkbuf_leaf_4_clk/Y (BUFx24_ASAP7_75t_R)
+   3.80  124.74 ^ x[0]$_DFFE_PN0P_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+ 105.74  230.48 ^ x[0]$_DFFE_PN0P_/QN (DFFASRHQNx1_ASAP7_75t_R)
+  43.68  274.16 v _05832_/Y (INVx1_ASAP7_75t_R)
+  44.76  318.93 ^ _10378_/CON (HAxp5_ASAP7_75t_R)
+ 152.42  471.35 ^ place236/Y (BUFx3_ASAP7_75t_R)
+  84.05  555.40 ^ _07373_/Y (OA22x2_ASAP7_75t_R)
+  36.96  592.36 ^ _07375_/Y (AND3x1_ASAP7_75t_R)
+  33.15  625.51 ^ _07376_/Y (AO21x1_ASAP7_75t_R)
+  81.37  706.87 v _07377_/Y (OAI21x1_ASAP7_75t_R)
+  73.04  779.91 v _07414_/Y (AND2x2_ASAP7_75t_R)
+  45.56  825.48 v _10407_/SN (HAxp5_ASAP7_75t_R)
+  24.72  850.20 ^ _07348_/Y (INVx1_ASAP7_75t_R)
+  59.31  909.51 v _09824_/SN (FAx1_ASAP7_75t_R)
+  26.05  935.56 ^ _06523_/Y (INVx1_ASAP7_75t_R)
+  63.77  999.33 v _09851_/SN (FAx1_ASAP7_75t_R)
+  30.72 1030.05 ^ _06634_/Y (INVx1_ASAP7_75t_R)
+  60.16 1090.21 ^ _09861_/SN (FAx1_ASAP7_75t_R)
+  22.92 1113.13 v _06690_/Y (INVx1_ASAP7_75t_R)
+  81.40 1194.53 v _10381_/SN (HAxp5_ASAP7_75t_R)
+  53.17 1247.70 v _07695_/Y (OA21x2_ASAP7_75t_R)
+  37.14 1284.84 v _07696_/Y (OA21x2_ASAP7_75t_R)
+  39.47 1324.31 v _07697_/Y (OA21x2_ASAP7_75t_R)
+  37.36 1361.67 v _07698_/Y (OA21x2_ASAP7_75t_R)
+  39.79 1401.46 v _07699_/Y (OA21x2_ASAP7_75t_R)
+  37.53 1439.00 v _07700_/Y (OA21x2_ASAP7_75t_R)
+  40.03 1479.03 v _07701_/Y (OA21x2_ASAP7_75t_R)
+  37.71 1516.73 v _09669_/Y (OA21x2_ASAP7_75t_R)
+  37.50 1554.24 v _09670_/Y (OA21x2_ASAP7_75t_R)
+  43.90 1598.14 ^ _09678_/Y (XNOR2x2_ASAP7_75t_R)
+  28.92 1627.07 ^ _09680_/Y (OA21x2_ASAP7_75t_R)
+   0.04 1627.10 ^ product1[0][15]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)
+        1627.10   data arrival time
+
+1000.00 1000.00   clock core_clock (rise edge)
+   0.00 1000.00   clock source latency
+   0.00 1000.00 ^ clk (in)
+  24.95 1024.95 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  37.94 1062.90 ^ clkbuf_1_1__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  48.29 1111.19 ^ clkbuf_leaf_12_clk/Y (BUFx24_ASAP7_75t_R)
+   1.73 1112.92 ^ product1[0][15]$_DFFE_PP_/CLK (DFFHQNx1_ASAP7_75t_R)
+-100.00 1012.92   clock uncertainty
+   1.13 1014.05   clock reconvergence pessimism
+ -16.91  997.14   library setup time
+         997.14   data required time
+---------------------------------------------------------
+         997.14   data required time
+        -1627.10   data arrival time
+---------------------------------------------------------
+        -629.96   slack (VIOLATED)
+
+
+Startpoint: x[0]$_DFFE_PN0P_
+            (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: product1[1][15]$_DFFE_PP_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock source latency
+   0.00    0.00 ^ clk (in)
+  26.08   26.08 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  41.32   67.41 ^ clkbuf_1_0__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  53.54  120.95 ^ clkbuf_leaf_4_clk/Y (BUFx24_ASAP7_75t_R)
+   3.80  124.74 ^ x[0]$_DFFE_PN0P_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+ 112.29  237.04 v x[0]$_DFFE_PN0P_/QN (DFFASRHQNx1_ASAP7_75t_R)
+  49.22  286.26 ^ _05832_/Y (INVx1_ASAP7_75t_R)
+  39.83  326.08 v _10378_/CON (HAxp5_ASAP7_75t_R)
+ 126.73  452.82 v place236/Y (BUFx3_ASAP7_75t_R)
+ 101.16  553.97 v _07001_/Y (OA33x2_ASAP7_75t_R)
+  60.84  614.81 v _07002_/Y (OA211x2_ASAP7_75t_R)
+  93.38  708.20 ^ _07005_/Y (AOI21x1_ASAP7_75t_R)
+  73.11  781.31 ^ _07059_/Y (AND2x2_ASAP7_75t_R)
+  60.48  841.79 v _10016_/SN (FAx1_ASAP7_75t_R)
+  25.83  867.61 ^ _06016_/Y (INVx1_ASAP7_75t_R)
+  61.93  929.54 v _10048_/SN (FAx1_ASAP7_75t_R)
+  31.63  961.17 ^ _06612_/Y (INVx1_ASAP7_75t_R)
+  67.93 1029.11 v _10197_/SN (FAx1_ASAP7_75t_R)
+  30.58 1059.69 ^ _06714_/Y (INVx1_ASAP7_75t_R)
+  58.90 1118.59 ^ _10144_/SN (FAx1_ASAP7_75t_R)
+  22.98 1141.58 v _06797_/Y (INVx1_ASAP7_75t_R)
+  83.43 1225.00 v _10328_/SN (HAxp5_ASAP7_75t_R)
+  50.31 1275.31 v _09507_/Y (OA21x2_ASAP7_75t_R)
+  39.49 1314.80 v _09508_/Y (OA21x2_ASAP7_75t_R)
+  37.31 1352.11 v _09509_/Y (OA21x2_ASAP7_75t_R)
+  39.51 1391.62 v _09510_/Y (OA21x2_ASAP7_75t_R)
+  37.25 1428.87 v _09511_/Y (OA21x2_ASAP7_75t_R)
+  39.46 1468.33 v _09512_/Y (OA21x2_ASAP7_75t_R)
+  37.26 1505.59 v _09788_/Y (OA21x2_ASAP7_75t_R)
+  37.29 1542.89 v _09789_/Y (OA21x2_ASAP7_75t_R)
+  43.58 1586.46 ^ _09797_/Y (XNOR2x2_ASAP7_75t_R)
+  28.91 1615.37 ^ _09799_/Y (OA21x2_ASAP7_75t_R)
+   0.04 1615.42 ^ product1[1][15]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)
+        1615.42   data arrival time
+
+1000.00 1000.00   clock core_clock (rise edge)
+   0.00 1000.00   clock source latency
+   0.00 1000.00 ^ clk (in)
+  24.95 1024.95 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  37.60 1062.55 ^ clkbuf_1_0__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  46.16 1108.71 ^ clkbuf_leaf_11_clk/Y (BUFx24_ASAP7_75t_R)
+   0.77 1109.48 ^ product1[1][15]$_DFFE_PP_/CLK (DFFHQNx1_ASAP7_75t_R)
+-100.00 1009.48   clock uncertainty
+   4.85 1014.34   clock reconvergence pessimism
+ -16.82  997.52   library setup time
+         997.52   data required time
+---------------------------------------------------------
+         997.52   data required time
+        -1615.42   data arrival time
+---------------------------------------------------------
+        -617.90   slack (VIOLATED)
+
+
+Startpoint: x[0]$_DFFE_PN0P_
+            (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: product0[0][15]$_DFFE_PP_
+          (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock source latency
+   0.00    0.00 ^ clk (in)
+  26.08   26.08 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  41.32   67.41 ^ clkbuf_1_0__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  53.54  120.95 ^ clkbuf_leaf_4_clk/Y (BUFx24_ASAP7_75t_R)
+   3.80  124.74 ^ x[0]$_DFFE_PN0P_/CLK (DFFASRHQNx1_ASAP7_75t_R)
+ 105.74  230.48 ^ x[0]$_DFFE_PN0P_/QN (DFFASRHQNx1_ASAP7_75t_R)
+  43.68  274.16 v _05832_/Y (INVx1_ASAP7_75t_R)
+  44.76  318.93 ^ _10378_/CON (HAxp5_ASAP7_75t_R)
+ 152.42  471.35 ^ place236/Y (BUFx3_ASAP7_75t_R)
+  87.04  558.38 ^ _07495_/Y (OA22x2_ASAP7_75t_R)
+  40.72  599.10 ^ _07497_/Y (AND3x1_ASAP7_75t_R)
+  43.77  642.88 ^ _07498_/Y (AO21x1_ASAP7_75t_R)
+  59.44  702.31 v _07499_/Y (OAI21x1_ASAP7_75t_R)
+  54.88  757.19 v _07532_/Y (AND3x1_ASAP7_75t_R)
+  44.44  801.63 v _10413_/SN (HAxp5_ASAP7_75t_R)
+  24.29  825.92 ^ _06568_/Y (INVx1_ASAP7_75t_R)
+  59.85  885.77 v _10105_/SN (FAx1_ASAP7_75t_R)
+  25.87  911.64 ^ _06566_/Y (INVx1_ASAP7_75t_R)
+  63.98  975.62 v _10170_/SN (FAx1_ASAP7_75t_R)
+  30.69 1006.31 ^ _06564_/Y (INVx1_ASAP7_75t_R)
+  32.29 1038.61 v _10235_/CON (FAx1_ASAP7_75t_R)
+  24.89 1063.50 ^ _10235_/SN (FAx1_ASAP7_75t_R)
+  21.32 1084.82 v _06404_/Y (INVx1_ASAP7_75t_R)
+  80.91 1165.73 v _10501_/SN (HAxp5_ASAP7_75t_R)
+  53.25 1218.97 v _07887_/Y (OA21x2_ASAP7_75t_R)
+  38.39 1257.36 v _07888_/Y (OA21x2_ASAP7_75t_R)
+  39.94 1297.30 v _07889_/Y (OA21x2_ASAP7_75t_R)
+  37.43 1334.73 v _07890_/Y (OA21x2_ASAP7_75t_R)
+  39.91 1374.64 v _07891_/Y (OA21x2_ASAP7_75t_R)
+  37.64 1412.28 v _07892_/Y (OA21x2_ASAP7_75t_R)
+  39.89 1452.17 v _07893_/Y (OA21x2_ASAP7_75t_R)
+  37.42 1489.59 v _09697_/Y (OA21x2_ASAP7_75t_R)
+  37.19 1526.78 v _09698_/Y (OA21x2_ASAP7_75t_R)
+  43.42 1570.20 ^ _09706_/Y (XNOR2x2_ASAP7_75t_R)
+  28.82 1599.02 ^ _09708_/Y (OA21x2_ASAP7_75t_R)
+   0.04 1599.06 ^ product0[0][15]$_DFFE_PP_/D (DFFHQNx1_ASAP7_75t_R)
+        1599.06   data arrival time
+
+1000.00 1000.00   clock core_clock (rise edge)
+   0.00 1000.00   clock source latency
+   0.00 1000.00 ^ clk (in)
+  24.95 1024.95 ^ clkbuf_0_clk/Y (BUFx16f_ASAP7_75t_R)
+  37.94 1062.90 ^ clkbuf_1_1__f_clk/Y (BUFx16f_ASAP7_75t_R)
+  48.33 1111.22 ^ clkbuf_leaf_13_clk/Y (BUFx24_ASAP7_75t_R)
+   2.31 1113.53 ^ product0[0][15]$_DFFE_PP_/CLK (DFFHQNx1_ASAP7_75t_R)
+-100.00 1013.53   clock uncertainty
+   1.13 1014.66   clock reconvergence pessimism
+ -16.95  997.71   library setup time
+         997.71   data required time
+---------------------------------------------------------
+         997.71   data required time
+        -1599.06   data arrival time
+---------------------------------------------------------
+        -601.35   slack (VIOLATED)
+
+
+max slew
+
+Pin                                    Limit    Slew   Slack
+------------------------------------------------------------
+_08919_/B                             320.00  499.23 -179.23 (VIOLATED)
+_08920_/A2                            320.00  499.23 -179.23 (VIOLATED)
+_08921_/B                             320.00  499.23 -179.23 (VIOLATED)
+_08922_/A2                            320.00  499.23 -179.23 (VIOLATED)
+_08914_/A2                            320.00  499.18 -179.18 (VIOLATED)
+_08913_/B                             320.00  499.18 -179.18 (VIOLATED)
+_09760_/A2                            320.00  499.01 -179.01 (VIOLATED)
+_08911_/B                             320.00  498.99 -178.99 (VIOLATED)
+_08917_/B                             320.00  498.99 -178.99 (VIOLATED)
+_08912_/A2                            320.00  498.99 -178.99 (VIOLATED)
+_08918_/A2                            320.00  498.99 -178.99 (VIOLATED)
+_08905_/A2                            320.00  498.99 -178.99 (VIOLATED)
+_08904_/B                             320.00  498.99 -178.99 (VIOLATED)
+_09759_/B                             320.00  498.97 -178.97 (VIOLATED)
+_08924_/A2                            320.00  498.97 -178.97 (VIOLATED)
+_08923_/B                             320.00  498.95 -178.95 (VIOLATED)
+_08903_/A2                            320.00  498.95 -178.95 (VIOLATED)
+_08902_/B                             320.00  498.95 -178.95 (VIOLATED)
+_08906_/B                             320.00  498.94 -178.94 (VIOLATED)
+_08907_/A2                            320.00  498.93 -178.93 (VIOLATED)
+_08910_/A2                            320.00  498.87 -178.87 (VIOLATED)
+_08909_/B                             320.00  498.85 -178.85 (VIOLATED)
+_08926_/A2                            320.00  498.70 -178.70 (VIOLATED)
+_08925_/B                             320.00  498.70 -178.70 (VIOLATED)
+_08930_/A2                            320.00  498.67 -178.67 (VIOLATED)
+_08929_/B                             320.00  498.67 -178.67 (VIOLATED)
+_08646_/A2                            320.00  498.65 -178.65 (VIOLATED)
+_08643_/A2                            320.00  498.65 -178.65 (VIOLATED)
+_08642_/B                             320.00  498.64 -178.64 (VIOLATED)
+_08645_/B                             320.00  498.62 -178.62 (VIOLATED)
+_08901_/A2                            320.00  498.61 -178.61 (VIOLATED)
+_08900_/B                             320.00  498.58 -178.58 (VIOLATED)
+_08915_/B                             320.00  498.54 -178.54 (VIOLATED)
+_08916_/A2                            320.00  498.54 -178.54 (VIOLATED)
+_08927_/B                             320.00  498.53 -178.53 (VIOLATED)
+_08928_/A2                            320.00  498.53 -178.53 (VIOLATED)
+_08639_/A2                            320.00  498.51 -178.51 (VIOLATED)
+_08638_/B                             320.00  498.48 -178.48 (VIOLATED)
+_08648_/A2                            320.00  498.38 -178.38 (VIOLATED)
+_08647_/B                             320.00  498.34 -178.34 (VIOLATED)
+_08738_/B                             320.00  498.23 -178.23 (VIOLATED)
+_08739_/A2                            320.00  498.22 -178.22 (VIOLATED)
+_08748_/A2                            320.00  498.21 -178.21 (VIOLATED)
+_08747_/B                             320.00  498.20 -178.20 (VIOLATED)
+_08650_/A2                            320.00  498.14 -178.14 (VIOLATED)
+_08744_/B                             320.00  498.14 -178.14 (VIOLATED)
+_08745_/A2                            320.00  498.13 -178.13 (VIOLATED)
+_08649_/B                             320.00  498.12 -178.12 (VIOLATED)
+_08740_/B                             320.00  498.07 -178.07 (VIOLATED)
+_08741_/A2                            320.00  498.05 -178.05 (VIOLATED)
+_08759_/B                             320.00  497.96 -177.96 (VIOLATED)
+_08760_/A2                            320.00  497.96 -177.96 (VIOLATED)
+_08750_/A2                            320.00  497.96 -177.96 (VIOLATED)
+_08758_/A2                            320.00  497.93 -177.93 (VIOLATED)
+_08757_/B                             320.00  497.93 -177.93 (VIOLATED)
+_08749_/B                             320.00  497.88 -177.88 (VIOLATED)
+_08751_/B                             320.00  497.87 -177.87 (VIOLATED)
+_08752_/A2                            320.00  497.87 -177.87 (VIOLATED)
+_08658_/A2                            320.00  497.84 -177.84 (VIOLATED)
+_08657_/B                             320.00  497.76 -177.76 (VIOLATED)
+_08743_/A2                            320.00  497.73 -177.73 (VIOLATED)
+_08656_/A2                            320.00  497.69 -177.69 (VIOLATED)
+_08742_/B                             320.00  497.69 -177.69 (VIOLATED)
+_08755_/B                             320.00  497.66 -177.66 (VIOLATED)
+_08756_/A2                            320.00  497.65 -177.65 (VIOLATED)
+_09739_/B                             320.00  497.65 -177.65 (VIOLATED)
+_09740_/A2                            320.00  497.64 -177.64 (VIOLATED)
+_08761_/B                             320.00  497.63 -177.63 (VIOLATED)
+_08762_/A2                            320.00  497.63 -177.63 (VIOLATED)
+_08768_/A2                            320.00  497.51 -177.51 (VIOLATED)
+_08767_/B                             320.00  497.51 -177.51 (VIOLATED)
+_08655_/B                             320.00  497.50 -177.50 (VIOLATED)
+_08764_/A2                            320.00  497.46 -177.46 (VIOLATED)
+_08763_/B                             320.00  497.42 -177.42 (VIOLATED)
+_08754_/A2                            320.00  497.35 -177.35 (VIOLATED)
+_08753_/B                             320.00  497.35 -177.35 (VIOLATED)
+_08766_/A2                            320.00  497.27 -177.27 (VIOLATED)
+_08765_/B                             320.00  497.27 -177.27 (VIOLATED)
+_08654_/A2                            320.00  496.91 -176.91 (VIOLATED)
+_08653_/B                             320.00  496.82 -176.82 (VIOLATED)
+_09463_/B                             320.00  496.61 -176.61 (VIOLATED)
+_09464_/A2                            320.00  496.61 -176.61 (VIOLATED)
+_09461_/B                             320.00  496.61 -176.61 (VIOLATED)
+_09459_/B                             320.00  496.60 -176.60 (VIOLATED)
+_09462_/A2                            320.00  496.60 -176.60 (VIOLATED)
+_09457_/A2                            320.00  496.59 -176.59 (VIOLATED)
+_09460_/A2                            320.00  496.59 -176.59 (VIOLATED)
+_09456_/B                             320.00  496.59 -176.59 (VIOLATED)
+_09453_/A2                            320.00  496.55 -176.55 (VIOLATED)
+_09454_/B                             320.00  496.55 -176.55 (VIOLATED)
+_09455_/A2                            320.00  496.55 -176.55 (VIOLATED)
+_09452_/B                             320.00  496.53 -176.53 (VIOLATED)
+_08660_/A2                            320.00  496.52 -176.52 (VIOLATED)
+_08659_/B                             320.00  496.52 -176.52 (VIOLATED)
+_08665_/B                             320.00  496.19 -176.19 (VIOLATED)
+_09471_/B                             320.00  496.18 -176.18 (VIOLATED)
+_09472_/A2                            320.00  496.18 -176.18 (VIOLATED)
+_08636_/B                             320.00  496.17 -176.17 (VIOLATED)
+_08637_/A2                            320.00  496.16 -176.16 (VIOLATED)
+_08641_/A2                            320.00  496.16 -176.16 (VIOLATED)
+_09470_/A2                            320.00  496.15 -176.15 (VIOLATED)
+_08640_/B                             320.00  496.15 -176.15 (VIOLATED)
+_08666_/A2                            320.00  496.15 -176.15 (VIOLATED)
+_09469_/B                             320.00  496.14 -176.14 (VIOLATED)
+_09468_/A2                            320.00  496.10 -176.10 (VIOLATED)
+_09467_/B                             320.00  496.08 -176.08 (VIOLATED)
+_09736_/A2                            320.00  496.05 -176.05 (VIOLATED)
+_09735_/B                             320.00  496.03 -176.03 (VIOLATED)
+_09451_/A2                            320.00  496.01 -176.01 (VIOLATED)
+_09474_/A2                            320.00  495.97 -175.97 (VIOLATED)
+_09450_/B                             320.00  495.95 -175.95 (VIOLATED)
+_09473_/B                             320.00  495.92 -175.92 (VIOLATED)
+_09781_/A2                            320.00  495.81 -175.81 (VIOLATED)
+_09780_/B                             320.00  495.81 -175.81 (VIOLATED)
+_09465_/B                             320.00  495.80 -175.80 (VIOLATED)
+_09466_/A2                            320.00  495.80 -175.80 (VIOLATED)
+_09477_/B                             320.00  495.80 -175.80 (VIOLATED)
+_09478_/A2                            320.00  495.79 -175.79 (VIOLATED)
+_09479_/B                             320.00  495.78 -175.78 (VIOLATED)
+_09480_/A2                            320.00  495.77 -175.77 (VIOLATED)
+_09476_/A2                            320.00  495.75 -175.75 (VIOLATED)
+_08662_/A2                            320.00  495.75 -175.75 (VIOLATED)
+_08661_/B                             320.00  495.73 -175.73 (VIOLATED)
+_09475_/B                             320.00  495.72 -175.72 (VIOLATED)
+_08651_/B                             320.00  495.51 -175.51 (VIOLATED)
+_08652_/A2                            320.00  495.51 -175.51 (VIOLATED)
+_08664_/A2                            320.00  495.44 -175.44 (VIOLATED)
+_08663_/B                             320.00  495.44 -175.44 (VIOLATED)
+_09596_/B                             320.00  488.85 -168.85 (VIOLATED)
+_09597_/A2                            320.00  488.85 -168.85 (VIOLATED)
+_09594_/A2                            320.00  488.85 -168.85 (VIOLATED)
+_09593_/B                             320.00  488.85 -168.85 (VIOLATED)
+_09589_/B                             320.00  488.75 -168.75 (VIOLATED)
+_09590_/A2                            320.00  488.74 -168.74 (VIOLATED)
+_09599_/A2                            320.00  488.62 -168.62 (VIOLATED)
+_09598_/B                             320.00  488.62 -168.62 (VIOLATED)
+_09592_/A2                            320.00  488.47 -168.47 (VIOLATED)
+_09591_/B                             320.00  488.44 -168.44 (VIOLATED)
+_09600_/B                             320.00  488.33 -168.33 (VIOLATED)
+_09601_/A2                            320.00  488.32 -168.32 (VIOLATED)
+_09609_/A2                            320.00  488.16 -168.16 (VIOLATED)
+_09608_/B                             320.00  488.06 -168.06 (VIOLATED)
+_09607_/A2                            320.00  487.77 -167.77 (VIOLATED)
+_09606_/B                             320.00  487.63 -167.63 (VIOLATED)
+_09605_/A2                            320.00  486.88 -166.88 (VIOLATED)
+_09604_/B                             320.00  486.80 -166.80 (VIOLATED)
+_09611_/A2                            320.00  486.68 -166.68 (VIOLATED)
+_09587_/B                             320.00  486.51 -166.51 (VIOLATED)
+_09588_/A2                            320.00  486.51 -166.51 (VIOLATED)
+_09610_/B                             320.00  486.50 -166.50 (VIOLATED)
+_09802_/B                             320.00  486.44 -166.44 (VIOLATED)
+_09803_/A2                            320.00  486.44 -166.44 (VIOLATED)
+_09617_/A2                            320.00  486.18 -166.18 (VIOLATED)
+_09616_/B                             320.00  486.15 -166.15 (VIOLATED)
+_09613_/A2                            320.00  486.00 -166.00 (VIOLATED)
+_09612_/B                             320.00  486.00 -166.00 (VIOLATED)
+_09614_/B                             320.00  485.90 -165.90 (VIOLATED)
+_09615_/A2                            320.00  485.90 -165.90 (VIOLATED)
+_09602_/B                             320.00  485.90 -165.90 (VIOLATED)
+_09603_/A2                            320.00  485.90 -165.90 (VIOLATED)
+_08778_/A2                            320.00  485.23 -165.23 (VIOLATED)
+_08777_/B                             320.00  485.23 -165.23 (VIOLATED)
+_08773_/B                             320.00  485.15 -165.15 (VIOLATED)
+_08776_/A2                            320.00  485.14 -165.14 (VIOLATED)
+_08774_/A2                            320.00  485.13 -165.13 (VIOLATED)
+_08794_/B                             320.00  485.12 -165.12 (VIOLATED)
+_08795_/A2                            320.00  485.11 -165.11 (VIOLATED)
+_08775_/B                             320.00  485.10 -165.10 (VIOLATED)
+_08793_/A2                            320.00  485.09 -165.09 (VIOLATED)
+_08792_/B                             320.00  485.08 -165.08 (VIOLATED)
+_08782_/B                             320.00  485.03 -165.03 (VIOLATED)
+_08783_/A2                            320.00  485.03 -165.03 (VIOLATED)
+_08780_/A2                            320.00  484.99 -164.99 (VIOLATED)
+_08787_/A2                            320.00  484.91 -164.91 (VIOLATED)
+_08779_/B                             320.00  484.89 -164.89 (VIOLATED)
+_08785_/A2                            320.00  484.85 -164.85 (VIOLATED)
+_08784_/B                             320.00  484.82 -164.82 (VIOLATED)
+_08786_/B                             320.00  484.76 -164.76 (VIOLATED)
+_08803_/A2                            320.00  484.22 -164.22 (VIOLATED)
+_08802_/B                             320.00  484.19 -164.19 (VIOLATED)
+_08797_/A2                            320.00  483.85 -163.85 (VIOLATED)
+_08796_/B                             320.00  483.67 -163.67 (VIOLATED)
+_08791_/A2                            320.00  483.61 -163.61 (VIOLATED)
+_08790_/B                             320.00  483.61 -163.61 (VIOLATED)
+_08789_/A2                            320.00  483.55 -163.55 (VIOLATED)
+_08788_/B                             320.00  483.51 -163.51 (VIOLATED)
+_09742_/A2                            320.00  483.50 -163.50 (VIOLATED)
+_09741_/B                             320.00  483.50 -163.50 (VIOLATED)
+_08798_/B                             320.00  483.46 -163.46 (VIOLATED)
+_08799_/A2                            320.00  483.46 -163.46 (VIOLATED)
+_08800_/B                             320.00  483.44 -163.44 (VIOLATED)
+_08801_/A2                            320.00  483.44 -163.44 (VIOLATED)
+_10198_/B                             320.00  479.06 -159.06 (VIOLATED)
+_10203_/B                             320.00  479.06 -159.06 (VIOLATED)
+_10204_/B                             320.00  479.05 -159.05 (VIOLATED)
+_10205_/B                             320.00  478.97 -158.97 (VIOLATED)
+_10206_/B                             320.00  478.90 -158.90 (VIOLATED)
+_10208_/B                             320.00  478.79 -158.79 (VIOLATED)
+_10207_/B                             320.00  478.68 -158.68 (VIOLATED)
+_10209_/B                             320.00  478.54 -158.54 (VIOLATED)
+_10210_/B                             320.00  478.27 -158.27 (VIOLATED)
+_10211_/B                             320.00  478.10 -158.10 (VIOLATED)
+_10212_/B                             320.00  478.08 -158.08 (VIOLATED)
+_10213_/B                             320.00  477.88 -157.88 (VIOLATED)
+_10214_/B                             320.00  477.71 -157.71 (VIOLATED)
+_10215_/B                             320.00  477.56 -157.56 (VIOLATED)
+_10216_/B                             320.00  477.40 -157.40 (VIOLATED)
+_10217_/B                             320.00  477.35 -157.35 (VIOLATED)
+_09619_/Y                             320.00  477.30 -157.30 (VIOLATED)
+_06859_/A                             320.00  474.48 -154.48 (VIOLATED)
+_06872_/A                             320.00  474.47 -154.47 (VIOLATED)
+_06883_/A                             320.00  474.46 -154.46 (VIOLATED)
+_06894_/A                             320.00  474.44 -154.44 (VIOLATED)
+_06904_/A                             320.00  474.40 -154.40 (VIOLATED)
+_06857_/A                             320.00  474.35 -154.35 (VIOLATED)
+_06871_/A                             320.00  474.30 -154.30 (VIOLATED)
+_06869_/A                             320.00  474.23 -154.23 (VIOLATED)
+_06855_/A                             320.00  474.23 -154.23 (VIOLATED)
+_06870_/A                             320.00  474.22 -154.22 (VIOLATED)
+_06915_/A                             320.00  474.20 -154.20 (VIOLATED)
+_06941_/A1                            320.00  474.19 -154.19 (VIOLATED)
+_06927_/A                             320.00  474.17 -154.17 (VIOLATED)
+_06926_/A                             320.00  474.12 -154.12 (VIOLATED)
+_06914_/A                             320.00  474.10 -154.10 (VIOLATED)
+_06913_/A                             320.00  474.06 -154.06 (VIOLATED)
+_06912_/A                             320.00  473.90 -153.90 (VIOLATED)
+_06940_/A1                            320.00  473.82 -153.81 (VIOLATED)
+_06924_/A                             320.00  473.75 -153.75 (VIOLATED)
+place243/A                            320.00  473.38 -153.38 (VIOLATED)
+place245/A                            320.00  472.33 -152.33 (VIOLATED)
+_07338_/A1                            320.00  472.28 -152.28 (VIOLATED)
+_07305_/A                             320.00  472.23 -152.23 (VIOLATED)
+_07304_/A                             320.00  472.23 -152.23 (VIOLATED)
+_07295_/A                             320.00  472.22 -152.22 (VIOLATED)
+_07299_/A                             320.00  472.19 -152.19 (VIOLATED)
+_07290_/A                             320.00  472.19 -152.19 (VIOLATED)
+_07309_/A                             320.00  472.18 -152.18 (VIOLATED)
+_07324_/A                             320.00  472.02 -152.02 (VIOLATED)
+_07337_/A1                            320.00  471.91 -151.91 (VIOLATED)
+_07323_/A                             320.00  471.77 -151.77 (VIOLATED)
+_07314_/A                             320.00  471.76 -151.76 (VIOLATED)
+_07336_/A1                            320.00  471.66 -151.66 (VIOLATED)
+_07335_/A1                            320.00  471.63 -151.63 (VIOLATED)
+place244/A                            320.00  471.25 -151.25 (VIOLATED)
+place242/A                            320.00  471.17 -151.17 (VIOLATED)
+flushing$_DFFE_PN0P_/QN               320.00  471.13 -151.13 (VIOLATED)
+_08427_/A2                            320.00  463.89 -143.89 (VIOLATED)
+_08426_/B                             320.00  463.89 -143.89 (VIOLATED)
+_08431_/A2                            320.00  463.88 -143.88 (VIOLATED)
+_08430_/B                             320.00  463.86 -143.86 (VIOLATED)
+_09726_/A2                            320.00  463.76 -143.76 (VIOLATED)
+_09725_/B                             320.00  463.75 -143.75 (VIOLATED)
+_08447_/B                             320.00  463.65 -143.65 (VIOLATED)
+_08448_/A2                            320.00  463.64 -143.64 (VIOLATED)
+_08445_/B                             320.00  463.55 -143.55 (VIOLATED)
+_08446_/A2                            320.00  463.54 -143.54 (VIOLATED)
+_08455_/B                             320.00  463.30 -143.30 (VIOLATED)
+_08456_/A2                            320.00  463.30 -143.30 (VIOLATED)
+_08451_/B                             320.00  463.27 -143.27 (VIOLATED)
+_08452_/A2                            320.00  463.25 -143.25 (VIOLATED)
+_08450_/A2                            320.00  463.17 -143.17 (VIOLATED)
+_08449_/B                             320.00  463.13 -143.13 (VIOLATED)
+_08454_/A2                            320.00  463.08 -143.08 (VIOLATED)
+_08453_/B                             320.00  463.07 -143.07 (VIOLATED)
+_08429_/A2                            320.00  463.01 -143.01 (VIOLATED)
+_08428_/B                             320.00  463.01 -143.01 (VIOLATED)
+_08441_/B                             320.00  463.00 -143.00 (VIOLATED)
+_08433_/A2                            320.00  462.99 -142.99 (VIOLATED)
+_08442_/A2                            320.00  462.99 -142.99 (VIOLATED)
+_08432_/B                             320.00  462.99 -142.99 (VIOLATED)
+_08439_/B                             320.00  462.96 -142.96 (VIOLATED)
+_08438_/A2                            320.00  462.96 -142.96 (VIOLATED)
+_08440_/A2                            320.00  462.96 -142.96 (VIOLATED)
+_08437_/B                             320.00  462.95 -142.95 (VIOLATED)
+_08436_/A2                            320.00  462.95 -142.95 (VIOLATED)
+_08435_/B                             320.00  462.92 -142.92 (VIOLATED)
+_08443_/B                             320.00  462.91 -142.91 (VIOLATED)
+_08444_/A2                            320.00  462.84 -142.84 (VIOLATED)
+_07758_/B                             320.00  450.17 -130.17 (VIOLATED)
+_07759_/A2                            320.00  450.17 -130.17 (VIOLATED)
+_07762_/A2                            320.00  450.14 -130.14 (VIOLATED)
+_07761_/B                             320.00  450.13 -130.13 (VIOLATED)
+_07752_/B                             320.00  450.09 -130.09 (VIOLATED)
+_07753_/A2                            320.00  450.08 -130.08 (VIOLATED)
+_07754_/B                             320.00  449.95 -129.95 (VIOLATED)
+_07755_/A2                            320.00  449.92 -129.92 (VIOLATED)
+_07769_/B                             320.00  449.87 -129.87 (VIOLATED)
+_07770_/A2                            320.00  449.87 -129.87 (VIOLATED)
+_07764_/A2                            320.00  449.85 -129.85 (VIOLATED)
+_07771_/B                             320.00  449.84 -129.84 (VIOLATED)
+_07772_/A2                            320.00  449.81 -129.81 (VIOLATED)
+_07773_/B                             320.00  449.79 -129.79 (VIOLATED)
+_07763_/B                             320.00  449.76 -129.76 (VIOLATED)
+_07774_/A2                            320.00  449.75 -129.75 (VIOLATED)
+_07766_/A2                            320.00  449.67 -129.67 (VIOLATED)
+_07765_/B                             320.00  449.66 -129.66 (VIOLATED)
+_07757_/A2                            320.00  449.57 -129.57 (VIOLATED)
+_07756_/B                             320.00  449.34 -129.34 (VIOLATED)
+_09681_/B                             320.00  448.82 -128.82 (VIOLATED)
+_09682_/A2                            320.00  448.68 -128.68 (VIOLATED)
+_07775_/B                             320.00  448.33 -128.33 (VIOLATED)
+_07776_/A2                            320.00  448.33 -128.33 (VIOLATED)
+_07778_/A2                            320.00  448.03 -128.03 (VIOLATED)
+_07777_/B                             320.00  448.00 -128.00 (VIOLATED)
+_07782_/A2                            320.00  447.94 -127.94 (VIOLATED)
+_07768_/A2                            320.00  447.94 -127.94 (VIOLATED)
+_07781_/B                             320.00  447.94 -127.94 (VIOLATED)
+_07767_/B                             320.00  447.94 -127.94 (VIOLATED)
+_07779_/B                             320.00  447.93 -127.93 (VIOLATED)
+_07780_/A2                            320.00  447.92 -127.92 (VIOLATED)
+_10176_/CI                            320.00  431.38 -111.38 (VIOLATED)
+_10050_/CI                            320.00  431.38 -111.38 (VIOLATED)
+_10178_/CI                            320.00  431.37 -111.37 (VIOLATED)
+_10175_/CI                            320.00  431.36 -111.36 (VIOLATED)
+_10238_/CI                            320.00  431.36 -111.36 (VIOLATED)
+_10174_/CI                            320.00  431.35 -111.35 (VIOLATED)
+_10194_/CI                            320.00  431.33 -111.33 (VIOLATED)
+_10051_/CI                            320.00  431.31 -111.31 (VIOLATED)
+_10065_/CI                            320.00  431.31 -111.31 (VIOLATED)
+_10151_/CI                            320.00  431.29 -111.29 (VIOLATED)
+_10202_/CI                            320.00  431.28 -111.28 (VIOLATED)
+_10149_/CI                            320.00  431.23 -111.23 (VIOLATED)
+_10237_/CI                            320.00  431.23 -111.23 (VIOLATED)
+_10177_/CI                            320.00  431.22 -111.22 (VIOLATED)
+_10069_/CI                            320.00  431.18 -111.18 (VIOLATED)
+_10180_/CI                            320.00  431.17 -111.17 (VIOLATED)
+_09869_/CI                            320.00  431.12 -111.12 (VIOLATED)
+_06805_/Y                             320.00  431.08 -111.08 (VIOLATED)
+_10198_/CI                            320.00  390.02  -70.02 (VIOLATED)
+_10203_/CI                            320.00  390.02  -70.02 (VIOLATED)
+_10204_/CI                            320.00  389.99  -69.99 (VIOLATED)
+_10205_/CI                            320.00  389.98  -69.98 (VIOLATED)
+_10206_/CI                            320.00  389.92  -69.92 (VIOLATED)
+_10208_/CI                            320.00  389.81  -69.81 (VIOLATED)
+_10207_/CI                            320.00  389.75  -69.75 (VIOLATED)
+_10209_/CI                            320.00  389.67  -69.67 (VIOLATED)
+_10210_/CI                            320.00  389.63  -69.63 (VIOLATED)
+_10211_/CI                            320.00  389.49  -69.49 (VIOLATED)
+_10212_/CI                            320.00  389.47  -69.47 (VIOLATED)
+_10213_/CI                            320.00  389.40  -69.40 (VIOLATED)
+_10214_/CI                            320.00  389.30  -69.30 (VIOLATED)
+_10215_/CI                            320.00  389.17  -69.17 (VIOLATED)
+_10216_/CI                            320.00  389.13  -69.13 (VIOLATED)
+_10217_/CI                            320.00  389.05  -69.05 (VIOLATED)
+_10218_/CI                            320.00  389.00  -69.00 (VIOLATED)
+_09620_/Y                             320.00  388.99  -68.99 (VIOLATED)
+_08027_/B                             320.00  363.56  -43.56 (VIOLATED)
+_08028_/A2                            320.00  363.56  -43.56 (VIOLATED)
+_08042_/A1                            320.00  363.52  -43.52 (VIOLATED)
+_08070_/A1                            320.00  363.43  -43.43 (VIOLATED)
+_08073_/A1                            320.00  363.42  -43.42 (VIOLATED)
+_08115_/A1                            320.00  363.35  -43.35 (VIOLATED)
+_08117_/A                             320.00  363.34  -43.34 (VIOLATED)
+_08138_/A                             320.00  363.28  -43.28 (VIOLATED)
+_08139_/A2                            320.00  363.28  -43.28 (VIOLATED)
+_08142_/B                             320.00  363.26  -43.26 (VIOLATED)
+_08140_/B                             320.00  363.26  -43.26 (VIOLATED)
+_08226_/D                             320.00  363.24  -43.24 (VIOLATED)
+_08379_/A                             320.00  363.23  -43.23 (VIOLATED)
+_08223_/C                             320.00  363.23  -43.23 (VIOLATED)
+_08380_/A2                            320.00  363.23  -43.23 (VIOLATED)
+_08381_/B                             320.00  363.23  -43.23 (VIOLATED)
+_08141_/A2                            320.00  363.22  -43.22 (VIOLATED)
+_08224_/B                             320.00  363.22  -43.22 (VIOLATED)
+_08383_/B                             320.00  363.22  -43.22 (VIOLATED)
+_08144_/B                             320.00  363.21  -43.21 (VIOLATED)
+_08143_/A2                            320.00  363.16  -43.16 (VIOLATED)
+_08312_/A1                            320.00  363.16  -43.16 (VIOLATED)
+_08382_/A2                            320.00  363.13  -43.13 (VIOLATED)
+_08384_/A2                            320.00  363.07  -43.07 (VIOLATED)
+_08386_/B                             320.00  363.05  -43.05 (VIOLATED)
+_08387_/A2                            320.00  363.05  -43.05 (VIOLATED)
+_08015_/A1                            320.00  352.82  -32.82 (VIOLATED)
+_07982_/A1                            320.00  352.82  -32.82 (VIOLATED)
+_08014_/B                             320.00  352.80  -32.80 (VIOLATED)
+_09714_/A1                            320.00  352.79  -32.79 (VIOLATED)
+_09713_/B                             320.00  352.77  -32.77 (VIOLATED)
+_07981_/B                             320.00  352.67  -32.67 (VIOLATED)
+_08030_/B                             320.00  352.64  -32.64 (VIOLATED)
+_08031_/A1                            320.00  352.43  -32.43 (VIOLATED)
+_08033_/B                             320.00  352.23  -32.23 (VIOLATED)
+_08037_/B                             320.00  352.00  -32.00 (VIOLATED)
+_08034_/A1                            320.00  351.77  -31.77 (VIOLATED)
+_08041_/B                             320.00  351.45  -31.45 (VIOLATED)
+_08045_/B                             320.00  351.25  -31.25 (VIOLATED)
+_08046_/A1                            320.00  351.08  -31.08 (VIOLATED)
+_08038_/A1                            320.00  351.00  -31.00 (VIOLATED)
+_08052_/A1                            320.00  350.76  -30.76 (VIOLATED)
+_08051_/B                             320.00  350.73  -30.73 (VIOLATED)
+_08054_/B                             320.00  350.52  -30.52 (VIOLATED)
+_08055_/A1                            320.00  350.49  -30.49 (VIOLATED)
+_08060_/B                             320.00  350.25  -30.25 (VIOLATED)
+_08061_/A1                            320.00  349.68  -29.68 (VIOLATED)
+_08067_/A1                            320.00  349.30  -29.30 (VIOLATED)
+_08066_/B                             320.00  348.96  -28.96 (VIOLATED)
+_08069_/B                             320.00  348.93  -28.93 (VIOLATED)
+_08072_/B                             320.00  348.39  -28.39 (VIOLATED)
+_08077_/B                             320.00  347.61  -27.61 (VIOLATED)
+_08090_/B                             320.00  347.06  -27.06 (VIOLATED)
+_08087_/B                             320.00  347.05  -27.05 (VIOLATED)
+_08078_/A1                            320.00  346.73  -26.73 (VIOLATED)
+_08088_/A1                            320.00  346.44  -26.44 (VIOLATED)
+_08091_/A1                            320.00  346.10  -26.10 (VIOLATED)
+_08093_/B                             320.00  345.79  -25.79 (VIOLATED)
+_08094_/A1                            320.00  345.48  -25.48 (VIOLATED)
+_08101_/A1                            320.00  345.08  -25.08 (VIOLATED)
+_08106_/A1                            320.00  344.69  -24.69 (VIOLATED)
+_08100_/B                             320.00  344.05  -24.05 (VIOLATED)
+_08109_/A1                            320.00  343.76  -23.76 (VIOLATED)
+_08112_/A1                            320.00  343.75  -23.75 (VIOLATED)
+_08108_/B                             320.00  343.50  -23.50 (VIOLATED)
+_08111_/B                             320.00  342.75  -22.75 (VIOLATED)
+_08105_/B                             320.00  342.15  -22.15 (VIOLATED)
+_08114_/B                             320.00  342.08  -22.08 (VIOLATED)
+_08118_/A2                            320.00  342.01  -22.01 (VIOLATED)
+_08126_/B                             320.00  341.57  -21.57 (VIOLATED)
+_08123_/A1                            320.00  341.28  -21.28 (VIOLATED)
+_08122_/B                             320.00  341.28  -21.28 (VIOLATED)
+_08127_/A1                            320.00  341.26  -21.26 (VIOLATED)
+_08136_/A1                            320.00  341.25  -21.25 (VIOLATED)
+_08132_/A1                            320.00  341.24  -21.24 (VIOLATED)
+_08131_/B                             320.00  341.17  -21.17 (VIOLATED)
+_08135_/B                             320.00  340.95  -20.95 (VIOLATED)
+place238/A                            320.00  340.83  -20.83 (VIOLATED)
+_08566_/A2                            320.00  323.80   -3.80 (VIOLATED)
+_09734_/A2                            320.00  323.78   -3.78 (VIOLATED)
+_08570_/A2                            320.00  323.73   -3.73 (VIOLATED)
+_08568_/A2                            320.00  323.67   -3.67 (VIOLATED)
+_08572_/A2                            320.00  323.66   -3.66 (VIOLATED)
+_08577_/A2                            320.00  323.55   -3.55 (VIOLATED)
+_08574_/A2                            320.00  323.43   -3.43 (VIOLATED)
+_08579_/A2                            320.00  323.41   -3.41 (VIOLATED)
+_08581_/A2                            320.00  323.26   -3.26 (VIOLATED)
+_08585_/A2                            320.00  323.02   -3.02 (VIOLATED)
+_08588_/A2                            320.00  322.73   -2.73 (VIOLATED)
+_08599_/A2                            320.00  322.45   -2.45 (VIOLATED)
+_08607_/A2                            320.00  322.30   -2.30 (VIOLATED)
+_08592_/A2                            320.00  322.29   -2.29 (VIOLATED)
+_08614_/A2                            320.00  322.28   -2.28 (VIOLATED)
+_08605_/A2                            320.00  322.28   -2.28 (VIOLATED)
+_08583_/A2                            320.00  322.28   -2.28 (VIOLATED)
+_08601_/A2                            320.00  322.25   -2.25 (VIOLATED)
+_08612_/A2                            320.00  322.24   -2.24 (VIOLATED)
+_08603_/A2                            320.00  322.24   -2.24 (VIOLATED)
+_08590_/A2                            320.00  321.81   -1.81 (VIOLATED)
+_08594_/A2                            320.00  321.80   -1.80 (VIOLATED)
+_08596_/A2                            320.00  321.77   -1.77 (VIOLATED)
+_08618_/A2                            320.00  321.74   -1.74 (VIOLATED)
+_08616_/A2                            320.00  321.74   -1.74 (VIOLATED)
+_08732_/A2                            320.00  321.72   -1.72 (VIOLATED)
+_08734_/A2                            320.00  321.60   -1.60 (VIOLATED)
+_08610_/A2                            320.00  321.09   -1.09 (VIOLATED)
+_08964_/A1                            320.00  320.13   -0.13 (VIOLATED)
+
+CLOCK_CHECK_BEGIN
+Group                                  Slack
+--------------------------------------------
+No paths found.
+
+CLOCK_CHECK_END
+CONSTRAINT_CHECK_BEGIN
+CONSTRAINT_CHECK_PASS 1
+CONSTRAINT_CHECK_END
+CLOSURE_AUDIT_DONE

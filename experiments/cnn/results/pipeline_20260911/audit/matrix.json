@@ -1,0 +1,65 @@
+{
+  "scope": "1000ps, original CNN 100/30ps SDC, one extracted RC view; not foundry MMMC",
+  "views": [
+    {
+      "corner": "FF",
+      "timing_drv_pass": true,
+      "metrics": {
+        "setup_ws_ps": 131.06316084833182,
+        "setup_tns_ps": 0.0,
+        "setup_endpoints": 0.0,
+        "hold_ws_ps": 1.5280693438365058,
+        "hold_tns_ps": 0.0,
+        "hold_endpoints": 0.0,
+        "slew_violations": 0.0,
+        "cap_violations": 0.0,
+        "fanout_violations": 0.0
+      },
+      "constraint_check_pass": true,
+      "wall_seconds": 1.9359900200000766,
+      "report_sha256": "87535fcfdbb51e46760a2cc43686b4122ed00c8c5700f34931a4c68b0543a248"
+    },
+    {
+      "corner": "TT",
+      "timing_drv_pass": false,
+      "metrics": {
+        "setup_ws_ps": -166.09880204333078,
+        "setup_tns_ps": -2249.862305456182,
+        "setup_endpoints": 27.0,
+        "hold_ws_ps": 17.03114045492256,
+        "hold_tns_ps": 0.0,
+        "hold_endpoints": 0.0,
+        "slew_violations": 41.0,
+        "cap_violations": 0.0,
+        "fanout_violations": 0.0
+      },
+      "constraint_check_pass": true,
+      "wall_seconds": 1.9334876520000535,
+      "report_sha256": "6d2fddf17e55b841aa3f1b309d7cc2c406e512e7a8c9c8110a70e8b1f91a5ea5"
+    },
+    {
+      "corner": "SS",
+      "timing_drv_pass": false,
+      "metrics": {
+        "setup_ws_ps": -713.8412112186303,
+        "setup_tns_ps": -48162.494629512934,
+        "setup_endpoints": 251.0,
+        "hold_ws_ps": 41.9153879947594,
+        "hold_tns_ps": 0.0,
+        "hold_endpoints": 0.0,
+        "slew_violations": 374.0,
+        "cap_violations": 0.0,
+        "fanout_violations": 0.0
+      },
+      "constraint_check_pass": true,
+      "wall_seconds": 2.032671058999995,
+      "report_sha256": "401d7869bd2462922651355d7e08c760bfcafdb09f1d74e044ab537e99a301da"
+    }
+  ],
+  "inputs": {
+    "6_final.v": "d5321db48f917b3302e0708933da82ee209317f5424f7ed67fb8ec4ec9fd74c9",
+    "6_final.sdc": "1b9da3ca144811b42e311af0cb0b2e5bf3090458b41e71eff18627f4985074df",
+    "6_final.spef": "d721dd3500c802962eeca12c2b1a4f0c534e8ab388ea1f6e4daa0bf259faafeb"
+  },
+  "script_sha256": "fe7e81a28e561979e8fd5e77063287992f1896b3da06651cdce07d650ef1f65a"
+}

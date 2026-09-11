@@ -9,14 +9,12 @@ case "$stage" in synth|floorplan|place|cts|route|finish) ;; *) echo 'stage: synt
 : "${FLOW_VARIANT:=reproduce_${view}}"
 variant_root="$ORFS_ROOT/flow/results/asap7/img_filter/$FLOW_VARIANT"
 if [[ ! "$FLOW_VARIANT" =~ ^[A-Za-z0-9_-]+$ ]]; then echo 'Invalid variant' >&2; exit 2; fi
-mkdir -p "$variant_root"
 stamp=$(mktemp)
 trap 'rm -f "$stamp"' EXIT
 VFIR_VIEW="$view" python3 "$repo/tools/flow_fingerprint.py" > "$stamp"
-if [[ -f "$variant_root/reproduction.inputs" ]] && ! cmp -s "$stamp" "$variant_root/reproduction.inputs"; then
-  echo 'Inputs changed: use a NEW FLOW_VARIANT; checkpoint reuse rejected.' >&2; exit 2
-fi
-cp "$stamp" "$variant_root/reproduction.inputs"
+python3 "$repo/tools/checkpoint_guard.py" --stamp "$stamp" "$variant_root" \
+  "$ORFS_ROOT/flow/logs/asap7/img_filter/$FLOW_VARIANT" \
+  "$ORFS_ROOT/flow/reports/asap7/img_filter/$FLOW_VARIANT"
 cd "$ORFS_ROOT/flow"
 make DESIGN_CONFIG="$repo/flow/asap7/$config" \
      VERILOG_FILES="$repo/rtl/img_filter_def.v $repo/rtl/img_filter.v" \

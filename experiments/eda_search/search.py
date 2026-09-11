@@ -40,6 +40,20 @@ def get_metric(data,suffix):
     return float(matches[0])
 
 
+def load_cached(cached, metrics):
+    """Reject stale/tampered evidence instead of trusting a cache filename."""
+    row = json.loads(cached.read_text())
+    if not metrics.is_file() or sha(metrics) != row['metrics_sha256']:
+        raise ValueError(f'Cache evidence mismatch: {metrics}')
+    data = json.loads(metrics.read_text())
+    for field, suffix in [('area_um2', 'design__instance__area__stdcell'),
+                          ('setup_ws_ps', 'timing__setup__ws'),
+                          ('hold_ws_ps', 'timing__hold__ws'), ('power_w', 'power__total')]:
+        if row[field] != get_metric(data, suffix):
+            raise ValueError(f'Cache metric mismatch: {cached}: {field}')
+    return row
+
+
 def main(a):
     root=a.orfs_root.resolve(); output=a.output.resolve(); output.mkdir(parents=True,exist_ok=True)
     design=root/f'flow/designs/asap7/{a.design}/config.mk'
@@ -67,7 +81,8 @@ def main(a):
             pool.remove(point)
             key=hashlib.sha256(json.dumps([context,point],sort_keys=True).encode()).hexdigest()[:16]
             cached=output/f'{key}.json'; variant=f'ai_search_{key}'
-            if cached.exists(): row=json.loads(cached.read_text()); row['cache_hit']=True
+            if cached.exists():
+                row=load_cached(cached, output/f'{key}.metrics.json'); row['cache_hit']=True
             else:
                 command=['make','-C',str(root/'flow'),f'DESIGN_CONFIG={design}',
                          f'FLOW_VARIANT={variant}','CORNER=BC','NUM_CORES=2',
@@ -100,8 +115,10 @@ def main(a):
                      'objective':area/1000+max(0,-ws)/1000,
                      'wall_seconds':elapsed,'metrics_sha256':hashlib.sha256(metrics.read_bytes()).hexdigest(),
                      'variant':variant,'cache_hit':False}
+                # Publish exactly the bytes hashed above. JSON reformatting
+                # changes SHA256 even when every numerical value is identical.
+                (output/f'{key}.metrics.json').write_bytes(metrics.read_bytes())
                 cached.write_text(json.dumps(row,indent=2)+'\n')
-                (output/f'{key}.metrics.json').write_text(json.dumps(data,indent=2)+'\n')
             seen.append(row)
             print(json.dumps({'algorithm':algorithm,'iteration':i+1,**row}),flush=True)
         results[algorithm]={'trials':seen,'best_objective':min(r['objective'] for r in seen),

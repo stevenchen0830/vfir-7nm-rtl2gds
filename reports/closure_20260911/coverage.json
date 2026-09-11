@@ -1,0 +1,7 @@
+{
+  "status": "TOOL_CHECK_PASS_WITH_EXISTING_EXCEPTIONS",
+  "wall_seconds": 76.96162056200001,
+  "report_sha256": "ad65809b95d9f69eb668a16fa337b2eade42c81199aae8dc4755fc0934db3848",
+  "limitations": "Does not validate that false paths/reset assumptions are physically justified; no new exception added",
+  "script_sha256": "1191a7b426169d5bba21890d87044ed3723afc409ba24e1af613e34d60bf1c52"
+}

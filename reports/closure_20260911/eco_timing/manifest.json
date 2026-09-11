@@ -1,0 +1,42 @@
+{
+  "corner": "FF",
+  "target_period_ps": 1000,
+  "setup_uncertainty_ps": 150,
+  "hold_uncertainty_ps": 30,
+  "status": "EXPERIMENT_COMPLETED_NOT_SIGNOFF",
+  "post_repair_view": "placement_estimate",
+  "inputs": {
+    "6_final.odb": "4478e420c086b2a08bdc900c3b287b0b9c5bb9edaff43f7a2af4e19de338e32b",
+    "6_final.v": "5e2732842ae6817cba05d9d1f86a744582c096a511b64130f50560ad1244cfcf",
+    "6_final.sdc": "52adeefbe3ac3fc76a095b2a7d65326a4c9de6725d4bdf1ee08b50541063f169",
+    "6_final.spef": "513882d0015583ed3fd9c21442e4465de411fe0e95275f415d0eebdcd3d6463e"
+  },
+  "scripts": {
+    "flow/closure/audit_candidate.tcl": "43f8148510ebf78947a4796cb96f565de131fc951fc166dd93a4721a978d53a9",
+    "flow/closure/eco_drv.tcl": "af27e349cda7bb51f15b0bec6048cfe30a0341bc9fd343c7a9d8bad5c108aeb2",
+    "flow/closure/eco_timing.tcl": "382ddb128fe0b5b3bc4a8ce71702a7b974b3fc4460a370b3757cffe8c150ec96",
+    "flow/closure/load_candidate.tcl": "6e808c2c9f1e7a4ad254a4d927d689aaf0d7b0d9ec69acd7c16c72c33df58500",
+    "flow/closure/report_candidate.tcl": "1d687e1e3cbd29e282713c0bd2511430af65fdb831f8ec91c3377fdd4ff7cf2d"
+  },
+  "driver_sha256": "e98384eed5b196aaf2f44dd6c14a5c6955fb114733ee4a9a2ea38d5d4a65143c",
+  "eco_inputs": {
+    "2_legalized.odb": "5f47d68a5dfd099253bad2c9a2a53474e4c5e8e7aecb7eaf69581b3741ab9351",
+    "2_legalized.v": "d79cc5ef987e0697a7dadf6ebe1a923ac816f5c255a3542b4e08346e73ac9707",
+    "2_legalized.sdc": "0647a07bd75e6a2a08e4d6b6d5fc4141613bb89f722019e34fc67171a29c8afc"
+  },
+  "pid": 2286,
+  "exit_code": 0,
+  "wall_seconds": 150.73436951199994,
+  "outputs": {
+    "4_hold.odb": "606c115e4ba5e59ac4c131f8bbe3c0b50efde26217563791c243921e111b46d0",
+    "5_timing_legalized.odb": "3fb66a582032abcbd4d7fbbe77cd534263cb3ab9dd57d09f293c452ba764d0b3",
+    "5_timing_legalized.v": "149df571f628b5005708bcdddd5fbe31d7c4cbedaa47d562a90cc7c06946ff9f",
+    "3_setup.odb": "bf915c571617fb011e3c3e242bbdc50f01eb1ad943fa147f734406fe5bbdbaa3",
+    "5_timing_legalized.sdc": "5a5fa89c6d39eb1fc1064ae9d8e1edc48f6fcacbf0aa50b20bcbe90f855cf117",
+    "4_hold.sdc": "01449cab44a367d8c81c420ae520c4b57224af40ec434dee3c95b7ec487c5b7f",
+    "3_setup.sdc": "105baf9617dd7f68082f4d23bf763f472929f2312eea62378e7982b03d2f836f",
+    "eco.log": "386ad337e1903879de9cae32c9c4265031c0604d04b7378f63802e3e828b5035",
+    "3_setup.v": "c84e330579a66aa245f5a7a174c746382d2e6548b38d29b8b87d3d6ff42e31e8",
+    "4_hold.v": "149df571f628b5005708bcdddd5fbe31d7c4cbedaa47d562a90cc7c06946ff9f"
+  }
+}

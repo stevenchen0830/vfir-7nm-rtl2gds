@@ -1,5 +1,23 @@
 # Report provenance
 
+## 2026-09-11 isolated repair evidence
+
+See [the repair ledger](../docs/closure-progress.md) for current status.
+`closure_20260911/matrix/` holds original-v4 FF/TT/SS STA at fixed 1 ns,
+150/30 ps with the same routed SPEF; every corner fails timing/DRV acceptance.
+`closure_20260911/eco_drv/` and `eco_timing/` contain bounded, saved ECO
+experiments with **placement** estimates, not a replacement post-route result.
+`closure_20260911/coverage.rpt` is a completed tool-level coverage check under
+existing exceptions. The old crashing attempt remains under `baseline/`.
+Input/output/script hashes are in the corresponding JSON manifests.
+
+New CNN physical results are separate from FIR:
+[`experiments/cnn/results/final_20260911/`](../experiments/cnn/results/final_20260911/).
+Only its BC timing/DRV/geometric-routing view is clean; TT/SS fail. Historical
+reports below remain unchanged and are not superseded by estimated ECO data.
+
+## Historical report sets
+
 Every file below maps to one run. "SDC" names the constraint file content in
 force during that run — `constraint.sdc` at the time of all these runs was
 the **blanket-uncertainty (reported)** version, preserved verbatim as

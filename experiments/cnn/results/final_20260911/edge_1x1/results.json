@@ -1,0 +1,46 @@
+{
+  "scope": "signed INT8 3x1 depthwise CNN operator; not a complete trained classifier",
+  "seed": 5,
+  "channels": 1,
+  "width": 1,
+  "height": 1,
+  "relu": 0,
+  "frames": 2,
+  "qshift": 0,
+  "pixel_beats": 2,
+  "component_checks": 2,
+  "frame_weights": [
+    [
+      [
+        -128,
+        127,
+        -1
+      ]
+    ],
+    [
+      [
+        127,
+        -1,
+        -128
+      ]
+    ]
+  ],
+  "frame_biases": [
+    [
+      -7242
+    ],
+    [
+      -6493
+    ]
+  ],
+  "distinct_frames": true,
+  "parameter_reload_each_frame": true,
+  "midframe_reset_restart": false,
+  "bias_extremes": false,
+  "line_buffer_bits": 16,
+  "macs_per_output_pixel": 3,
+  "wall_seconds": 0.03778352300014376,
+  "simulation": "CNN PASS beats=2 cycles=24 stalled=2",
+  "accuracy": "bit-exact integer operator test; task accuracy not measured",
+  "physical_area_power": "separate placement pilot only; see results/placement; no SRAM macro or energy measurement"
+}

@@ -1,0 +1,32 @@
+{
+  "corner": "FF",
+  "target_period_ps": 1000,
+  "setup_uncertainty_ps": 150,
+  "hold_uncertainty_ps": 30,
+  "status": "EXPERIMENT_COMPLETED_NOT_SIGNOFF",
+  "post_repair_view": "placement_estimate",
+  "inputs": {
+    "6_final.odb": "4478e420c086b2a08bdc900c3b287b0b9c5bb9edaff43f7a2af4e19de338e32b",
+    "6_final.v": "5e2732842ae6817cba05d9d1f86a744582c096a511b64130f50560ad1244cfcf",
+    "6_final.sdc": "52adeefbe3ac3fc76a095b2a7d65326a4c9de6725d4bdf1ee08b50541063f169",
+    "6_final.spef": "513882d0015583ed3fd9c21442e4465de411fe0e95275f415d0eebdcd3d6463e"
+  },
+  "scripts": {
+    "flow/closure/audit_candidate.tcl": "43f8148510ebf78947a4796cb96f565de131fc951fc166dd93a4721a978d53a9",
+    "flow/closure/eco_drv.tcl": "af27e349cda7bb51f15b0bec6048cfe30a0341bc9fd343c7a9d8bad5c108aeb2",
+    "flow/closure/load_candidate.tcl": "6e808c2c9f1e7a4ad254a4d927d689aaf0d7b0d9ec69acd7c16c72c33df58500",
+    "flow/closure/report_candidate.tcl": "1d687e1e3cbd29e282713c0bd2511430af65fdb831f8ec91c3377fdd4ff7cf2d"
+  },
+  "pid": 646,
+  "exit_code": 0,
+  "wall_seconds": 311.16509055000006,
+  "outputs": {
+    "1_drv_fixed.odb": "2751e7e0aa41f4c5a3076b036182b41334e469bb85ac5f8d43b2459cce2c4741",
+    "1_drv_fixed.sdc": "1fef4336dc7d464d51d102d853db32779e4e9ed7b07826a3ff0be0bf1c778d0a",
+    "1_drv_fixed.v": "d79cc5ef987e0697a7dadf6ebe1a923ac816f5c255a3542b4e08346e73ac9707",
+    "2_legalized.odb": "5f47d68a5dfd099253bad2c9a2a53474e4c5e8e7aecb7eaf69581b3741ab9351",
+    "2_legalized.sdc": "0647a07bd75e6a2a08e4d6b6d5fc4141613bb89f722019e34fc67171a29c8afc",
+    "2_legalized.v": "d79cc5ef987e0697a7dadf6ebe1a923ac816f5c255a3542b4e08346e73ac9707",
+    "eco.log": "c9e60729c3e1a20c14dccc3669ed0263e0ee196b8a0a75f414a2f5155feaf720"
+  }
+}

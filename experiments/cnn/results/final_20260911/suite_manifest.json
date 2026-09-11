@@ -1,0 +1,90 @@
+{
+  "scope": "integer operator and protocol regression, not trained model accuracy",
+  "frames": 15,
+  "beats": 498,
+  "comparisons": 1262,
+  "cases": [
+    {
+      "case": "c2",
+      "frames": 2,
+      "beats": 128,
+      "comparisons": 256,
+      "files": {
+        "c2\\results.json": "b963e86dd48f2453aacd115149bf25a86297743011709315734e0a1a21603da8",
+        "c2\\simulation.log": "9df223667ce54cc2f79b82a2713db43e159ce2ca180fd1f6cc0435f7cc6b4b0c",
+        "c2\\tb.sv": "40ad84c87df67a4a6dc179c323cf3211f09544de184b2f464ae457fcf7722e1a"
+      }
+    },
+    {
+      "case": "c4_relu",
+      "frames": 2,
+      "beats": 128,
+      "comparisons": 512,
+      "files": {
+        "c4_relu\\results.json": "028caa79990d6b3e7292c10456f27a0e352b35530c78204e45eec26c59c6e781",
+        "c4_relu\\simulation.log": "9df223667ce54cc2f79b82a2713db43e159ce2ca180fd1f6cc0435f7cc6b4b0c",
+        "c4_relu\\tb.sv": "711777f0081862d7e15cc8c665d735170330db3950267e3b2507cecde890288b"
+      }
+    },
+    {
+      "case": "edge_1x1",
+      "frames": 2,
+      "beats": 2,
+      "comparisons": 2,
+      "files": {
+        "edge_1x1\\results.json": "c92e252c1a89c38cce56014552e131f5d08592dda34ea832f8e6dd84f779b444",
+        "edge_1x1\\simulation.log": "49471c9e0ab9c344ca40401d5eb01020721c3b94650174e1faa4d1ada3a703fc",
+        "edge_1x1\\tb.sv": "6c245f7071ecd7072e38cc2aeca1e8df526787904e0575ab3a708f1af538a7fe"
+      }
+    },
+    {
+      "case": "edge_q31",
+      "frames": 2,
+      "beats": 12,
+      "comparisons": 36,
+      "files": {
+        "edge_q31\\results.json": "628fa3d0e459da8f43f3ef8c90893d3701931ffa1a7c6179c615a5444f9a067a",
+        "edge_q31\\simulation.log": "fed0fb5ad2bd13ed04caaa4735612ecefa45c338bf553a2da453f140f079493b",
+        "edge_q31\\tb.sv": "d8039868193e4bfb1465deb4764c67121cbeadf7cd469c24fcd8ce65dec356f2"
+      }
+    },
+    {
+      "case": "reset_restart",
+      "frames": 3,
+      "beats": 192,
+      "comparisons": 384,
+      "files": {
+        "reset_restart\\results.json": "032d5c204b17b4a12c24dd37bf1038397253630369b2c8579df93ba5cfb76e5b",
+        "reset_restart\\simulation.log": "7d6120d8230471bab5673aeba242b09a07121f629102463ef3330dbd3568659c",
+        "reset_restart\\tb.sv": "4550ff451d4bbd5054397123f155de10fb0e0d0c114a3a3c1770cb557094a119"
+      }
+    },
+    {
+      "case": "bias_extremes_q31",
+      "frames": 2,
+      "beats": 18,
+      "comparisons": 36,
+      "files": {
+        "bias_extremes_q31\\results.json": "385b09f1eec0956a6423a0e87b3d4dd15bc663c18cb22b65d1f8ae31168ce08e",
+        "bias_extremes_q31\\simulation.log": "5a83ade2d4a869dbcd1067994f71891819f1e1a1efa2ef938d30857b761081af",
+        "bias_extremes_q31\\tb.sv": "39b9ee64c2c8aedf9f52aea973cbbc285aea4d500b0c8771089aec805e1ebeb1"
+      }
+    },
+    {
+      "case": "bias_extremes_q0",
+      "frames": 2,
+      "beats": 18,
+      "comparisons": 36,
+      "files": {
+        "bias_extremes_q0\\results.json": "15ca148c6dfc6f65163f0d0f916788288238e473f5379f02fa45b5a35ef30310",
+        "bias_extremes_q0\\simulation.log": "5a83ade2d4a869dbcd1067994f71891819f1e1a1efa2ef938d30857b761081af",
+        "bias_extremes_q0\\tb.sv": "8055b7cc4deb48c5d201f3912e0380f291cafae9a27e9e8c8ea042d3468c68f9"
+      }
+    }
+  ],
+  "sources": {
+    "experiments\\cnn\\rtl\\int8_dw3x1.sv": "a536036891b493ce327cc5f5ccef171c0bf743fbd697fa425225463dd801b5d9",
+    "experiments\\cnn\\test_cnn.py": "192a2589600c49f3e3f891147659793cc5035c1e60900d60d9f53db89fe7e1f7",
+    "experiments\\cnn\\run_tests.sh": "30357c07164663e0fcf095944fffeb91796c775f10a81368402d16e2a540e413"
+  }
+}

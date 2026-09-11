@@ -20,7 +20,7 @@ files={}
 for directory in ['rtl','flow/asap7']:
     for p in sorted((repo/directory).rglob('*')):
         if p.is_file(): files['repo/'+str(p.relative_to(repo))]=sha(p)
-for p in [repo/'flow/run_stage.sh',Path(__file__).resolve()]: files['repo/'+str(p.relative_to(repo))]=sha(p)
+for p in [repo/'flow/run_stage.sh',repo/'tools/checkpoint_guard.py',Path(__file__).resolve()]: files['repo/'+str(p.relative_to(repo))]=sha(p)
 for directory in ['flow/scripts','flow/util','flow/platforms/asap7']:
     for p in sorted((root/directory).rglob('*')):
         if p.is_file(): files['orfs/'+str(p.relative_to(root))]=sha(p)

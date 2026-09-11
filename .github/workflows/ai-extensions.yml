@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ai-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   bounded-experiments:
     runs-on: ubuntu-latest
@@ -20,16 +24,19 @@ jobs:
       - name: Install lightweight dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq iverilog
+          sudo apt-get install -y -qq iverilog verilator
           python -m pip install numpy==2.3.5
       - name: Public evidence and documentation checks
         run: |
           python tools/check_reproduction.py
           python tools/check_flow_views.py
+          python -m unittest discover -s tests -v
       - name: Reproduce constrained FIR learning
         run: python experiments/learned_fir/train.py --output work/learned-ci
       - name: Signed CNN integer and handshake tests
-        run: bash experiments/cnn/run_tests.sh work/cnn-ci
+        run: |
+          verilator --lint-only --top-module int8_dw3x1 experiments/cnn/rtl/int8_dw3x1.sv
+          bash experiments/cnn/run_tests.sh work/cnn-ci
       - name: Check historical v4 report integrity
         run: cd reports && sha256sum -c manifest_v4.sha256
       - uses: actions/upload-artifact@v4

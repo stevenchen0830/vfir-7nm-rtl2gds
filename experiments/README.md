@@ -42,6 +42,38 @@ frame; this verifies hardware compatibility, not image-task generalization.
 
 ## 2. Signed INT8 CNN convolution IP
 
+**2026-09-11 update:** active RTL has three valid-aligned stages (products,
+33-bit bias/accumulate, requantize) and bounded-width x/y counters. The exact
+single-cycle baseline is retained in
+[`cnn/history/int8_dw3x1_20260910.sv`](cnn/history/int8_dw3x1_20260910.sv).
+The added pipeline changes latency, not the mathematical operator or
+steady-state one-pixel/beat interface. Backpressure freezes all stages.
+
+The strengthened suite uses different consecutive images, per-frame
+weights/biases, midframe reset/restart and INT32 bias extrema:
+**15 completed frames, 498 beats, 1,262 channel comparisons**. A Python test
+also compares the narrowed rounding formula with the independent absolute-value
+reference in 64,576 cases over QSHIFT=0..31. This is finite evidence, not
+exhaustive 33-bit formal equivalence.
+
+The first pipeline candidate completed CTS, DRT and RCX: BC setup +131.06 ps,
+hold +1.53 ps, both TNS/counts 0, slew/cap/fanout/routing DRC 0; area
+718.021 um². **TT/SS do not pass.** See the
+[repair ledger](../docs/closure-progress.md),
+[physical evidence](cnn/results/pipeline_20260911/physical/summary.json) and
+[multi-PVT audit](cnn/results/pipeline_20260911/audit/matrix.json).
+The narrow-counter follow-up must use its own measured results, not inherit
+this PPA. Current regression output: [`cnn/results/final_20260911/`](cnn/results/final_20260911/).
+
+The final lint-clean narrow-counter version now also completed the full flow:
+BC setup **+170.86 ps**, hold **+0.149 ps**, setup/hold TNS and all applicable
+timing/DRV/geometric DRC counts zero; area **673.071 um²**, vectorless power
+**26.216 mW**. Hold margin is very small. TT setup is **-111.67 ps**, SS setup
+**-629.96 ps** with 176/453 slew violations respectively: **not all-corner
+closure**. [Final physical report](cnn/results/final_20260911/physical/summary.json)
+and [PVT matrix](cnn/results/final_20260911/audit/matrix.json). No new SRAM,
+LVS/EM or measured inference-energy claim is implied.
+
 ```bash
 bash experiments/cnn/run_tests.sh
 ```
@@ -58,11 +90,12 @@ there is no time-multiplexed channel scheduler yet.
 Quantization uses zero_point=0 and a power-of-two scale; rounding is nearest
 with ties away from zero. This differs from the original unsigned FIR's
 `+64 >>7` rule. The reference and testbench exercise mixed signs, -128 weights,
-large bias, saturation and stalls. Four configurations currently have measured
+large bias, saturation and stalls. The historical single-cycle baseline had four measured
 bit-exact simulation evidence: [2-channel](cnn/results/c2/results.json),
 [4-channel ReLU](cnn/results/c4_relu/results.json), [1x1/no shift](cnn/results/edge_1x1/results.json),
-and [3-channel/QSHIFT31](cnn/results/edge_q31/results.json). Each runs two
-consecutive frames and checks ten drain cycles for unexpected extra output.
+and [3-channel/QSHIFT31](cnn/results/edge_q31/results.json). Each ran two
+identical consecutive frames and checked ten drain cycles for extra output;
+the new suite above fixes that weak multi-frame stimulus.
 Total: **8 frames, 270 pixel beats, 806 channel comparisons**, zero mismatches.
 
 | Configuration | Buffer bits (structural) | MACs/output pixel | Measured simulation |
@@ -76,7 +109,7 @@ needs W virtual-row flush cycles before the next frame is accepted. Logical
 rolling-buffer traffic per ordinary interior pixel is 2C byte reads + 2C byte
 writes. These counts do not imply inferred SRAMs or measured energy.
 
-An actual small ORFS placement pilot was also run:
+The historical single-cycle ORFS placement pilot was:
 
 ```bash
 ORFS_ROOT=/path/to/ORFS FLOW_VARIANT=cnn_pilot_new bash experiments/cnn/flow/run_place.sh
@@ -93,15 +126,17 @@ ORFS_ROOT=/path/to/ORFS FLOW_VARIANT=cnn_pilot_new bash experiments/cnn/flow/run
 This is an unoptimized baseline, not a fast/low-power claim. Default activity
 does not model frame-static weights/biases or a real workload; the raw power
 estimate must **not** be advertised as CNN inference energy or compared directly
-with v4 FIR power. No CTS/DRT/RCX was run for this operator. The C=4 test also
+with v4 FIR power. No CTS/DRT/RCX was run for that baseline; the pipelined
+successor above has routed evidence. The historical C=4 test also
 changes ReLU and stimulus, so the two simulation rows are not a controlled
 causal power/area comparison.
 
 This first operator is not a full trained classifier, a 3×3 implementation,
 or a completed MobileNet. Horizontal spatial filtering and 1×1 cross-channel
 mixing remain extensions. An arbitrary 3×3 kernel is not exactly a rank-1
-3×1/1×3 factorization. Task accuracy, routed PPA and workload energy have not
-been measured for this new IP. Buffer bits and MAC counts are structural
+3×1/1×3 factorization. Task accuracy and workload energy have not been
+measured; routed PPA is available only for the named pipeline candidates.
+Buffer bits and MAC counts are structural
 counts, not power estimates. For context: [MobileNet](https://arxiv.org/abs/1704.04861)
 and [integer quantization](https://arxiv.org/abs/1712.05877).
 
@@ -126,6 +161,13 @@ both algorithms. Equal evaluation count is **not** equal wall-clock budget;
 the report records both. A four-trial seed is an integration pilot, not a
 statistical demonstration that ML beats random search. Report ties or worse
 results honestly. No best configuration is automatically applied to FIR.
+
+The 2026-09-11 integrity fix restores exact original raw metrics bytes
+(including no terminal newline); historical numerical observations are
+unchanged. The measured driver is archived as
+`eda_search/history/search_20260910.py`. New `search.py` writes raw bytes and
+validates cache hashes and values before reuse. Offline
+`tools/check_reproduction.py` now checks raw/cache/summary agreement.
 
 Only placement is used here: hold/DRV/routing feasibility must gate later
 stages. This pilot does not claim a measured FIR PPA improvement or GPU routing

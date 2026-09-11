@@ -1,0 +1,38 @@
+{
+  "variant": "cnn_final_20260911",
+  "view": "BC/FF; 1000ps; 100/30ps; extracted final SPEF",
+  "timing_electrical_counts": {
+    "setup": 0,
+    "hold": 0,
+    "max slew": 0,
+    "max cap": 0,
+    "max fanout": 0
+  },
+  "routing_drc": 0,
+  "stage_metrics": {
+    "finish__timing__setup__tns": 0,
+    "finish__timing__hold__tns": 0,
+    "finish__timing__setup__ws": 170.864,
+    "finish__timing__hold__ws": 0.149027,
+    "finish__power__total": 0.026216,
+    "finish__design__instance__area__stdcell": 673.071
+  },
+  "power_scope": "vectorless default activity, NOT workload inference energy",
+  "final_inputs": {
+    "6_final.v": "0a9f36322cf121c19dfc77d4eb56a2e1a6db42400658c63160cb15209d6d3a05",
+    "6_final.odb": "c2649c0f6fbd1f103353a2f09057fd8dfb3fbb3e18509540fa94159d7fe56e77",
+    "6_final.def": "9604efd2e67fabebd4b20948c721b39bd3e41b73747899176b2a7b07c384b552",
+    "6_final.spef": "4b7811d409a8e331d45e2412131e287cf3d027cb2f358285055fd7058e221a07",
+    "6_final.sdc": "1b9da3ca144811b42e311af0cb0b2e5bf3090458b41e71eff18627f4985074df"
+  },
+  "evidence_files": {
+    "5_2_route.rpt": "59870bf13c471423233383a723845249e1b7ed899e94e16e234c23cbbc7150b5",
+    "5_route_drc.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "6_final.sdc": "1b9da3ca144811b42e311af0cb0b2e5bf3090458b41e71eff18627f4985074df",
+    "6_finish.rpt": "572a19dbecb4b9c2f050f02178af79c9bfde0a5b51090730b025bd8c769d4ee5",
+    "6_metrics.json": "93b739220b1623057fed1b5168fc2764d62a93b5ac2452cbce59debadc4256b9",
+    "bounded_finish.json": "3f16fa915073db9e0cc8df38616a925bde577eb965b8500a7ad6cfc599b33ceb",
+    "drc_summary.json": "c4f08dd01ea134f6668d302ca2f1824d5bef43990e7186870f94c9a4289284f0",
+    "reproduction.inputs": "37f193a5dcb385e5dc26f11032f7ff57eeda9ed9135b7f346001dd100a2797b1"
+  }
+}

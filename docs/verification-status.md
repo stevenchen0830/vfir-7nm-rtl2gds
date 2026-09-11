@@ -5,13 +5,16 @@ on `main`. Verification was re-run on 2026-09-01 with Icarus
 Verilog 14, Verilator 5.051, Yosys/SBY/EQY 0.68 and Boolector 3.2.4. Historical
 audit files for commit `cc60e8a` remain in [`audit/`](audit/) but do not define
 the current v4 status. Nothing on this page is a tapeout-signoff claim.
-A native UVM pass-through smoke was additionally run on 2026-09-02 with
-Verilator 5.050 and the Verilator-compatible Accellera UVM 2020.3.1 library.
+The 2026-09-02 native UVM pass-through smoke is historical. The 2026-09-10
+functional UVM suite uses Verilator 5.050 and Accellera UVM 2020.3.1, a real
+SRAM behavior model and convolution predictor: 17 positive frames / 6,440
+beats, plus two injected-fault controls. See [the run guide](../verification/uvm/README.md).
 
 | Check | Status | Current v4 evidence |
 | --- | --- | --- |
-| RTL dynamic verification | **PASS** | Complete 54-frame self-checking regression, four independent 13-frame seeds, 0..48 split-rotator test, PREP boundary/consecutive-frame checks and five runtime-reset injection sites. Independent Python model: 117 shape-by-kernel checks. Native UVM smoke: 144 accepted beats with input starvation/output backpressure, 0 errors/fatals. See [`audit/dynamic_verification_v4.md`](audit/dynamic_verification_v4.md) and [`audit/uvm_smoke_v4.log`](audit/uvm_smoke_v4.log). |
+| RTL dynamic verification | **PASS within tested scope** | Historical 54-frame regression, four 13-frame seeds, 0..48 rotator, PREP and runtime-reset tests; Python: 117 shape/kernel checks. Current functional UVM: **17 frames / 6,440 beats**, K=1/3/5/7/49, real SRAM reads and observed-input predictor, two fault controls detected. [Functional UVM evidence](audit/uvm_functional/summary.json); [historical dynamic evidence](audit/dynamic_verification_v4.md). |
 | Functional coverage | **PARTIAL** | The testbench records legal kernel values, width modulo 4, bank wrap and all three rotation-shift masks. These are targeted functional counters, not code/toggle/branch coverage and not proof of every legal input sequence. |
+| STA constraint coverage | **TOOL CHECK PASS, existing exceptions** | 2026-09-11 `check_setup -verbose` completed and returned true on original v4 with fixed 150/30 ps. No exceptions added. This does not characterize SRAM/clock budgets or prove reset exceptions valid. [Report](../reports/closure_20260911/coverage.rpt). |
 | Formal functional completeness | **PARTIAL** | Forty-cycle BMC passes the control-safety and split-rotator pipeline/tag assertions. It does not prove every output transaction against the mathematical FIR reference and is not an unbounded proof. |
 | CDC | **PASS (module level)** | 562 sequential cells / 22,577 state bits all use the sole top-level `clk`; no internal clock crossing exists. |
 | RDC | **CONDITIONAL** | All 1,206 resettable state bits use `rst_n`; 21,371 datapath bits are deliberately unreset. Reset-injection and bounded-formal checks support payload isolation, but safe deassertion still depends on the external reset synchronizer required by the integration contract. |
@@ -19,7 +22,7 @@ Verilator 5.050 and the Verilator-compatible Accellera UVM 2020.3.1 library.
 | Zero-delay GLS | **PASS (generic netlist)** | Public-interface pass-through smoke: 144 beats, zero errors. Original v4 final inputs and new derived SDF are now packaged separately; mapped-netlist and timing GLS remain unrun. [Asset scope](physical-assets.md). |
 | 1 GHz FF/BC operating view | **PASS, limited view** | With the documented 100 ps setup / 30 ps hold uncertainty: setup WNS +34.31 ps, TNS 0; hold WNS +4.88 ps, TNS 0. This uses the routed v4 SPEF and FF Liberty view. |
 | Implementation 150 ps setup-uncertainty view | **NOT CLOSED** | Setup WNS -15.69 ps, TNS -117.37 ps, 19 endpoints; hold remains +4.88 ps / TNS 0. This is the implementation budget; 100/30 is a separate assumed sensitivity view, not a physically established operating guarantee. |
-| MMMC / electrical / physical signoff | **NOT CLOSED** | 243 max-slew violations remain (max-cap and max-fanout are 0). TT at 1 GHz and SS at 2 ns are diagnostics that reuse one SPEF, not per-corner extracted MMMC. Full `check_timing`, final-netlist LEC, LVS, EM/IR and SRAM-macro signoff are absent. |
+| MMMC / electrical / physical signoff | **NOT CLOSED** | Original FF has 243 max-slew violations. Fresh same-SDC 1 ns FF/TT/SS diagnostics and bounded ECO are in the [repair ledger](closure-progress.md). They reuse one RC view or placement estimates, not per-corner extracted MMMC. Tool-level coverage now passes, but physical exception validation, final-netlist LEC, LVS, EM/IR and SRAM-macro signoff remain open. |
 
 ## Timing evidence boundary
 
