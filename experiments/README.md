@@ -5,6 +5,14 @@ area or power. Each has runnable source, a bounded experiment and explicit
 limits. Upstream CNN concepts and optimization techniques are acknowledged;
 the project contribution is their implementation, verification and comparison.
 
+CNN source portability note (2026-09-11): CI Verilator 5.020 required an
+explicit `(RELU != 0)` boolean comparison where the original source used
+the integer parameter directly. No warning was suppressed. The exact
+pre-cleanup source for the reported physical candidate is preserved as
+`cnn/history/int8_dw3x1_final_20260911.sv`; the original manifest hashes are
+unchanged and `source-map.json` resolves that one archived source. The active
+source is retested separately; this source cleanup is not a new physical run.
+
 ## 1. Learned legal FIR coefficients
 
 ```bash

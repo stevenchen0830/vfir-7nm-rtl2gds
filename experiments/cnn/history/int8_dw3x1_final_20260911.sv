@@ -54,7 +54,7 @@ module int8_dw3x1 #(
                         rounded=sum_q[c]+HALF-(sum_q[c][32] ? 33'sd1 : 33'sd0);
                         shifted=rounded>>>QSHIFT;
                     end else shifted=sum_q[c];
-                    if((RELU != 0) && shifted<0) shifted=0;
+                    if(RELU && shifted<0) shifted=0;
                     if(shifted>127) shifted=127;
                     if(shifted< -128) shifted=-128;
                     out_data[c*8+:8]<=shifted[7:0];

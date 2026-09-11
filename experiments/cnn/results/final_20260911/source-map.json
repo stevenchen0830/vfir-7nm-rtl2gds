@@ -1,0 +1,6 @@
+{
+  "reason": "Preserve exact measured source before the explicit RELU != 0 boolean spelling required by Verilator 5.020. Original manifests are unchanged; new source is separately retested.",
+  "archived_sources": {
+    "experiments/cnn/rtl/int8_dw3x1.sv": "experiments/cnn/history/int8_dw3x1_final_20260911.sv"
+  }
+}

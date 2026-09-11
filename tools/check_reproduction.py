@@ -64,8 +64,10 @@ for algorithm in comparison['algorithms'].values():
                 errors.append(f'EDA raw/cache/summary metric mismatch: {key}: {field}')
 suite_path=repo/'experiments/cnn/results/final_20260911/suite_manifest.json'
 suite=json.loads(suite_path.read_text())
+source_map=json.loads((suite_path.parent/'source-map.json').read_text())['archived_sources']
 for name,h in suite['sources'].items():
-    if hashlib.sha256(evidence_path(repo,name).read_bytes()).hexdigest()!=h: errors.append(f'CNN suite source mismatch: {name}')
+    preserved=source_map.get(name.replace('\\','/'),name)
+    if hashlib.sha256(evidence_path(repo,preserved).read_bytes()).hexdigest()!=h: errors.append(f'CNN suite source mismatch: {name}')
 for case in suite['cases']:
     for name,h in case['files'].items():
         if hashlib.sha256(evidence_path(suite_path.parent,name).read_bytes()).hexdigest()!=h: errors.append(f'CNN test artifact mismatch: {name}')
