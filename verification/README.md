@@ -18,7 +18,8 @@ the broader 54-frame regression.
   rotator stage B, FILL and MAIN under output backpressure, followed by a
   checked clean-restart frame after every reset.
 - `prep_boundary_tb.sv`: focused PREP-vector check at heights 24, 49, 4095
-  and the 12-bit maximum height 4096.
+  and the 12-bit maximum height 4096, plus the 24x24 `blk_v=49` row-0 vector,
+  whose bottom fold needs the reduced `mod_x` (the PREP load-count sentinel).
 - `prep_transition_tb.sv`: finishes one frame and checks maximum-height PREP
   on the next frame without an intervening reset.
 - `gls_smoke_tb.sv`: public-interface-only pass-through smoke for a zero-delay

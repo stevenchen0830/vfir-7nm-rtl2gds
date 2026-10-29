@@ -24,7 +24,14 @@ always @(posedge clk) begin
         assert((mem_we & ~mem_ce) == {NBK{1'b0}});
         assert((mem_we & (mem_we - {{(NBK-1){1'b0}}, 1'b1})) == {NBK{1'b0}});
         assert((m_ce & m_1h) == {NBK{1'b0}});
-        if (state == S_IDLE)
+        // in_pix_need is the registered in_need_q, so it shows the decision
+        // made in the previous cycle.  A blk_v = 1 frame goes from MAIN
+        // straight to IDLE, and the request computed in that last MAIN cycle
+        // is still visible for exactly one IDLE cycle.  Every other IDLE
+        // cycle must not request input, including an IDLE reached from MAIN
+        // when blk_v > 1 (that frame should have gone to DRAIN).
+        if (f_past_valid && state == S_IDLE &&
+            !($past(state) == S_MAIN && hv_q == 5'd0))
             assert(!in_pix_need);
     end
 
@@ -40,8 +47,11 @@ always @(posedge clk) begin
 
     // v4 split-rotator/tag alignment.  These assertions pin every registered
     // stage to the value and metadata presented in the preceding cycle, then
-    // pin the row-boundary transfer to the prepared vector.  They catch a
-    // PREP count change or unequal data/enable/control pipeline depth.
+    // pin the row-boundary transfer to the prepared vector.  They catch
+    // unequal data/enable/control pipeline depth.  They do not catch a
+    // change of the PREP load count: each one restates a register transfer,
+    // which holds whenever c_load fires.  check_fold49 in
+    // verification/prep_boundary_tb.sv covers the load count.
     if (f_past_valid && rst_n && $past(rst_n)) begin
         assert(cvlo1_q == $past(cvlo1));
         assert(cvlo2_q == $past(cvlo2));
